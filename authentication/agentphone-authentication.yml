@@ -1,0 +1,43 @@
+generated: '2026-07-17'
+method: searched
+source: openapi/agentphone-openapi-original.json
+docs: https://docs.agentphone.ai/welcome
+summary:
+  types:
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+description: >-
+  The AgentPhone REST API authenticates with an API key passed as an HTTP
+  Bearer token on every request (Authorization: Bearer <API_KEY>). Keys are
+  created in the dashboard under Settings -> API Keys. A separate OAuth 2.0
+  authorization server (advertised at /.well-known/oauth-authorization-server
+  and /.well-known/openid-configuration on api.agentphone.ai) secures the
+  remote MCP surface with authorization_code + PKCE, dynamic client
+  registration, refresh tokens, and a single `mcp` scope.
+schemes:
+- name: HTTPBearer
+  type: http
+  scheme: bearer
+  description: API key supplied as a Bearer token on every REST request.
+  sources:
+  - openapi/agentphone-openapi-original.json
+- name: MCPOAuth2
+  type: oauth2
+  description: >-
+    OAuth 2.0 / OIDC authorization server protecting the remote MCP surface
+    (RFC 8414 metadata). Not used by the core REST API.
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://agentphone.ai/oauth/authorize
+    tokenUrl: https://api.agentphone.ai/oauth/token
+    registrationUrl: https://api.agentphone.ai/oauth/register
+    revocationUrl: https://api.agentphone.ai/oauth/revoke
+    scopes:
+      mcp: Access the AgentPhone MCP tools
+  pkce: true
+  sources:
+  - well-known/agentphone-oauth-authorization-server.json

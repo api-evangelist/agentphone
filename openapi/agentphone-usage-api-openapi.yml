@@ -1,0 +1,467 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks usage API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: usage
+paths:
+  /v1/usage:
+    get:
+      operationId: get-usage-v-1-usage-get
+      summary: Get Usage
+      description: 'Get usage statistics for the current account.
+
+
+        Returns:
+
+        - Phone number limits (used/limit/remaining)
+
+        - Message statistics (total, last 24h, last 7 days, last 30 days)
+
+        - Call statistics (total, last 24h, last 7 days, last 30 days)
+
+        - Webhook delivery statistics'
+      tags:
+      - usage
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponse'
+  /v1/usage/daily:
+    get:
+      operationId: get-daily-usage-v-1-usage-daily-get
+      summary: Get Daily Usage
+      description: 'Get daily usage breakdown for the last N days (up to 365).
+
+        Returns per-day counts of messages, calls, and webhook deliveries.'
+      tags:
+      - usage
+      parameters:
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 30
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/usage/monthly:
+    get:
+      operationId: get-monthly-usage-v-1-usage-monthly-get
+      summary: Get Monthly Usage
+      description: 'Get monthly usage aggregation for the last N months.
+
+        Returns per-month totals of messages, calls, and webhook deliveries.'
+      tags:
+      - usage
+      parameters:
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 6
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlyUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/usage/by-number:
+    get:
+      operationId: get-usage-by-number-v-1-usage-by-number-get
+      summary: Get Usage By Number
+      description: Get usage statistics broken down by phone number, with linked agent info.
+      tags:
+      - usage
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberUsageResponse'
+  /v1/usage/by-agent:
+    get:
+      operationId: get-usage-by-agent-v-1-usage-by-agent-get
+      summary: Get Usage By Agent
+      description: 'Get usage broken down by agent for the current calendar week, month, or year.
+
+        Includes message count, completed call count, and total call seconds per agent.
+
+        Calls/messages with no agent attached are bucketed as "Unassigned".'
+      tags:
+      - usage
+      parameters:
+      - name: period
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/V1UsageByAgentGetParametersPeriod'
+      - name: tz
+        in: query
+        description: IANA timezone, e.g. America/New_York
+        required: false
+        schema:
+          type:
+          - string
+          - 'null'
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentUsageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    MonthlyUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonthlyUsagePoint'
+        months:
+          type: integer
+      required:
+      - data
+      - months
+      title: MonthlyUsageResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    V1UsageByAgentGetParametersPeriod:
+      type: string
+      enum:
+      - week
+      - month
+      - year
+      title: V1UsageByAgentGetParametersPeriod
+    UsageStats:
+      type: object
+      properties:
+        totalMessages:
+          type: integer
+        messagesLast24h:
+          type: integer
+        messagesLast7d:
+          type: integer
+        messagesLast30d:
+          type: integer
+        totalCalls:
+          type: integer
+        callsLast24h:
+          type: integer
+        callsLast7d:
+          type: integer
+        callsLast30d:
+          type: integer
+        totalWebhookDeliveries:
+          type: integer
+        successfulWebhookDeliveries:
+          type: integer
+        failedWebhookDeliveries:
+          type: integer
+      required:
+      - totalMessages
+      - messagesLast24h
+      - messagesLast7d
+      - messagesLast30d
+      - totalCalls
+      - callsLast24h
+      - callsLast7d
+      - callsLast30d
+      - totalWebhookDeliveries
+      - successfulWebhookDeliveries
+      - failedWebhookDeliveries
+      title: UsageStats
+    PlanInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        limits:
+          $ref: '#/components/schemas/PlanLimits'
+      required:
+      - name
+      - limits
+      title: PlanInfo
+    AgentUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentUsageItem'
+        period:
+          type: string
+        periodStart:
+          type: string
+        periodEnd:
+          type: string
+      required:
+      - data
+      - period
+      - periodStart
+      - periodEnd
+      title: AgentUsageResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UsageResponse:
+      type: object
+      properties:
+        plan:
+          $ref: '#/components/schemas/PlanInfo'
+        numbers:
+          $ref: '#/components/schemas/NumberLimits'
+        stats:
+          $ref: '#/components/schemas/UsageStats'
+        periodStart:
+          type: string
+        periodEnd:
+          type: string
+      required:
+      - plan
+      - numbers
+      - stats
+      - periodStart
+      - periodEnd
+      title: UsageResponse
+    NumberUsageItem:
+      type: object
+      properties:
+        numberId:
+          type: string
+        phoneNumber:
+          type: string
+        country:
+          type: string
+        status:
+          type: string
+        agentId:
+          type:
+          - string
+          - 'null'
+        agentName:
+          type:
+          - string
+          - 'null'
+        messages:
+          type: integer
+        calls:
+          type: integer
+      required:
+      - numberId
+      - phoneNumber
+      - country
+      - status
+      - messages
+      - calls
+      title: NumberUsageItem
+    DailyUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyUsagePoint'
+        days:
+          type: integer
+      required:
+      - data
+      - days
+      title: DailyUsageResponse
+    PlanLimits:
+      type: object
+      properties:
+        numbers:
+          type: integer
+        messagesPerMonth:
+          type: integer
+        voiceMinutesPerMonth:
+          type: integer
+        maxCallDurationMinutes:
+          type: integer
+        concurrentCalls:
+          type: integer
+      required:
+      - numbers
+      - messagesPerMonth
+      - voiceMinutesPerMonth
+      - maxCallDurationMinutes
+      - concurrentCalls
+      title: PlanLimits
+    AgentUsageItem:
+      type: object
+      properties:
+        agentId:
+          type:
+          - string
+          - 'null'
+        agentName:
+          type: string
+        messages:
+          type: integer
+        calls:
+          type: integer
+        totalSeconds:
+          type: integer
+        isOrphan:
+          type: boolean
+          default: false
+      required:
+      - agentId
+      - agentName
+      - messages
+      - calls
+      - totalSeconds
+      title: AgentUsageItem
+    NumberUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NumberUsageItem'
+      required:
+      - data
+      title: NumberUsageResponse
+    MonthlyUsagePoint:
+      type: object
+      properties:
+        month:
+          type: string
+        messages:
+          type: integer
+        calls:
+          type: integer
+        webhooks:
+          type: integer
+      required:
+      - month
+      - messages
+      - calls
+      - webhooks
+      title: MonthlyUsagePoint
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    NumberLimits:
+      type: object
+      properties:
+        used:
+          type: integer
+        limit:
+          type: integer
+        remaining:
+          type: integer
+      required:
+      - used
+      - limit
+      - remaining
+      title: NumberLimits
+    DailyUsagePoint:
+      type: object
+      properties:
+        date:
+          type: string
+        messages:
+          type: integer
+        calls:
+          type: integer
+        webhooks:
+          type: integer
+      required:
+      - date
+      - messages
+      - calls
+      - webhooks
+      title: DailyUsagePoint
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

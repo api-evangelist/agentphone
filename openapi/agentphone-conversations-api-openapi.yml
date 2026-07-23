@@ -1,0 +1,670 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks conversations API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: conversations
+paths:
+  /v1/conversations:
+    get:
+      operationId: list-conversations-v-1-conversations-get
+      summary: List Conversations
+      description: 'List all conversations for this account.
+
+
+        Sorted by most recent activity (lastMessageAt desc).
+
+        Sorted by most recent activity.'
+      tags:
+      - conversations
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
+        required: false
+        schema:
+          type: string
+          default: 20
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__routes__conversations__ConversationListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/conversations/{conversation_id}:
+    get:
+      operationId: get-conversation-v-1-conversations-conversation-id-get
+      summary: Get Conversation
+      description: Get a conversation with its recent messages.
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: message_limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      operationId: update-conversation-v-1-conversations-conversation-id-patch
+      summary: Update Conversation
+      description: "Update a conversation.\n\n- `metadata`: store custom context for AI agents (customer info, order/ticket\n  ids, session state). Replaces the stored object; surfaced in webhook\n  payloads as `conversationState`.\n- `group_name`: rename a group conversation (iMessage groups only). Also\n  renames the underlying iMessage thread.\n\nOnly the fields you include are changed: a rename-only PATCH leaves metadata\nuntouched, and vice versa."
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetail'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConversationRequest'
+  /v1/conversations/{conversation_id}/messages:
+    get:
+      operationId: get-conversation-messages-v-1-conversations-conversation-id-messages-get
+      summary: Get Conversation Messages
+      description: 'Get paginated messages for a conversation.
+
+
+        Use before/after for cursor-based pagination.'
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: before
+        in: query
+        required: false
+        schema:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      - name: after
+        in: query
+        required: false
+        schema:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagesListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/conversations/{conversation_id}/typing:
+    post:
+      operationId: send-typing-indicator-v-1-conversations-conversation-id-typing-post
+      summary: Send Typing Indicator
+      description: 'Show a typing indicator in the conversation (iMessage only).
+
+
+        Works for both 1:1 and group chats: a group id is itself a valid typing
+
+        target, so every participant sees the indicator. Best-effort: the
+
+        indicator may be silently dropped if the chat has no recent activity, the
+
+        recipient isn''t on iMessage, or it''s RCS-routed (RCS carries no composing
+
+        state). Auto-expires after a few seconds; no "stop typing" call needed.'
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendTypingResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/conversations/{conversation_id}/background:
+    post:
+      operationId: set-chat-background-v-1-conversations-conversation-id-background-post
+      summary: Set Chat Background
+      description: 'Set a custom wallpaper for the chat (iMessage only).
+
+
+        Customer sends `image_url`; we fetch (≤10MB, JPEG/PNG/GIF/WebP/HEIC),
+
+        validate, and forward as multipart to the iMessage provider. Idempotent —
+
+        re-setting replaces. Recipients on iOS < 18 fall back to the default
+
+        silently.'
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetBackgroundResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetBackgroundRequest'
+    delete:
+      operationId: remove-chat-background-v-1-conversations-conversation-id-background-delete
+      summary: Remove Chat Background
+      description: 'Clear the custom wallpaper for the chat (iMessage only).
+
+
+        Idempotent: deleting a default-background chat returns 204 (no-op).'
+      tags:
+      - conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    SetBackgroundRequest:
+      type: object
+      properties:
+        image_url:
+          type: string
+          description: HTTPS URL of the background image. JPEG/PNG/GIF/WebP/HEIC, max 10MB. Recipients on iOS < 18 see the default background; no error is raised.
+      required:
+      - image_url
+      title: SetBackgroundRequest
+    AppRoutesConversationsConversationSummaryMetadata:
+      type: object
+      properties: {}
+      title: AppRoutesConversationsConversationSummaryMetadata
+    GroupParticipant:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+      required:
+      - identifier
+      description: A member of a group chat, mirrored from Conversation.participants.
+      title: GroupParticipant
+    ConversationDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        agentId:
+          type:
+          - string
+          - 'null'
+        phoneNumberId:
+          type: string
+        phoneNumber:
+          type: string
+        participant:
+          type: string
+        isGroup:
+          type: boolean
+          default: false
+        groupId:
+          type:
+          - string
+          - 'null'
+        groupName:
+          type:
+          - string
+          - 'null'
+        groupIconUrl:
+          type:
+          - string
+          - 'null'
+        participants:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/GroupParticipant'
+        lastMessageAt:
+          type: string
+          format: date-time
+        messageCount:
+          type: integer
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/ConversationDetailMetadata'
+          - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageInConversation'
+      required:
+      - id
+      - phoneNumberId
+      - phoneNumber
+      - participant
+      - lastMessageAt
+      - messageCount
+      - createdAt
+      - messages
+      title: ConversationDetail
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    MessageInConversation:
+      type: object
+      properties:
+        id:
+          type: string
+        body:
+          type: string
+        fromNumber:
+          type: string
+        toNumber:
+          type: string
+        direction:
+          type: string
+        senderIdentifier:
+          type:
+          - string
+          - 'null'
+        channel:
+          type:
+          - string
+          - 'null'
+        mediaUrl:
+          type:
+          - string
+          - 'null'
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          default: []
+        receivedAt:
+          type: string
+          format: date-time
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReactionInConversation'
+          default: []
+        replyTo:
+          oneOf:
+          - $ref: '#/components/schemas/ReplyToInConversation'
+          - type: 'null'
+      required:
+      - id
+      - body
+      - fromNumber
+      - toNumber
+      - direction
+      - receivedAt
+      title: MessageInConversation
+    SetBackgroundResponse:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        channel:
+          type: string
+        hasBackground:
+          type: boolean
+        backgroundId:
+          type:
+          - string
+          - 'null'
+        backgroundVersion:
+          type:
+          - integer
+          - 'null'
+        changed:
+          type: boolean
+      required:
+      - conversationId
+      - channel
+      - hasBackground
+      - changed
+      title: SetBackgroundResponse
+    app__routes__conversations__ConversationListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/app__routes__conversations__ConversationSummary'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: app__routes__conversations__ConversationListResponse
+    ConversationDetailMetadata:
+      type: object
+      properties: {}
+      title: ConversationDetailMetadata
+    MessagesListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageInConversation'
+        hasMore:
+          type: boolean
+      required:
+      - data
+      - hasMore
+      title: MessagesListResponse
+    app__routes__conversations__ConversationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        agentId:
+          type:
+          - string
+          - 'null'
+        phoneNumberId:
+          type: string
+        phoneNumber:
+          type: string
+        participant:
+          type: string
+        isGroup:
+          type: boolean
+          default: false
+        groupId:
+          type:
+          - string
+          - 'null'
+        groupName:
+          type:
+          - string
+          - 'null'
+        groupIconUrl:
+          type:
+          - string
+          - 'null'
+        participants:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/GroupParticipant'
+        lastMessageAt:
+          type: string
+          format: date-time
+        lastMessagePreview:
+          type: string
+        messageCount:
+          type: integer
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/AppRoutesConversationsConversationSummaryMetadata'
+          - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - phoneNumberId
+      - phoneNumber
+      - participant
+      - lastMessageAt
+      - lastMessagePreview
+      - messageCount
+      - createdAt
+      title: app__routes__conversations__ConversationSummary
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    UpdateConversationRequestMetadata:
+      type: object
+      properties: {}
+      title: UpdateConversationRequestMetadata
+    ReplyToInConversation:
+      type: object
+      properties:
+        messageId:
+          type: string
+        message:
+          type: string
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          default: []
+      required:
+      - messageId
+      - message
+      title: ReplyToInConversation
+    ReactionInConversation:
+      type: object
+      properties:
+        id:
+          type: string
+        reactionType:
+          type: string
+        fromNumber:
+          type: string
+        direction:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - reactionType
+      - fromNumber
+      - direction
+      - createdAt
+      title: ReactionInConversation
+    SendTypingResponse:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        channel:
+          type: string
+        status:
+          type: string
+      required:
+      - conversationId
+      - channel
+      - status
+      title: SendTypingResponse
+    UpdateConversationRequest:
+      type: object
+      properties:
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/UpdateConversationRequestMetadata'
+          - type: 'null'
+        group_name:
+          type:
+          - string
+          - 'null'
+          description: New display name for a group conversation. iMessage groups only; also renames the underlying iMessage thread. Ignored (omit) for 1:1 chats.
+      description: Request body for updating a conversation.
+      title: UpdateConversationRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

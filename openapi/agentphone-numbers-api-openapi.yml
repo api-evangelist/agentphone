@@ -1,0 +1,383 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks numbers API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: numbers
+paths:
+  /v1/numbers:
+    get:
+      operationId: list-numbers-v-1-numbers-get
+      summary: List Numbers
+      description: 'List the active phone numbers for this account.
+
+
+        Released (deleted) numbers are excluded so the count reflects the numbers
+
+        the account actually holds. Fetch a single number via GET /{number_id}
+
+        (which returns it regardless of status).'
+      tags:
+      - numbers
+      parameters:
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
+        required: false
+        schema:
+          type: string
+          default: 20
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      operationId: create-number-v-1-numbers-post
+      summary: Create Number
+      description: 'Provision a new SMS-enabled phone number.
+
+
+        1. Check number limit (lifetime limit)
+
+        2. Search the account''s configured SMS provider for available numbers
+
+        3. Purchase the first available one
+
+        4. Configure messaging and voice routing
+
+        5. Store the number in our database'
+      tags:
+      - numbers
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNumberRequest'
+  /v1/numbers/{number_id}:
+    get:
+      operationId: get-number-v-1-numbers-number-id-get
+      summary: Get Number
+      description: 'Get a single phone number owned by this account.
+
+
+        Returns the number regardless of status (including released) so detail
+
+        pages still load for numbers that are no longer active.'
+      tags:
+      - numbers
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumberResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      operationId: delete-number-v-1-numbers-number-id-delete
+      summary: Delete Number
+      description: 'Release (delete) a phone number.
+
+
+        This will:
+
+        1. Release the number from its upstream provider when supported
+
+        2. Mark the number as "released" in the database
+
+        3. Keep all messages and conversation history (for audit purposes)
+
+
+        WARNING: This action is irreversible! The number cannot be recovered.'
+      tags:
+      - numbers
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/numbers/{number_id}/messages:
+    get:
+      operationId: get-messages-v-1-numbers-number-id-messages-get
+      summary: Get Messages
+      description: 'Get messages for a specific phone number.
+
+
+        Supports cursor-based pagination via before/after timestamps.'
+      tags:
+      - numbers
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: before
+        in: query
+        required: false
+        schema:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      - name: after
+        in: query
+        required: false
+        schema:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    PhoneNumberListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberResponse'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: PhoneNumberListResponse
+    MessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        from_:
+          type: string
+        to:
+          type: string
+        body:
+          type: string
+        direction:
+          type: string
+        channel:
+          type:
+          - string
+          - 'null'
+        receivedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - from_
+      - to
+      - body
+      - direction
+      - receivedAt
+      title: MessageResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    MessageListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageResponse'
+        hasMore:
+          type: boolean
+      required:
+      - data
+      - hasMore
+      title: MessageListResponse
+    CreateNumberRequest:
+      type: object
+      properties:
+        country:
+          type: string
+          default: US
+        areaCode:
+          type:
+          - string
+          - 'null'
+        agentId:
+          type:
+          - string
+          - 'null'
+      title: CreateNumberRequest
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    PhoneNumberResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        phoneNumber:
+          type: string
+        country:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          default: sms
+        agentId:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - phoneNumber
+      - country
+      - status
+      - createdAt
+      title: PhoneNumberResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

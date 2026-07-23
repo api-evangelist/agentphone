@@ -1,0 +1,52 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai/documentation/sdks/python
+packages:
+- language: python
+  registry: pypi
+  name: agentphone
+  url: https://pypi.org/project/agentphone/
+  install: pip install agentphone
+  official: true
+  description: >-
+    Official AgentPhone Python SDK (Fern-generated). Sync + async clients,
+    Python 3.9+. Published by the AgentPhone team (founders@agentphone.to).
+- language: javascript
+  registry: npm
+  name: agentphone
+  url: https://www.npmjs.com/package/agentphone
+  install: npm install agentphone
+  official: true
+  description: >-
+    Official AgentPhone TypeScript/JavaScript SDK (Fern-generated). Works in
+    Node.js 18+, Deno, Bun, and Cloudflare Workers. Built-in retry on 408/429/5xx.
+- language: javascript
+  registry: npm
+  name: agentphone-mcp
+  url: https://www.npmjs.com/package/agentphone-mcp
+  install: npx -y agentphone-mcp
+  official: true
+  description: >-
+    Official AgentPhone MCP server (stdio) exposing 26 tools over the API.
+    Source: https://github.com/AgentPhone-AI/agentphone-mcp
+integrations:
+- language: python
+  name: crewai-agentphone
+  url: https://github.com/AgentPhone-AI/crewai-agentphone
+  official: true
+  description: CrewAI integration — telephony tools for AI agents.
+- language: python
+  name: openai-agents-agentphone
+  url: https://github.com/AgentPhone-AI/openai-agents-agentphone
+  official: true
+  description: AgentPhone tools for the OpenAI Agents SDK.
+- language: javascript
+  name: chat-sdk-adapter
+  url: https://github.com/AgentPhone-AI/chat-sdk-adapter
+  official: true
+  description: AgentPhone adapter for Chat SDK — SMS, MMS, iMessage, and voice.
+notes: >-
+  A LangChain AgentPhone Toolkit is also documented at
+  https://docs.langchain.com/oss/python/integrations/tools/agentphone.
+  SDK source repositories under github.com/AgentPhone-AI are private; the
+  published registry packages are first-party.

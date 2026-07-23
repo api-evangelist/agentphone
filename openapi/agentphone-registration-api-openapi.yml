@@ -1,0 +1,399 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks registration API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: registration
+paths:
+  /v1/register/status:
+    get:
+      operationId: get-registration-status-v-1-register-status-get
+      summary: Get Registration Status
+      description: 'Check the status of your A2P 10DLC registration.
+
+
+        ### Sub-account status
+
+
+        To check the registration status of a sub-account, pass the `X-Sub-Account-Id` header with the sub-account ID returned from `POST /v1/register`.
+
+
+        ### Possible statuses
+
+
+        - `none` -- No registration submitted.
+
+        - `pending` -- Registration is under review.
+
+        - `approved` -- Registration approved. Your account is ready to send messages.'
+      tags:
+      - registration
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Check a sub-account's registration status. Pass the sub-account ID returned from `POST /v1/register`. Omit to check the master account.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignStatusResponse'
+  /v1/register:
+    post:
+      operationId: register-a-2-p-v-1-register-post
+      summary: Register A2P
+      description: 'Submit an A2P 10DLC registration to enable outbound SMS on your account.
+
+
+        US carriers require 10DLC registration before your AI agent can send text messages. This endpoint accepts both `sole_proprietor` and `standard_brand` registration types.
+
+
+        ### How it works
+
+
+        1. Submit your registration details via this endpoint
+
+        2. A one-time $25 registration fee is deducted from your account balance
+
+        3. We submit your registration to the carriers on your behalf
+
+        4. Carrier approval typically takes 7-10 business days
+
+
+        ### Registration types
+
+
+        - **`sole_proprietor`** -- For individuals or small businesses. Simpler requirements, fewer fields.
+
+        - **`standard_brand`** -- For established businesses. Requires `business_name`, `organization_type`, `ein`, `privacy_policy_url`, `terms_of_service_url`.
+
+
+        ### Sub-accounts
+
+
+        Parent accounts can set `create_sub_account: true` (the default) to create a dedicated sub-account for each registration. This lets you manage multiple campaigns independently. The $25 fee is always charged to the parent account.
+
+
+        ### Opt-in image
+
+
+        `opt_in_image_url` must be a publicly accessible HTTPS URL to a screenshot showing how users opt in to receive messages from you (e.g. a consent checkbox on your signup form). Supports PNG, JPG, WEBP, and GIF up to 2MB. Google Drive links (`drive.google.com/file/d/.../view`) are automatically converted if the file is shared publicly.
+
+
+        ### Re-submitting
+
+
+        If your previous registration was rejected, you can call this endpoint again to re-register.'
+      tags:
+      - registration
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistrationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    OrganizationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - private_corporation
+      - public_corporation
+      - llc
+      - partnership
+      - non_profit
+      - co_op
+      - government
+      title: OrganizationType
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ContactTitle:
+      type: string
+      enum:
+      - ceo
+      - cfo
+      - cto
+      - coo
+      - vp
+      - gm
+      - director
+      - other
+      title: ContactTitle
+    CampaignStatusResponse:
+      type: object
+      properties:
+        campaign_status:
+          type: string
+        message:
+          type: string
+        stage:
+          type:
+          - string
+          - 'null'
+      required:
+      - campaign_status
+      - message
+      title: CampaignStatusResponse
+    RegistrationRequestRegistrationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - standard_brand
+      description: '''sole_proprietor'' or ''standard_brand'''
+      title: RegistrationRequestRegistrationType
+    RegistrationResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        campaign_status:
+          type: string
+        sub_account_id:
+          type:
+          - string
+          - 'null'
+        fee_cents:
+          type: integer
+          default: 2500
+      required:
+      - ok
+      - message
+      - campaign_status
+      title: RegistrationResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    UseCase:
+      type: string
+      enum:
+      - account_notification
+      - customer_care
+      - delivery_notification
+      - fraud_alert
+      - higher_education
+      - marketing
+      - polling_voting
+      - public_service_announcement
+      - security_alert
+      - two_factor_authentication
+      title: UseCase
+    RegistrationRequest:
+      type: object
+      properties:
+        registration_type:
+          $ref: '#/components/schemas/RegistrationRequestRegistrationType'
+          description: '''sole_proprietor'' or ''standard_brand'''
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+          description: E.164 format, e.g. +15551234567
+        business_name:
+          type:
+          - string
+          - 'null'
+          description: Legal/registered business name. Required for standard_brand.
+        brand_name:
+          type:
+          - string
+          - 'null'
+          description: Public-facing brand name if different from business_name.
+        organization_type:
+          oneOf:
+          - $ref: '#/components/schemas/OrganizationType'
+          - type: 'null'
+          description: Required for standard_brand.
+        contact_title:
+          oneOf:
+          - $ref: '#/components/schemas/ContactTitle'
+          - type: 'null'
+          description: Your role. Required for standard_brand.
+        contact_title_other:
+          type:
+          - string
+          - 'null'
+          description: Custom title when contact_title is 'other'.
+        ein:
+          type:
+          - string
+          - 'null'
+          description: EIN / Tax ID. Required for standard_brand.
+        website_url:
+          type:
+          - string
+          - 'null'
+        industry:
+          type:
+          - string
+          - 'null'
+          description: e.g. technology, real_estate, retail, healthcare
+        business_regions:
+          type: array
+          items:
+            type: string
+          default:
+          - usa_and_canada
+        street_address:
+          type: string
+        street_address_2:
+          type:
+          - string
+          - 'null'
+        city:
+          type: string
+        state:
+          type: string
+        zip_code:
+          type: string
+        country:
+          type: string
+          default: US
+        planned_numbers:
+          type: integer
+          default: 1
+          description: Number of phone numbers you plan to use
+        description:
+          type: string
+          description: What your business does, who you message, and what types of messages you send. Min 40 chars.
+        use_cases:
+          type: array
+          items:
+            $ref: '#/components/schemas/UseCase'
+          description: 1-5 specific use cases for your SMS campaign.
+        volume:
+          $ref: '#/components/schemas/Volume'
+          default: low
+          description: Expected message volume.
+        message_samples:
+          type: array
+          items:
+            type: string
+          description: 2-5 example messages. Each must be 20-1024 chars and include your brand name.
+        consent_flow:
+          type: string
+          description: How users opt in to receive messages. Min 40 chars.
+        privacy_policy_url:
+          type:
+          - string
+          - 'null'
+          description: Required for standard_brand.
+        terms_of_service_url:
+          type:
+          - string
+          - 'null'
+          description: Required for standard_brand.
+        opt_in_image_url:
+          type: string
+          description: Publicly accessible URL to a screenshot of your opt-in flow (PNG, JPG, WEBP, or GIF, max 2MB)
+        includes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CampaignInclude'
+          default: []
+          description: Content types included in messages.
+        link_sample:
+          type:
+          - string
+          - 'null'
+          description: Example URL if messages contain links.
+        create_sub_account:
+          type: boolean
+          default: true
+          description: Create a dedicated sub-account for this campaign. Set false to register on your main account.
+      required:
+      - registration_type
+      - first_name
+      - last_name
+      - email
+      - phone_number
+      - street_address
+      - city
+      - state
+      - zip_code
+      - description
+      - use_cases
+      - message_samples
+      - consent_flow
+      - opt_in_image_url
+      title: RegistrationRequest
+    CampaignInclude:
+      type: string
+      enum:
+      - links
+      - phone_numbers
+      - age_gated
+      - direct_lending
+      title: CampaignInclude
+    Volume:
+      type: string
+      enum:
+      - low
+      - high
+      title: Volume
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

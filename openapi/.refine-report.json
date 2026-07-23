@@ -1,0 +1,38 @@
+{
+  "provider": "agentphone",
+  "sources": [
+    "agentphone-agent-webhooks-api-openapi.yml",
+    "agentphone-agents-api-openapi.yml",
+    "agentphone-calls-api-openapi.yml",
+    "agentphone-contactcards-api-openapi.yml",
+    "agentphone-contacts-api-openapi.yml",
+    "agentphone-conversations-api-openapi.yml",
+    "agentphone-location-api-openapi.yml",
+    "agentphone-messages-api-openapi.yml",
+    "agentphone-numbers-api-openapi.yml",
+    "agentphone-registration-api-openapi.yml",
+    "agentphone-sub-accounts-api-openapi.yml",
+    "agentphone-usage-api-openapi.yml",
+    "agentphone-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "agentphone-agent-webhooks-api-openapi.yml",
+    "agentphone-agents-api-openapi.yml",
+    "agentphone-calls-api-openapi.yml",
+    "agentphone-contactcards-api-openapi.yml",
+    "agentphone-contacts-api-openapi.yml",
+    "agentphone-conversations-api-openapi.yml",
+    "agentphone-location-api-openapi.yml",
+    "agentphone-messages-api-openapi.yml",
+    "agentphone-numbers-api-openapi.yml",
+    "agentphone-registration-api-openapi.yml",
+    "agentphone-sub-accounts-api-openapi.yml",
+    "agentphone-usage-api-openapi.yml",
+    "agentphone-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

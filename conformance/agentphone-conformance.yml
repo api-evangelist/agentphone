@@ -1,0 +1,40 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/agentphone-openapi-original.json
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: OpenAPI 3.1.0 document published at docs.agentphone.ai/openapi.json
+- id: oauth2
+  conforms: true
+  evidence: OAuth 2.0 authorization server for the MCP surface (scope mcp, PKCE)
+- id: oidc
+  conforms: true
+  evidence: /.well-known/openid-configuration published on api.agentphone.ai
+- id: rfc8414-oauth-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server published
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: /.well-known/api-catalog linkset published on docs.agentphone.ai
+- id: http-bearer-auth
+  conforms: true
+  evidence: securityScheme HTTPBearer (type http, scheme bearer)
+- id: webhook-hmac-signing
+  conforms: true
+  evidence: X-Webhook-Signature HMAC-SHA256 over {timestamp}.{body}
+- id: mcp
+  conforms: true
+  evidence: Official agentphone-mcp server + remote MCP OAuth server
+- id: 10dlc-a2p-messaging
+  conforms: true
+  evidence: Documented 10DLC campaign registration and carrier rate limits
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use a custom error envelope (error.message/code/type), not application/problem+json'
+- id: fhir-r4
+  conforms: false
+- id: fapi
+  conforms: false
+- id: scim2
+  conforms: false

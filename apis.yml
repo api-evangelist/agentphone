@@ -1,22 +1,275 @@
 aid: agentphone
-name: Agentphone
-description: Agentphone is a company surfaced as a portfolio company of y-combinator and added to the
-  API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+name: AgentPhone
+description: >-
+  AgentPhone is the telephony infrastructure layer for AI agents. A single REST
+  API provisions real US/Canada phone numbers for agents with voice calling, SMS,
+  MMS, and iMessage built in, plus unified webhooks, automatic conversation
+  threading, real-time call transcription, hosted-LLM or webhook voice modes, and
+  10DLC/A2P compliance handled for you. Official Python and TypeScript SDKs and a
+  published MCP server let agents buy numbers, place calls, and send messages
+  through natural language. Founded 2026 (Y Combinator), used by teams at Google
+  ADK, Replit, LangChain, Sim AI, and Alchemy.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://agentphone.ai/favicon.png?v=3
 url: https://raw.githubusercontent.com/api-evangelist/agentphone/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: active
+x-tier-reason: enriched-from-live-api
+x-enriched: '2026-07-17'
 specificationVersion: '0.20'
 created: '2026-07-17'
 modified: '2026-07-17'
 tags:
 - Company
-apis: []
+- Telephony
+- Phone Numbers
+- SMS
+- Voice
+- AI Agents
+- Messaging
+- Communications
+- Webhooks
+- MCP
+- iMessage
+apis:
+- aid: agentphone:agentphone-agent-webhooks-api
+  name: AgentPhone agent-webhooks API
+  description: The agent-webhooks API from AgentPhone — 3 operation(s) for agent-webhooks.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - agent-webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-agent-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-agents-api
+  name: AgentPhone agents API
+  description: The agents API from AgentPhone — 7 operation(s) for agents.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - agents
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-agents-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-calls-api
+  name: AgentPhone calls API
+  description: The calls API from AgentPhone — 8 operation(s) for calls.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - calls
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-calls-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-contactcards-api
+  name: AgentPhone contactCards API
+  description: The contactCards API from AgentPhone — 1 operation(s) for contactcards.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - contactCards
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-contactcards-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-contacts-api
+  name: AgentPhone contacts API
+  description: The contacts API from AgentPhone — 3 operation(s) for contacts.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-contacts-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-conversations-api
+  name: AgentPhone conversations API
+  description: The conversations API from AgentPhone — 5 operation(s) for conversations.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - conversations
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-conversations-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-location-api
+  name: AgentPhone location API
+  description: The location API from AgentPhone — 2 operation(s) for location.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - location
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-location-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-messages-api
+  name: AgentPhone messages API
+  description: The messages API from AgentPhone — 2 operation(s) for messages.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - messages
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-messages-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-numbers-api
+  name: AgentPhone numbers API
+  description: The numbers API from AgentPhone — 3 operation(s) for numbers.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - numbers
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-numbers-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-registration-api
+  name: AgentPhone registration API
+  description: The registration API from AgentPhone — 2 operation(s) for registration.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - registration
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-registration-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-sub-accounts-api
+  name: AgentPhone sub-accounts API
+  description: The sub-accounts API from AgentPhone — 2 operation(s) for sub-accounts.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - sub-accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-sub-accounts-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-usage-api
+  name: AgentPhone usage API
+  description: The usage API from AgentPhone — 5 operation(s) for usage.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - usage
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-usage-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-webhooks-api
+  name: AgentPhone webhooks API
+  description: The webhooks API from AgentPhone — 5 operation(s) for webhooks.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: DomainSecurity
+  url: security/agentphone-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/agentphone-agentic-access.yml
+- type: Authentication
+  url: authentication/agentphone-authentication.yml
+- type: Packages
+  url: packages/agentphone-packages.yml
+- type: SDKs
+  url: packages/agentphone-packages.yml
+- type: WellKnown
+  url: well-known/agentphone-well-known.yml
+- type: APICatalog
+  url: well-known/agentphone-api-catalog.json
+- type: MCPServer
+  url: mcp/agentphone-mcp.yml
+- type: LLMsTxt
+  url: llms/agentphone-llms.txt
+- type: Conformance
+  url: conformance/agentphone-conformance.yml
+- type: ErrorCatalog
+  url: errors/agentphone-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/agentphone-lifecycle.yml
+- type: Conventions
+  url: conventions/agentphone-conventions.yml
+- type: Idempotency
+  url: conventions/agentphone-conventions.yml
+- type: RateLimits
+  url: rate-limits/agentphone-rate-limits.yml
+- type: Sandbox
+  url: sandbox/agentphone-sandbox.yml
+- type: DataModel
+  url: data-model/agentphone-data-model.yml
+- type: AsyncAPI
+  url: asyncapi/agentphone-webhooks-asyncapi.yml
+- type: Webhooks
+  url: asyncapi/agentphone-webhooks-asyncapi.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DeveloperPortal
+  url: https://docs.agentphone.ai
+- type: Documentation
+  url: https://docs.agentphone.ai
+- type: GettingStarted
+  url: https://docs.agentphone.ai/welcome
+- type: GitHubOrganization
+  url: https://github.com/AgentPhone-AI
+- type: Support
+  url: https://discord.gg/sbNJDZbYmn
+- type: Pricing
+  url: https://agentphone.ai/pricing
+- type: SignUp
+  url: https://agentphone.ai/signup
+- type: Login
+  url: https://agentphone.ai/login
+- type: TermsOfService
+  url: https://agentphone.ai/terms
+- type: PrivacyPolicy
+  url: https://agentphone.ai/privacy
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

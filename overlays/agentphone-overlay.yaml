@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for AgentPhone
+  version: 1.0.0
+extends: openapi/agentphone-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-17'
+    x-apievangelist-artifacts:
+      authentication: authentication/agentphone-authentication.yml
+      conventions: conventions/agentphone-conventions.yml
+      errors: errors/agentphone-error-codes.yml
+      rate-limits: rate-limits/agentphone-rate-limits.yml
+      webhooks: asyncapi/agentphone-webhooks-asyncapi.yml
+      mcp: mcp/agentphone-mcp.yml
+      data-model: data-model/agentphone-data-model.yml
+- target: $.info
+  update:
+    x-error-envelope: '{ "error": { "message, code, type, details[] } }'
+    x-rate-limit-signal:
+      status: 429
+      header: Retry-After
+- target: $.servers
+  update:
+  - url: https://api.agentphone.ai
+    description: Production
+    x-verified: '2026-07-17'

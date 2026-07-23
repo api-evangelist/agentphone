@@ -1,0 +1,37 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai/documentation/reference/messaging-rate-limits
+signal:
+  status_code: 429
+  retry_after_header: Retry-After
+  error_code: RATE_LIMIT_EXCEEDED
+  behavior: >-
+    API request throttling returns 429 with a Retry-After header. Messaging
+    over carrier caps is NOT dropped — AgentPhone enqueues and delivers as
+    throughput frees up.
+api_limits:
+- scope: register (A2P registration)
+  limit_count: 5
+  window_seconds: 3600
+  note: 'Observed in RATE_LIMIT_EXCEEDED example (Limit: 5 requests per 3600s).'
+sms_10dlc_daily_segments:
+- {campaign_type: Sole proprietor, tmobile_daily: 1000, estimated_total: 3000}
+- {campaign_type: Low volume, tmobile_daily: 2000, estimated_total: 6000}
+- {campaign_type: High volume - low trust, tmobile_daily: 2000, estimated_total: 6000}
+- {campaign_type: High volume - standard, tmobile_daily: 10000, estimated_total: 30000}
+- {campaign_type: High volume - high trust, tmobile_daily: 40000, estimated_total: 120000}
+- {campaign_type: High volume - highest trust, tmobile_daily: 200000, estimated_total: 600000}
+sms_throughput_mps:
+- {campaign_type: Sole proprietor, mps: 2.25}
+- {campaign_type: Low volume, mps: 3.75}
+- {campaign_type: High volume - standard, mps: 12}
+- {campaign_type: High volume - high trust, mps: 120}
+- {campaign_type: High volume - highest trust, mps: 225}
+imessage_limits:
+- {scenario: Inbound (contact texts you first), limit_count: 1000, unit: contacts/day/line}
+- {scenario: Reply within 24h of last inbound, limit: unlimited}
+- {scenario: Outbound-first (cold outreach), limit_count: 50, unit: contacts/day/line}
+notes: >-
+  A segment is 160 chars (70 for Unicode). SMS caps are carrier-set (10DLC
+  campaign type + vetting/trust score), not AgentPhone-set. Limits are
+  per-line; load-balance across numbers for higher capacity.

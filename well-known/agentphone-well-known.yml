@@ -1,0 +1,36 @@
+generated: '2026-07-17'
+method: searched
+hosts:
+- host: https://api.agentphone.ai
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: agentphone-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: agentphone-oauth-authorization-server.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://docs.agentphone.ai
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    file: agentphone-api-catalog.json
+    note: RFC 9727 linkset pointing at the OpenAPI (service-desc) and API reference
+- host: https://agentphone.ai
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    note: SPA HTML fallback (not a real RFC 9116 document) — not saved
+  - path: /.well-known/openid-configuration
+    status: 200
+    note: SPA HTML fallback — not saved
+notes: >-
+  Only api.agentphone.ai (OAuth/OIDC authorization-server metadata for the MCP
+  surface) and docs.agentphone.ai (RFC 9727 api-catalog) return genuine
+  documents. All /.well-known/* paths on the apex agentphone.ai return the
+  SPA HTML shell (HTTP 200) rather than real documents and were not saved.

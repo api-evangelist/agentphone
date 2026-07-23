@@ -1,0 +1,113 @@
+# AgentPhone
+
+## Instructions for AI Agents
+
+- For clean Markdown of any page, append `.md` to the page URL
+- For section-specific indexes, append `/llms.txt` to any section URL
+- For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.agentphone.ai/_mcp/server
+
+## Docs
+
+- [Welcome](https://docs.agentphone.ai/welcome.md): Give your AI agents phone numbers, SMS, and voice calls.
+- [Agents](https://docs.agentphone.ai/documentation/guides/agents.md): Create and manage AI agent personas with phone numbers, voice modes, and system prompts
+- [Phone numbers](https://docs.agentphone.ai/documentation/guides/phone-numbers.md): Provision, manage, and release SMS- and voice-enabled phone numbers
+- [Messages](https://docs.agentphone.ai/documentation/guides/messages.md): Send and receive SMS, MMS, and iMessage — text, media, threaded replies, effects, reactions, and group chats
+- [Calls](https://docs.agentphone.ai/documentation/guides/calls.md): Voice call flows, streaming responses, live transcript streaming, recordings, and call management
+- [Webhooks](https://docs.agentphone.ai/documentation/guides/webhooks.md): Configure webhook endpoints and receive real-time event notifications
+- [Usage & Billing](https://docs.agentphone.ai/usage.md): Pay-as-you-go pricing, balance management, and usage monitoring
+- [Sub-Accounts](https://docs.agentphone.ai/sub-accounts.md): Create isolated sub-accounts for separate campaigns, brands, or clients under one master account.
+- [Pagination](https://docs.agentphone.ai/documentation/reference/pagination.md): How to paginate through list endpoints in the AgentPhone API.
+- [Error Handling](https://docs.agentphone.ai/documentation/reference/error-handling.md): HTTP status codes, error response format, and error handling best practices
+- [Messaging Rate Limits](https://docs.agentphone.ai/documentation/reference/messaging-rate-limits.md): Daily message limits and throughput rates for SMS (10DLC) and iMessage
+- [Testing](https://docs.agentphone.ai/documentation/reference/testing.md): Test webhooks locally, use mock payloads, and verify your integration
+- [Best Practices](https://docs.agentphone.ai/documentation/reference/best-practices.md): Voice latency, security, webhook reliability, and performance tips
+- [Code Examples](https://docs.agentphone.ai/documentation/reference/code-examples.md): End-to-end examples for common AgentPhone integrations.
+- [FAQ](https://docs.agentphone.ai/documentation/reference/faq.md): Frequently asked questions about AgentPhone
+- [TypeScript SDK](https://docs.agentphone.ai/documentation/sdks/typescript.md): Official TypeScript/JavaScript SDK for the AgentPhone API
+- [Python SDK](https://docs.agentphone.ai/documentation/sdks/python.md): Official Python SDK for the AgentPhone API
+- [Connect Your AI Agent](https://docs.agentphone.ai/integrations/connect-your-ai.md): Give any MCP-compatible AI agent a phone — calls, SMS, and iMessage through one config block
+- [Replit](https://docs.agentphone.ai/integrations/replit.md): Use AgentPhone in your Replit apps and agents
+- [Sim.ai](https://docs.agentphone.ai/integrations/sim.md): Add AgentPhone tools to the AI agents you build in Sim's visual workflow builder
+- [MCP Server](https://docs.agentphone.ai/mcp.md): Give AI agents phone numbers, SMS, and voice calls via the Model Context Protocol
+- [Claude Code Skill](https://docs.agentphone.ai/integrations/claude-code-skill.md): Use AgentPhone directly from Claude Code with the official skill
+- [LangChain](https://docs.agentphone.ai/integrations/langchain.md): Give your LangChain agent phone numbers, voice calls, and messaging with AgentPhone
+- [Google ADK](https://docs.agentphone.ai/integrations/google-adk.md): Give your Google ADK agent phone numbers, voice calls, and SMS with AgentPhone
+- [Vercel](https://docs.agentphone.ai/integrations/vercel.md): Add SMS, MMS, iMessage, and voice to Vercel's Chat SDK with the AgentPhone adapter
+- [Stripe Projects](https://docs.agentphone.ai/integrations/stripe-projects.md): Provision an AgentPhone number and API key from the command line with Stripe Projects
+- [API Reference](https://docs.agentphone.ai/api-reference.md): Explore the AgentPhone API with interactive examples and SDK snippets.
+
+## API Docs
+
+- API Reference > agents [List Voices](https://docs.agentphone.ai/api-reference/agents/list-voices-v-1-agents-voices-get.md)
+- API Reference > agents [List Agents](https://docs.agentphone.ai/api-reference/agents/list-agents-v-1-agents-get.md)
+- API Reference > agents [Create Agent](https://docs.agentphone.ai/api-reference/agents/create-agent-v-1-agents-post.md)
+- API Reference > agents [Get Agent](https://docs.agentphone.ai/api-reference/agents/get-agent-v-1-agents-agent-id-get.md)
+- API Reference > agents [Delete Agent](https://docs.agentphone.ai/api-reference/agents/delete-agent-v-1-agents-agent-id-delete.md)
+- API Reference > agents [Update Agent](https://docs.agentphone.ai/api-reference/agents/update-agent-v-1-agents-agent-id-patch.md)
+- API Reference > agents [Attach Number To Agent](https://docs.agentphone.ai/api-reference/agents/attach-number-to-agent-v-1-agents-agent-id-numbers-post.md)
+- API Reference > agents [Detach Number From Agent](https://docs.agentphone.ai/api-reference/agents/detach-number-from-agent-v-1-agents-agent-id-numbers-number-id-delete.md)
+- API Reference > agents [List Agent Conversations](https://docs.agentphone.ai/api-reference/agents/list-agent-conversations-v-1-agents-agent-id-conversations-get.md)
+- API Reference > agents [List Agent Calls](https://docs.agentphone.ai/api-reference/agents/list-agent-calls-v-1-agents-agent-id-calls-get.md)
+- API Reference > numbers [List Numbers](https://docs.agentphone.ai/api-reference/numbers/list-numbers-v-1-numbers-get.md)
+- API Reference > numbers [Create Number](https://docs.agentphone.ai/api-reference/numbers/create-number-v-1-numbers-post.md)
+- API Reference > numbers [Get Number](https://docs.agentphone.ai/api-reference/numbers/get-number-v-1-numbers-number-id-get.md)
+- API Reference > numbers [Delete Number](https://docs.agentphone.ai/api-reference/numbers/delete-number-v-1-numbers-number-id-delete.md)
+- API Reference > numbers [Get Messages](https://docs.agentphone.ai/api-reference/numbers/get-messages-v-1-numbers-number-id-messages-get.md)
+- API Reference > webhooks [Get Webhook](https://docs.agentphone.ai/api-reference/webhooks/get-webhook-v-1-webhooks-get.md)
+- API Reference > webhooks [Create Or Update Webhook](https://docs.agentphone.ai/api-reference/webhooks/create-or-update-webhook-v-1-webhooks-post.md)
+- API Reference > webhooks [Delete Webhook](https://docs.agentphone.ai/api-reference/webhooks/delete-webhook-v-1-webhooks-delete.md)
+- API Reference > webhooks [List Deliveries](https://docs.agentphone.ai/api-reference/webhooks/list-deliveries-v-1-webhooks-deliveries-get.md)
+- API Reference > webhooks [Delivery Stats](https://docs.agentphone.ai/api-reference/webhooks/delivery-stats-v-1-webhooks-deliveries-stats-get.md)
+- API Reference > webhooks [All Time Stats](https://docs.agentphone.ai/api-reference/webhooks/all-time-stats-v-1-webhooks-deliveries-all-time-get.md)
+- API Reference > webhooks [Test Webhook](https://docs.agentphone.ai/api-reference/webhooks/test-webhook-v-1-webhooks-test-post.md)
+- API Reference > agent-webhooks [Get Agent Webhook](https://docs.agentphone.ai/api-reference/agent-webhooks/get-agent-webhook-v-1-agents-agent-id-webhook-get.md)
+- API Reference > agent-webhooks [Create Or Update Agent Webhook](https://docs.agentphone.ai/api-reference/agent-webhooks/create-or-update-agent-webhook-v-1-agents-agent-id-webhook-post.md)
+- API Reference > agent-webhooks [Delete Agent Webhook](https://docs.agentphone.ai/api-reference/agent-webhooks/delete-agent-webhook-v-1-agents-agent-id-webhook-delete.md)
+- API Reference > agent-webhooks [List Agent Deliveries](https://docs.agentphone.ai/api-reference/agent-webhooks/list-agent-deliveries-v-1-agents-agent-id-webhook-deliveries-get.md)
+- API Reference > agent-webhooks [Test Agent Webhook](https://docs.agentphone.ai/api-reference/agent-webhooks/test-agent-webhook-v-1-agents-agent-id-webhook-test-post.md)
+- API Reference > contacts [List Contacts](https://docs.agentphone.ai/api-reference/contacts/list-contacts-v-1-contacts-get.md)
+- API Reference > contacts [Create Contact](https://docs.agentphone.ai/api-reference/contacts/create-contact-v-1-contacts-post.md)
+- API Reference > contacts [Get Contact Capabilities](https://docs.agentphone.ai/api-reference/contacts/get-contact-capabilities-v-1-contacts-capabilities-get.md)
+- API Reference > contacts [Get Contact](https://docs.agentphone.ai/api-reference/contacts/get-contact-v-1-contacts-contact-id-get.md)
+- API Reference > contacts [Delete Contact](https://docs.agentphone.ai/api-reference/contacts/delete-contact-v-1-contacts-contact-id-delete.md)
+- API Reference > contacts [Update Contact](https://docs.agentphone.ai/api-reference/contacts/update-contact-v-1-contacts-contact-id-patch.md)
+- API Reference > conversations [List Conversations](https://docs.agentphone.ai/api-reference/conversations/list-conversations-v-1-conversations-get.md)
+- API Reference > conversations [Get Conversation](https://docs.agentphone.ai/api-reference/conversations/get-conversation-v-1-conversations-conversation-id-get.md)
+- API Reference > conversations [Update Conversation](https://docs.agentphone.ai/api-reference/conversations/update-conversation-v-1-conversations-conversation-id-patch.md)
+- API Reference > conversations [Get Conversation Messages](https://docs.agentphone.ai/api-reference/conversations/get-conversation-messages-v-1-conversations-conversation-id-messages-get.md)
+- API Reference > conversations [Send Typing Indicator](https://docs.agentphone.ai/api-reference/conversations/send-typing-indicator-v-1-conversations-conversation-id-typing-post.md)
+- API Reference > conversations [Set Chat Background](https://docs.agentphone.ai/api-reference/conversations/set-chat-background-v-1-conversations-conversation-id-background-post.md)
+- API Reference > conversations [Remove Chat Background](https://docs.agentphone.ai/api-reference/conversations/remove-chat-background-v-1-conversations-conversation-id-background-delete.md)
+- API Reference > calls [List Calls](https://docs.agentphone.ai/api-reference/calls/list-calls-v-1-calls-get.md)
+- API Reference > calls [Create Outbound Call](https://docs.agentphone.ai/api-reference/calls/create-outbound-call-v-1-calls-post.md)
+- API Reference > calls [Create Web Call](https://docs.agentphone.ai/api-reference/calls/create-web-call-v-1-calls-web-post.md)
+- API Reference > calls [Get Call](https://docs.agentphone.ai/api-reference/calls/get-call-v-1-calls-call-id-get.md)
+- API Reference > calls [End Call](https://docs.agentphone.ai/api-reference/calls/end-call-v-1-calls-call-id-end-post.md)
+- API Reference > calls [Get Call Recording](https://docs.agentphone.ai/api-reference/calls/get-call-recording-v-1-calls-call-id-recording-get.md)
+- API Reference > calls [Get Call Transcript](https://docs.agentphone.ai/api-reference/calls/get-call-transcript-v-1-calls-call-id-transcript-get.md)
+- API Reference > calls [Stream Call Transcript](https://docs.agentphone.ai/api-reference/calls/stream-call-transcript-v-1-calls-call-id-transcript-stream-get.md)
+- API Reference > calls [List Calls For Number](https://docs.agentphone.ai/api-reference/calls/list-calls-for-number-v-1-numbers-number-id-calls-get.md)
+- API Reference > usage [Get Usage](https://docs.agentphone.ai/api-reference/usage/get-usage-v-1-usage-get.md)
+- API Reference > usage [Get Daily Usage](https://docs.agentphone.ai/api-reference/usage/get-daily-usage-v-1-usage-daily-get.md)
+- API Reference > usage [Get Monthly Usage](https://docs.agentphone.ai/api-reference/usage/get-monthly-usage-v-1-usage-monthly-get.md)
+- API Reference > usage [Get Usage By Number](https://docs.agentphone.ai/api-reference/usage/get-usage-by-number-v-1-usage-by-number-get.md)
+- API Reference > usage [Get Usage By Agent](https://docs.agentphone.ai/api-reference/usage/get-usage-by-agent-v-1-usage-by-agent-get.md)
+- API Reference > messages [Send Message](https://docs.agentphone.ai/api-reference/messages/send-message-v-1-messages-post.md)
+- API Reference > messages [Send Reaction](https://docs.agentphone.ai/api-reference/messages/send-reaction-v-1-messages-message-id-reactions-post.md)
+- API Reference > Contact Cards [Get Contact Card](https://docs.agentphone.ai/api-reference/contact-cards/get-contact-card-v-1-numbers-number-id-contact-card-get.md)
+- API Reference > Contact Cards [Put Contact Card](https://docs.agentphone.ai/api-reference/contact-cards/put-contact-card-v-1-numbers-number-id-contact-card-put.md)
+- API Reference > Contact Cards [Delete Contact Card](https://docs.agentphone.ai/api-reference/contact-cards/delete-contact-card-v-1-numbers-number-id-contact-card-delete.md)
+- API Reference > sub-accounts [List Sub Accounts](https://docs.agentphone.ai/api-reference/sub-accounts/list-sub-accounts-v-1-sub-accounts-get.md)
+- API Reference > sub-accounts [Create Sub Account](https://docs.agentphone.ai/api-reference/sub-accounts/create-sub-account-v-1-sub-accounts-post.md)
+- API Reference > sub-accounts [Delete Sub Account](https://docs.agentphone.ai/api-reference/sub-accounts/delete-sub-account-v-1-sub-accounts-sub-account-id-delete.md)
+- API Reference > sub-accounts [Update Sub Account](https://docs.agentphone.ai/api-reference/sub-accounts/update-sub-account-v-1-sub-accounts-sub-account-id-patch.md)
+- API Reference > registration [Get Registration Status](https://docs.agentphone.ai/api-reference/registration/get-registration-status-v-1-register-status-get.md)
+- API Reference > registration [Register A2P](https://docs.agentphone.ai/api-reference/registration/register-a-2-p-v-1-register-post.md)
+- API Reference > location [Get Location](https://docs.agentphone.ai/api-reference/location/get-location-v-1-location-phone-number-get.md)
+- API Reference > location [Refresh Locations](https://docs.agentphone.ai/api-reference/location/refresh-locations-v-1-location-refresh-post.md)
+
+## OpenAPI Specification
+
+The raw OpenAPI 3.1 specification for this API is available at:
+- [OpenAPI JSON](https://docs.agentphone.ai/openapi.json)
+- [OpenAPI YAML](https://docs.agentphone.ai/openapi.yaml)

@@ -1,0 +1,184 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks contactCards API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: contactCards
+paths:
+  /v1/numbers/{number_id}/contact-card:
+    get:
+      operationId: get-contact-card-v-1-numbers-number-id-contact-card-get
+      summary: Get Contact Card
+      description: Fetch the iMessage contact card set on this number.
+      tags:
+      - contactCards
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCardResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      operationId: put-contact-card-v-1-numbers-number-id-contact-card-put
+      summary: Put Contact Card
+      description: Create or replace the iMessage contact card on this number.
+      tags:
+      - contactCards
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCardResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCardWriteRequest'
+    delete:
+      operationId: delete-contact-card-v-1-numbers-number-id-contact-card-delete
+      summary: Delete Contact Card
+      description: Remove the iMessage contact card from this number.
+      tags:
+      - contactCards
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ContactCardResponse:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+        lastName:
+          type:
+          - string
+          - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+        hasAvatar:
+          type: boolean
+          default: false
+      title: ContactCardResponse
+    ContactCardWriteRequest:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+        lastName:
+          type:
+          - string
+          - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+        avatarUrl:
+          type:
+          - string
+          - 'null'
+      title: ContactCardWriteRequest
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

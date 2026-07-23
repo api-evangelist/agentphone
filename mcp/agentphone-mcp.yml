@@ -1,0 +1,49 @@
+generated: '2026-07-17'
+method: searched
+status: published
+source: https://docs.agentphone.ai/mcp
+server:
+  name: agentphone
+  transport: stdio
+  package: agentphone-mcp
+  install: npx -y agentphone-mcp
+  repository: https://github.com/AgentPhone-AI/agentphone-mcp
+  npm: https://www.npmjs.com/package/agentphone-mcp
+  env:
+    AGENTPHONE_API_KEY: required
+    AGENTPHONE_BASE_URL: optional (default https://api.agentphone.ai)
+remote:
+  docs_mcp: https://docs.agentphone.ai/_mcp/server
+  oauth_authorization_server: https://api.agentphone.ai/.well-known/oauth-authorization-server
+  note: >-
+    A hosted/remote MCP endpoint is advertised via an OAuth 2.0 authorization
+    server (scope `mcp`). The primary published server is the local stdio
+    bridge `agentphone-mcp`.
+tool_count: 26
+tools:
+- {name: account_overview, description: Full snapshot of account — agents, numbers, webhook, usage}
+- {name: get_usage, description: Detailed usage stats — balance, counts, volume, delivery stats}
+- {name: list_numbers, description: List all phone numbers}
+- {name: buy_number, description: Purchase a phone number in a region}
+- {name: release_number, description: Release a phone number (irreversible)}
+- {name: get_messages, description: Get SMS messages for a number}
+- {name: list_conversations, description: List SMS conversation threads}
+- {name: get_conversation, description: Get a conversation with full history}
+- {name: list_calls, description: List recent calls}
+- {name: list_calls_for_number, description: List calls for a specific number}
+- {name: get_call, description: Get call details and transcript}
+- {name: make_call, description: Place an outbound call (uses your webhook)}
+- {name: make_conversation_call, description: Place a call with built-in AI, no webhook}
+- {name: list_agents, description: List all agents}
+- {name: create_agent, description: Create a new agent with optional voice config}
+- {name: update_agent, description: Update an agent}
+- {name: delete_agent, description: Delete an agent}
+- {name: get_agent, description: Get agent details}
+- {name: attach_number, description: Assign a number to an agent}
+- {name: list_voices, description: List available agent voices}
+- {name: get_webhook, description: Get project-level webhook config}
+- {name: set_webhook, description: Set project-level webhook URL}
+- {name: delete_webhook, description: Remove project-level webhook}
+- {name: get_agent_webhook, description: Get an agent's webhook}
+- {name: set_agent_webhook, description: Set an agent's webhook}
+- {name: delete_agent_webhook, description: Remove an agent's webhook}

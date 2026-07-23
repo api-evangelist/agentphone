@@ -1,0 +1,52 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai/documentation/reference
+authentication:
+  style: bearer
+  header: 'Authorization: Bearer <API_KEY>'
+  ref: authentication/agentphone-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.agentphone.ai
+  note: >-
+    Core API is under /v1. A separate agent self-signup flow lives under
+    /v0/agent/sign-up and /v0/agent/verify.
+pagination:
+  styles:
+  - style: offset
+    endpoints: [GET /v1/numbers, GET /v1/conversations, GET /v1/agents]
+    params: {limit: 'default 20, max 100', offset: 'default 0'}
+    response_fields: [data, hasMore, total]
+  - style: cursor
+    endpoints: ['GET /v1/numbers/{id}/messages']
+    params: {limit: 'default 50, max 200', before: ISO timestamp, after: ISO timestamp}
+    response_fields: [data, hasMore]
+  guidance: Always check hasMore before fetching the next page.
+  ref: https://docs.agentphone.ai/documentation/reference/pagination
+idempotency:
+  supported: true
+  mechanism: webhook-delivery
+  header: X-Webhook-ID
+  note: >-
+    Webhook deliveries may be retried and can arrive more than once; the
+    provider documents using the X-Webhook-ID header to de-duplicate
+    (idempotent processing). The REST write endpoints do not document a
+    request-level Idempotency-Key header.
+  ref: https://docs.agentphone.ai/documentation/guides/webhooks
+rate_limiting:
+  status_code: 429
+  retry_after_header: Retry-After
+  ref: rate-limits/agentphone-rate-limits.yml
+error_envelope:
+  shape: '{ "error": { "message, code, type, details[] } }'
+  ref: errors/agentphone-error-codes.yml
+webhook_security:
+  signature_header: X-Webhook-Signature
+  algorithm: HMAC-SHA256 (sha256=<hex>)
+  signed_string: '{timestamp}.{raw_body}'
+  secret_prefix: whsec_
+  replay_window: 5 minutes
+  delivery_id_header: X-Webhook-ID
+tracing:
+  request_id: not documented

@@ -1,0 +1,52 @@
+generated: '2026-07-17'
+method: derived
+source: openapi/agentphone-openapi-original.json
+id_prefixes:
+  agent: agent_ / agt_
+  number: num_
+  conversation: conv_
+  call: call_
+entities:
+- name: Agent
+  description: An AI persona with voice/prompt config that owns phone numbers.
+  key_operations: [create-agent, get-agent, update-agent, delete-agent, list-agents]
+- name: PhoneNumber
+  description: A provisioned SMS/voice-capable phone number.
+  key_operations: [create-number, get-number, delete-number, list-numbers]
+- name: Contact
+  description: A person/endpoint the agent communicates with.
+  key_operations: [create-contact, get-contact, update-contact, delete-contact, list-contacts]
+- name: Conversation
+  description: A threaded exchange of messages on a number/agent.
+  key_operations: [get-conversation, update-conversation, list-conversations, get-conversation-messages]
+- name: Message
+  description: An SMS/MMS/iMessage message within a conversation.
+  key_operations: [send-message, get-messages, send-reaction]
+- name: Call
+  description: An inbound/outbound voice call with transcript + recording.
+  key_operations: [create-outbound-call, create-web-call, get-call, end-call, get-call-transcript, get-call-recording]
+- name: Webhook
+  description: Project-level or per-agent event delivery target.
+  key_operations: [create-or-update-webhook, get-webhook, delete-webhook, list-deliveries]
+- name: ContactCard
+  description: vCard/contact-card metadata attached to a number.
+  key_operations: [get-contact-card, put-contact-card, delete-contact-card]
+- name: SubAccount
+  description: A child account for multi-tenant separation.
+  key_operations: [create-sub-account, list-sub-accounts, update-sub-account, delete-sub-account]
+- name: Usage
+  description: Balance and usage rollups (daily, monthly, by-number, by-agent).
+  key_operations: [get-usage, get-daily-usage, get-monthly-usage, get-usage-by-number, get-usage-by-agent]
+relationships:
+- {from: Agent, type: has_many, to: PhoneNumber, via: agent_id/numbers}
+- {from: PhoneNumber, type: belongs_to, to: Agent, via: agent_id}
+- {from: PhoneNumber, type: has_many, to: Message, via: number_id}
+- {from: PhoneNumber, type: has_many, to: Call, via: number_id}
+- {from: PhoneNumber, type: has_one, to: ContactCard, via: number_id}
+- {from: Agent, type: has_many, to: Conversation, via: agent_id}
+- {from: Agent, type: has_many, to: Call, via: agent_id}
+- {from: Conversation, type: has_many, to: Message, via: conversation_id}
+- {from: Message, type: belongs_to, to: Conversation, via: conversation_id}
+- {from: Message, type: has_many, to: Reaction, via: message_id}
+- {from: Call, type: has_one, to: Transcript, via: call_id}
+- {from: Agent, type: has_one, to: Webhook, via: agent_id}

@@ -1,0 +1,52 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai/documentation/reference/error-handling
+format: custom-json
+envelope:
+  shape: '{ "error": { "message, code, type, details[] } }'
+  fields:
+    message: Human-readable description of the error
+    code: Machine-readable error code
+    type: Error category (validation_error, rate_limit_error, ...)
+    details: Optional array of field-level validation errors
+status_codes:
+- {status: 200, meaning: OK, when: Successful GET or POST}
+- {status: 201, meaning: Created, when: Successful POST /v1/contacts}
+- {status: 400, meaning: Bad Request, when: Invalid request parameters or validation error}
+- {status: 401, meaning: Unauthorized, when: Missing or invalid API key}
+- {status: 404, meaning: Not Found, when: Resource does not exist or no access}
+- {status: 422, meaning: Unprocessable Entity, when: Validation error (invalid data format)}
+- {status: 429, meaning: Too Many Requests, when: Rate limit exceeded (check Retry-After header)}
+- {status: 500, meaning: Internal Server Error, when: Retry with exponential backoff}
+- {status: 502, meaning: Bad Gateway, when: Carrier service error, retry later}
+- {status: 503, meaning: Service Unavailable, when: Temporary, retry with backoff}
+- {status: 504, meaning: Gateway Timeout, when: Upstream timeout, retry with backoff}
+retryable_statuses: [429, 500, 502, 503, 504]
+error_codes:
+- code: VALIDATION_ERROR
+  type: validation_error
+  meaning: Request validation failed; see details[] for field errors.
+- code: VALIDATION_ERROR_NUMBER_LIMIT
+  type: validation_error
+  meaning: Phone number limit reached (self-serve accounts up to 10 numbers).
+  action: Contact AgentPhone to increase the limit.
+- code: INSUFFICIENT_BALANCE
+  type: validation_error
+  meaning: Balance too low to complete the action (provisioning a number needs >= $3.00).
+  action: Add funds or enable auto-recharge on the Billing page.
+- code: RATE_LIMIT_EXCEEDED
+  type: rate_limit_error
+  meaning: Rate limit exceeded.
+  action: Honor the Retry-After header before retrying.
+- code: PHONE_NUMBER_NOT_FOUND
+  type: not_found
+  meaning: The requested phone number does not exist or you do not have access.
+- code: CARRIER_ERROR
+  type: carrier_error
+  meaning: Error from the downstream carrier service; usually temporary.
+  action: Retry with exponential backoff.
+  note: Previously returned as TWILIO_ERROR (deprecated; still works, will be removed).
+deprecated_codes:
+- code: TWILIO_ERROR
+  replaced_by: CARRIER_ERROR
+  status: deprecated

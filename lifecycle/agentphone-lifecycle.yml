@@ -1,0 +1,22 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://api.agentphone.ai
+deprecation:
+  policy_url: null
+  examples:
+  - item: TWILIO_ERROR error code
+    replaced_by: CARRIER_ERROR
+    note: Deprecated code still works but will be removed in a future version.
+  note: >-
+    No formal published deprecation-policy page or Sunset/Deprecation header
+    support found; deprecations are announced inline in the docs.
+sla:
+  url: null
+status_page: null
+status_page_note: >-
+  No status page found (status.agentphone.ai does not resolve as of 2026-07-17).
+deprecated_operations: []

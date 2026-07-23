@@ -1,0 +1,21 @@
+generated: '2026-07-17'
+method: searched
+skills:
+- file: agentphone-published-skill.md
+  name: AgentPhone (official Claude Code skill)
+  method: searched
+  source: https://github.com/AgentPhone-AI/skills
+  api: openapi/agentphone-openapi-original.json
+  description: >-
+    Official AgentPhone Claude Code plugin/skill (SKILL.md) — self-signup,
+    numbers, SMS, voice calls. Saved verbatim.
+- file: agentphone-provision-and-text.md
+  name: Provision a number and send an SMS
+  method: generated
+  api: openapi/agentphone-openapi-original.json
+  operations: [create-agent-v-1-agents-post, create-number-v-1-numbers-post, attach-number-to-agent-v-1-agents-agent-id-numbers-post, send-message-v-1-messages-post]
+- file: agentphone-place-call-and-get-transcript.md
+  name: Place an outbound call and read the transcript
+  method: generated
+  api: openapi/agentphone-openapi-original.json
+  operations: [create-or-update-webhook-v-1-webhooks-post, create-outbound-call-v-1-calls-post, get-call-v-1-calls-call-id-get, get-call-transcript-v-1-calls-call-id-transcript-get]

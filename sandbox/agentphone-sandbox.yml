@@ -1,0 +1,34 @@
+generated: '2026-07-17'
+method: searched
+source: https://docs.agentphone.ai/documentation/reference/testing
+model: >-
+  AgentPhone does not publish separate test-vs-live API keys or magic test
+  phone numbers. Integration testing centers on webhook verification: a test
+  endpoint that emits a real sample payload, documented mock payloads, and a
+  testMode flag inside webhook conversationState.
+test_endpoints:
+- endpoint: POST /v1/webhooks/test
+  operationId: test-webhook-v-1-webhooks-test-post
+  description: Sends a sample agent.message payload to your configured project webhook.
+- endpoint: POST /v1/agents/{agent_id}/webhook/test
+  operationId: test-agent-webhook-v-1-agents-agent-id-webhook-test-post
+  description: Sends a sample payload to a specific agent's webhook.
+test_mode_flag:
+  location: webhook payload conversationState.testMode
+  example: '{ "conversationState": { "testMode": true } }'
+mock_payloads:
+- channel: sms
+  event: agent.message
+  fields: [conversationId, numberId, from, to, message, direction, receivedAt]
+- channel: voice
+  event: agent.message
+  fields: [callId, numberId, from, to, status, transcript, confidence, direction]
+local_tunneling:
+  recommended: [ngrok, localtunnel]
+  note: Expose a local server to receive live webhooks during development.
+delivery_inspection:
+  endpoint: GET /v1/webhooks/deliveries
+  description: Inspect delivery attempts, HTTP status, error messages, retry timestamps.
+notes: >-
+  No published test card numbers / test IBANs (AgentPhone is telephony, not
+  payments). Provisioning a real number requires a funded balance (>= $3.00).

@@ -1,0 +1,277 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks messages API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: messages
+paths:
+  /v1/messages:
+    post:
+      operationId: send-message-v-1-messages-post
+      summary: Send Message
+      description: 'Send an outbound message (SMS or iMessage) via the provider assigned to the number.
+
+
+        Attach media by passing public HTTPS URLs in `media_urls`.
+
+
+        ### Single attachment
+
+
+        Pass a single-item array in `media_urls`. The URL must be publicly accessible.
+
+
+        ### Carousel / multi-image (iMessage)
+
+
+        To send a carousel of images on iMessage, pass 2-20 URLs in `media_urls`. Requirements:
+
+        - Each URL must be a **publicly accessible HTTPS link** to an image (JPEG, PNG, GIF, etc.)
+
+        - Minimum 2 URLs, maximum 20
+
+        - `body` must be omitted or empty (text cannot be sent alongside a carousel)
+
+        - Only supported on iMessage-capable lines
+
+
+        > **Deprecation notice:** The `media_url` field (singular) is deprecated and will be removed in a future version. Use `media_urls` (array) instead — even for a single attachment, pass it as `media_urls: ["https://..."]`.'
+      tags:
+      - messages
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendMessageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageRequest'
+  /v1/messages/{message_id}/reactions:
+    post:
+      operationId: send-reaction-v-1-messages-message-id-reactions-post
+      summary: Send Reaction
+      description: 'Send a tapback reaction to a message (iMessage only).
+
+
+        Reactions are available only for iMessage messages. Attempting to react
+
+        to an SMS message or another channel that does not support tapbacks
+
+        returns a clear error.'
+      tags:
+      - messages
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendReactionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendReactionRequest'
+components:
+  schemas:
+    SendMessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        channel:
+          type: string
+        from_number:
+          type: string
+        to_number:
+          type: string
+        conversation_id:
+          type:
+          - string
+          - 'null'
+        media_urls:
+          type: array
+          items:
+            type: string
+          default: []
+        reply_to_message_id:
+          type:
+          - string
+          - 'null'
+        reply_parent_unresolved:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - id
+      - status
+      - channel
+      - from_number
+      - to_number
+      title: SendMessageResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SendMessageRequest:
+      type: object
+      properties:
+        agent_id:
+          type:
+          - string
+          - 'null'
+        to_number:
+          type:
+          - string
+          - 'null'
+          description: 'Recipient of an existing chat: a phone (any format, normalized to E.164), US short code, email, or a group id (grp_...). Provide this OR `recipients` (to start a new group), not both.'
+        recipients:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Start a NEW iMessage group by listing 2 or more recipients (phones or emails). The first message is delivered to all of them, an iMessage group is created, and the response `to_number` returns the new group id (grp_...) to use for follow-up sends. iMessage numbers only.
+        body:
+          type: string
+        media_url:
+          type:
+          - string
+          - 'null'
+        media_urls:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        number_id:
+          type:
+          - string
+          - 'null'
+        from_number:
+          type:
+          - string
+          - 'null'
+        send_style:
+          $ref: '#/components/schemas/SendMessageRequestSendStyle'
+          description: 'Optional iMessage expressive effect. Only valid on iMessage-capable numbers. Supported values: celebration, fireworks, lasers, love, confetti, balloons, spotlight, echo, invisible, gentle, loud, slam.'
+        reply_to_message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional parent message ID (AgentPhone Message.id) to send this message as an inline reply in iMessage.
+      required:
+      - body
+      title: SendMessageRequest
+    SendReactionRequest:
+      type: object
+      properties:
+        reaction:
+          type: string
+          description: iMessage reaction to send. Classic tapbacks (love, like, dislike, laugh, emphasize, question) are supported on every iMessage line. Custom emoji reactions (e.g. "🔥", "😂", "👍") are supported on newer lines only; lines that don't support them return a 400 with upgrade instructions. Custom emoji also require the recipient to be on macOS 14 / iOS 17 or later.
+      required:
+      - reaction
+      title: SendReactionRequest
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    SendReactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        reaction_type:
+          type: string
+        message_id:
+          type: string
+        channel:
+          type: string
+      required:
+      - id
+      - reaction_type
+      - message_id
+      - channel
+      title: SendReactionResponse
+    SendMessageRequestSendStyle:
+      type: string
+      enum:
+      - celebration
+      - fireworks
+      - lasers
+      - love
+      - confetti
+      - balloons
+      - spotlight
+      - echo
+      - invisible
+      - gentle
+      - loud
+      - slam
+      description: 'Optional iMessage expressive effect. Only valid on iMessage-capable numbers. Supported values: celebration, fireworks, lasers, love, confetti, balloons, spotlight, echo, invisible, gentle, loud, slam.'
+      title: SendMessageRequestSendStyle
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,385 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks contacts API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: contacts
+paths:
+  /v1/contacts:
+    get:
+      operationId: list-contacts-v-1-contacts-get
+      summary: List Contacts
+      description: 'List all contacts for this account.
+
+
+        Optional `search` query filters by name or phone number (case-insensitive contains).'
+      tags:
+      - contacts
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      - name: X-Sub-Account-Id
+        in: header
+        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      operationId: create-contact-v-1-contacts-post
+      summary: Create Contact
+      description: 'Create a new contact.
+
+
+        Phone number is normalized to E.164 format. Returns 409 if a contact
+
+        with this phone number already exists for the project.'
+      tags:
+      - contacts
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactRequest'
+  /v1/contacts/capabilities:
+    get:
+      operationId: get-contact-capabilities-v-1-contacts-capabilities-get
+      summary: Get Contact Capabilities
+      description: 'Check which messaging channels a phone number supports, without sending
+
+        a message.
+
+
+        Runs a live check (typically 1-2 seconds), so the result reflects the
+
+        number right now. Capabilities can still change by the time you send.
+
+        Requires at least one active iMessage-capable number on the account.'
+      tags:
+      - contacts
+      parameters:
+      - name: phone_number
+        in: query
+        description: Phone number to check (E.164 preferred; URL-encode + as %2B)
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCapabilitiesResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/contacts/{contact_id}:
+    get:
+      operationId: get-contact-v-1-contacts-contact-id-get
+      summary: Get Contact
+      description: Get a single contact by ID.
+      tags:
+      - contacts
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      operationId: delete-contact-v-1-contacts-contact-id-delete
+      summary: Delete Contact
+      description: Delete a contact.
+      tags:
+      - contacts
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      operationId: update-contact-v-1-contacts-contact-id-patch
+      summary: Update Contact
+      description: 'Update a contact''s fields.
+
+
+        If phoneNumber is updated, it''s re-normalized and checked for uniqueness (409 on conflict).'
+      tags:
+      - contacts
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactRequest'
+components:
+  schemas:
+    ContactCapabilityFlags:
+      type: object
+      properties:
+        imessage:
+          type: boolean
+        sms:
+          type: boolean
+      required:
+      - imessage
+      - sms
+      title: ContactCapabilityFlags
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ContactListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactResponse'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: ContactListResponse
+    UpdateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      title: UpdateContactRequest
+    CreateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      required:
+      - phoneNumber
+      - name
+      title: CreateContactRequest
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ContactCapabilitiesResponse:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/ContactCapabilityFlags'
+        checkedAt:
+          type: string
+          format: date-time
+      required:
+      - phoneNumber
+      - capabilities
+      - checkedAt
+      title: ContactCapabilitiesResponse
+    ContactResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - phoneNumber
+      - name
+      - createdAt
+      - updatedAt
+      title: ContactResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

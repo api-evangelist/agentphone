@@ -1,0 +1,325 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: agent-webhooks
+paths:
+  /v1/agents/{agent_id}/webhook:
+    get:
+      operationId: get-agent-webhook-v-1-agents-agent-id-webhook-get
+      summary: Get Agent Webhook
+      description: Get the webhook configuration for a specific agent.
+      tags:
+      - agent-webhooks
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/WebhookResponse'
+                - type: 'null'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      operationId: create-or-update-agent-webhook-v-1-agents-agent-id-webhook-post
+      summary: Create Or Update Agent Webhook
+      description: 'Register or update a webhook URL for a specific agent.
+
+
+        When set, this agent''s events are delivered here instead of the account default webhook.'
+      tags:
+      - agent-webhooks
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+    delete:
+      operationId: delete-agent-webhook-v-1-agents-agent-id-webhook-delete
+      summary: Delete Agent Webhook
+      description: Remove the webhook for a specific agent.
+      tags:
+      - agent-webhooks
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/agents/{agent_id}/webhook/deliveries:
+    get:
+      operationId: list-agent-deliveries-v-1-agents-agent-id-webhook-deliveries-get
+      summary: List Agent Deliveries
+      description: Get recent webhook delivery attempts for a specific agent's webhook.
+      tags:
+      - agent-webhooks
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookDeliveryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/agents/{agent_id}/webhook/test:
+    post:
+      operationId: test-agent-webhook-v-1-agents-agent-id-webhook-test-post
+      summary: Test Agent Webhook
+      description: Send a test webhook to the agent's webhook endpoint.
+      tags:
+      - agent-webhooks
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WebhookDeliveryResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        messageId:
+          type:
+          - string
+          - 'null'
+        eventType:
+          type:
+          - string
+          - 'null'
+        channel:
+          type:
+          - string
+          - 'null'
+        status:
+          type: string
+        httpStatus:
+          type:
+          - integer
+          - 'null'
+        errorMessage:
+          type:
+          - string
+          - 'null'
+        responseBody:
+          type:
+          - string
+          - 'null'
+        attemptCount:
+          type: integer
+        lastAttemptAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        nextRetryAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - messageId
+      - eventType
+      - channel
+      - status
+      - httpStatus
+      - errorMessage
+      - responseBody
+      - attemptCount
+      - lastAttemptAt
+      - nextRetryAt
+      - createdAt
+      title: WebhookDeliveryResponse
+    WebhookCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        contextLimit:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type:
+          - integer
+          - 'null'
+      required:
+      - url
+      title: WebhookCreateRequest
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    WebhookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        secret:
+          type: string
+        status:
+          type: string
+        contextLimit:
+          type: integer
+        timeout:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - url
+      - secret
+      - status
+      - contextLimit
+      - timeout
+      - createdAt
+      title: WebhookResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

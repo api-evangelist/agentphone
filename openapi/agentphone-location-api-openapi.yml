@@ -1,0 +1,131 @@
+openapi: 3.1.0
+info:
+  title: API Reference agent-webhooks location API
+  version: 1.0.0
+servers:
+- url: https://api.agentphone.ai
+  description: Production
+tags:
+- name: location
+paths:
+  /v1/location/{phone_number}:
+    get:
+      operationId: get-location-v-1-location-phone-number-get
+      summary: Get Location
+      tags:
+      - location
+      parameters:
+      - name: phone_number
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/location/refresh:
+    post:
+      operationId: refresh-locations-v-1-location-refresh-post
+      summary: Refresh Locations
+      tags:
+      - location
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer authentication
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationRefreshResponse'
+components:
+  schemas:
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    LocationResponse:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        latitude:
+          type:
+          - number
+          - 'null'
+          format: double
+        longitude:
+          type:
+          - number
+          - 'null'
+          format: double
+        status:
+          type: string
+        lastUpdated:
+          type: integer
+      required:
+      - phoneNumber
+      - status
+      - lastUpdated
+      title: LocationResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LocationRefreshResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        pollAfterSeconds:
+          type: integer
+          default: 20
+      required:
+      - success
+      title: LocationRefreshResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

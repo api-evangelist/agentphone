@@ -208,6 +208,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/agentphone-overlay.yaml
 - type: DomainSecurity
   url: security/agentphone-domain-security.yml
 - type: AgenticAccess

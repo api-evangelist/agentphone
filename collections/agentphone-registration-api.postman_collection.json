@@ -1,0 +1,273 @@
+{
+  "item": [
+    {
+      "id": "6922f600-5edc-4a8f-9f71-ebd7f3cd88be",
+      "name": "registration",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "003cba63-3345-4392-8b3f-f3a193cea460",
+          "name": "Get Registration Status",
+          "request": {
+            "name": "Get Registration Status",
+            "description": {
+              "content": "Check the status of your A2P 10DLC registration.\n\n### Sub-account status\n\nTo check the registration status of a sub-account, pass the `X-Sub-Account-Id` header with the sub-account ID returned from `POST /v1/register`.\n\n### Possible statuses\n\n- `none` -- No registration submitted.\n- `pending` -- Registration is under review.\n- `approved` -- Registration approved. Your account is ready to send messages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "register",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Check a sub-account's registration status. Pass the sub-account ID returned from `POST /v1/register`. Omit to check the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "288852b8-fd7d-4301-b06e-c84eeb1da02e",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "register",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Check a sub-account's registration status. Pass the sub-account ID returned from `POST /v1/register`. Omit to check the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaign_status\": \"string\",\n  \"message\": \"string\",\n  \"stage\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dfd6ab32-0414-4e85-b357-c37e8d79a468",
+          "name": "Register A2P",
+          "request": {
+            "name": "Register A2P",
+            "description": {
+              "content": "Submit an A2P 10DLC registration to enable outbound SMS on your account.\n\nUS carriers require 10DLC registration before your AI agent can send text messages. This endpoint accepts both `sole_proprietor` and `standard_brand` registration types.\n\n### How it works\n\n1. Submit your registration details via this endpoint\n2. A one-time $25 registration fee is deducted from your account balance\n3. We submit your registration to the carriers on your behalf\n4. Carrier approval typically takes 7-10 business days\n\n### Registration types\n\n- **`sole_proprietor`** -- For individuals or small businesses. Simpler requirements, fewer fields.\n- **`standard_brand`** -- For established businesses. Requires `business_name`, `organization_type`, `ein`, `privacy_policy_url`, `terms_of_service_url`.\n\n### Sub-accounts\n\nParent accounts can set `create_sub_account: true` (the default) to create a dedicated sub-account for each registration. This lets you manage multiple campaigns independently. The $25 fee is always charged to the parent account.\n\n### Opt-in image\n\n`opt_in_image_url` must be a publicly accessible HTTPS URL to a screenshot showing how users opt in to receive messages from you (e.g. a consent checkbox on your signup form). Supports PNG, JPG, WEBP, and GIF up to 2MB. Google Drive links (`drive.google.com/file/d/.../view`) are automatically converted if the file is shared publicly.\n\n### Re-submitting\n\nIf your previous registration was rejected, you can call this endpoint again to re-register.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "register"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registration_type\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"street_address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zip_code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"use_cases\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message_samples\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"consent_flow\": \"<string>\",\n  \"opt_in_image_url\": \"<string>\",\n  \"business_name\": \"<string,null>\",\n  \"brand_name\": \"<string,null>\",\n  \"organization_type\": \"<string>\",\n  \"contact_title\": \"<string>\",\n  \"contact_title_other\": \"<string,null>\",\n  \"ein\": \"<string,null>\",\n  \"website_url\": \"<string,null>\",\n  \"industry\": \"<string,null>\",\n  \"business_regions\": [\n    \"usa_and_canada\"\n  ],\n  \"street_address_2\": \"<string,null>\",\n  \"country\": \"US\",\n  \"planned_numbers\": 1,\n  \"volume\": \"low\",\n  \"privacy_policy_url\": \"<string,null>\",\n  \"terms_of_service_url\": \"<string,null>\",\n  \"link_sample\": \"<string,null>\",\n  \"create_sub_account\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de2900c0-0d73-42d1-bf62-8a4319c8f957",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registration_type\": \"sole_proprietor\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"street_address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zip_code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"use_cases\": [\n    \"security_alert\",\n    \"marketing\"\n  ],\n  \"message_samples\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"consent_flow\": \"<string>\",\n  \"opt_in_image_url\": \"<string>\",\n  \"business_name\": \"<string,null>\",\n  \"brand_name\": \"<string,null>\",\n  \"organization_type\": \"co_op\",\n  \"contact_title\": \"cto\",\n  \"contact_title_other\": \"<string,null>\",\n  \"ein\": \"<string,null>\",\n  \"website_url\": \"<string,null>\",\n  \"industry\": \"<string,null>\",\n  \"business_regions\": [\n    \"usa_and_canada\"\n  ],\n  \"street_address_2\": \"<string,null>\",\n  \"country\": \"US\",\n  \"planned_numbers\": 1,\n  \"volume\": \"low\",\n  \"privacy_policy_url\": \"<string,null>\",\n  \"terms_of_service_url\": \"<string,null>\",\n  \"link_sample\": \"<string,null>\",\n  \"create_sub_account\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ok\": false,\n  \"message\": \"string\",\n  \"campaign_status\": \"string\",\n  \"sub_account_id\": \"string\",\n  \"fee_cents\": 2500\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a61e7be-1e1d-4e61-8ae8-4cee13a3bba9",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "register"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registration_type\": \"sole_proprietor\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"email\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"street_address\": \"<string>\",\n  \"city\": \"<string>\",\n  \"state\": \"<string>\",\n  \"zip_code\": \"<string>\",\n  \"description\": \"<string>\",\n  \"use_cases\": [\n    \"security_alert\",\n    \"marketing\"\n  ],\n  \"message_samples\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"consent_flow\": \"<string>\",\n  \"opt_in_image_url\": \"<string>\",\n  \"business_name\": \"<string,null>\",\n  \"brand_name\": \"<string,null>\",\n  \"organization_type\": \"co_op\",\n  \"contact_title\": \"cto\",\n  \"contact_title_other\": \"<string,null>\",\n  \"ein\": \"<string,null>\",\n  \"website_url\": \"<string,null>\",\n  \"industry\": \"<string,null>\",\n  \"business_regions\": [\n    \"usa_and_canada\"\n  ],\n  \"street_address_2\": \"<string,null>\",\n  \"country\": \"US\",\n  \"planned_numbers\": 1,\n  \"volume\": \"low\",\n  \"privacy_policy_url\": \"<string,null>\",\n  \"terms_of_service_url\": \"<string,null>\",\n  \"link_sample\": \"<string,null>\",\n  \"create_sub_account\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.agentphone.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "be3fc688-2a09-4751-aeab-a9778869f03e",
+    "name": "API Reference agent-webhooks registration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

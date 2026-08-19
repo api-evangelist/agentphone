@@ -15,35 +15,75 @@ server:
 remote:
   docs_mcp: https://docs.agentphone.ai/_mcp/server
   oauth_authorization_server: https://api.agentphone.ai/.well-known/oauth-authorization-server
-  note: >-
-    A hosted/remote MCP endpoint is advertised via an OAuth 2.0 authorization
-    server (scope `mcp`). The primary published server is the local stdio
-    bridge `agentphone-mcp`.
+  note: A hosted/remote MCP endpoint is advertised via an OAuth 2.0 authorization server (scope `mcp`).
+    The primary published server is the local stdio bridge `agentphone-mcp`.
 tool_count: 26
 tools:
-- {name: account_overview, description: Full snapshot of account — agents, numbers, webhook, usage}
-- {name: get_usage, description: Detailed usage stats — balance, counts, volume, delivery stats}
-- {name: list_numbers, description: List all phone numbers}
-- {name: buy_number, description: Purchase a phone number in a region}
-- {name: release_number, description: Release a phone number (irreversible)}
-- {name: get_messages, description: Get SMS messages for a number}
-- {name: list_conversations, description: List SMS conversation threads}
-- {name: get_conversation, description: Get a conversation with full history}
-- {name: list_calls, description: List recent calls}
-- {name: list_calls_for_number, description: List calls for a specific number}
-- {name: get_call, description: Get call details and transcript}
-- {name: make_call, description: Place an outbound call (uses your webhook)}
-- {name: make_conversation_call, description: Place a call with built-in AI, no webhook}
-- {name: list_agents, description: List all agents}
-- {name: create_agent, description: Create a new agent with optional voice config}
-- {name: update_agent, description: Update an agent}
-- {name: delete_agent, description: Delete an agent}
-- {name: get_agent, description: Get agent details}
-- {name: attach_number, description: Assign a number to an agent}
-- {name: list_voices, description: List available agent voices}
-- {name: get_webhook, description: Get project-level webhook config}
-- {name: set_webhook, description: Set project-level webhook URL}
-- {name: delete_webhook, description: Remove project-level webhook}
-- {name: get_agent_webhook, description: Get an agent's webhook}
-- {name: set_agent_webhook, description: Set an agent's webhook}
-- {name: delete_agent_webhook, description: Remove an agent's webhook}
+- name: account_overview
+  description: Full snapshot of account — agents
+  numbers: null
+  webhook: null
+  usage: null
+- name: get_usage
+  description: Detailed usage stats — balance
+  counts: null
+  volume: null
+  delivery stats: null
+- name: list_numbers
+  description: List all phone numbers
+- name: buy_number
+  description: Purchase a phone number in a region
+- name: release_number
+  description: Release a phone number (irreversible)
+- name: get_messages
+  description: Get SMS messages for a number
+- name: list_conversations
+  description: List SMS conversation threads
+- name: get_conversation
+  description: Get a conversation with full history
+- name: list_calls
+  description: List recent calls
+- name: list_calls_for_number
+  description: List calls for a specific number
+- name: get_call
+  description: Get call details and transcript
+- name: make_call
+  description: Place an outbound call (uses your webhook)
+- name: make_conversation_call
+  description: Place a call with built-in AI
+  no webhook: null
+- name: list_agents
+  description: List all agents
+- name: create_agent
+  description: Create a new agent with optional voice config
+- name: update_agent
+  description: Update an agent
+- name: delete_agent
+  description: Delete an agent
+- name: get_agent
+  description: Get agent details
+- name: attach_number
+  description: Assign a number to an agent
+- name: list_voices
+  description: List available agent voices
+- name: get_webhook
+  description: Get project-level webhook config
+- name: set_webhook
+  description: Set project-level webhook URL
+- name: delete_webhook
+  description: Remove project-level webhook
+- name: get_agent_webhook
+  description: Get an agent's webhook
+- name: set_agent_webhook
+  description: Set an agent's webhook
+- name: delete_agent_webhook
+  description: Remove an agent's webhook
+deployment:
+  mode: none
+  endpoint: https://api.agentphone.ai
+  verified: probed
+  probe: dead
+  note: the endpoint this manifest claimed did not answer; recorded as none rather than deleted so the
+    claim stays auditable
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,67 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks messages API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/messages",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send an outbound message (SMS or iMessage) via the provider assigned to the number.\n\nAttach media by passing public HTTPS URLs in `media_urls`.\n\n### Single attachment\n\nPass a single-item array in `media_urls`. The URL must be publicly accessible.\n\n### Carousel / multi-image (iMessage)\n\nTo send a carousel of images on iMessage, pass 2-20 URLs in `media_urls`. Requirements:\n- Each URL must be a **publicly accessible HTTPS link** to an image (JPEG, PNG, GIF, etc.)\n- Minimum 2 URLs, maximum 20\n- `bo"
+        },
+        {
+          "info": {
+            "name": "Send Reaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/messages/:message_id/reactions",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "message_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a tapback reaction to a message (iMessage only).\n\nReactions are available only for iMessage messages. Attempting to react\nto an SMS message or another channel that does not support tapbacks\nreturns a clear error."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

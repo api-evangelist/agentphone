@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks location API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "location",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Location",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/location/:phone_number",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "phone_number",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Location"
+        },
+        {
+          "info": {
+            "name": "Refresh Locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/location/refresh",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Refresh Locations"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

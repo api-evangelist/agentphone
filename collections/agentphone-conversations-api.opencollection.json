@@ -1,0 +1,218 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks conversations API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Conversations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/conversations",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all conversations for this account.\n\nSorted by most recent activity (lastMessageAt desc).\nSorted by most recent activity."
+        },
+        {
+          "info": {
+            "name": "Get Conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "message_limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get a conversation with its recent messages."
+        },
+        {
+          "info": {
+            "name": "Update Conversation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a conversation.\n\n- `metadata`: store custom context for AI agents (customer info, order/ticket\n  ids, session state). Replaces the stored object; surfaced in webhook\n  payloads as `conversationState`.\n- `group_name`: rename a group conversation (iMessage groups only). Also\n  renames the underlying iMessage thread.\n\nOnly the fields you include are changed: a rename-only PATCH leaves metadata\nuntouched, and vice versa."
+        },
+        {
+          "info": {
+            "name": "Get Conversation Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id/messages",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get paginated messages for a conversation.\n\nUse before/after for cursor-based pagination."
+        },
+        {
+          "info": {
+            "name": "Send Typing Indicator",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id/typing",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Show a typing indicator in the conversation (iMessage only).\n\nWorks for both 1:1 and group chats: a group id is itself a valid typing\ntarget, so every participant sees the indicator. Best-effort: the\nindicator may be silently dropped if the chat has no recent activity, the\nrecipient isn't on iMessage, or it's RCS-routed (RCS carries no composing\nstate). Auto-expires after a few seconds; no \"stop typing\" call needed."
+        },
+        {
+          "info": {
+            "name": "Set Chat Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id/background",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set a custom wallpaper for the chat (iMessage only).\n\nCustomer sends `image_url`; we fetch (≤10MB, JPEG/PNG/GIF/WebP/HEIC),\nvalidate, and forward as multipart to the iMessage provider. Idempotent —\nre-setting replaces. Recipients on iOS < 18 fall back to the default\nsilently."
+        },
+        {
+          "info": {
+            "name": "Remove Chat Background",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.agentphone.ai/v1/conversations/:conversation_id/background",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Clear the custom wallpaper for the chat (iMessage only).\n\nIdempotent: deleting a default-background chat returns 204 (no-op)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

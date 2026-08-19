@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks numbers API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "numbers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/numbers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List the active phone numbers for this account.\n\nReleased (deleted) numbers are excluded so the count reflects the numbers\nthe account actually holds. Fetch a single number via GET /{number_id}\n(which returns it regardless of status)."
+        },
+        {
+          "info": {
+            "name": "Create Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/numbers",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provision a new SMS-enabled phone number.\n\n1. Check number limit (lifetime limit)\n2. Search the account's configured SMS provider for available numbers\n3. Purchase the first available one\n4. Configure messaging and voice routing\n5. Store the number in our database"
+        },
+        {
+          "info": {
+            "name": "Get Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/numbers/:number_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "number_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single phone number owned by this account.\n\nReturns the number regardless of status (including released) so detail\npages still load for numbers that are no longer active."
+        },
+        {
+          "info": {
+            "name": "Delete Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.agentphone.ai/v1/numbers/:number_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "number_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Release (delete) a phone number.\n\nThis will:\n1. Release the number from its upstream provider when supported\n2. Mark the number as \"released\" in the database\n3. Keep all messages and conversation history (for audit purposes)\n\nWARNING: This action is irreversible! The number cannot be recovered."
+        },
+        {
+          "info": {
+            "name": "Get Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/numbers/:number_id/messages",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "number_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get messages for a specific phone number.\n\nSupports cursor-based pagination via before/after timestamps."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

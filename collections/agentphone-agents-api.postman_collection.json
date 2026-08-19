@@ -1,0 +1,1668 @@
+{
+  "item": [
+    {
+      "id": "5a73f794-fd9e-4464-82a6-5378989e71a7",
+      "name": "agents",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "83d08143-2649-42d1-9f16-39665e91e801",
+          "name": "List Voices",
+          "request": {
+            "name": "List Voices",
+            "description": {
+              "content": "Return available voices from the configured voice provider.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                "voices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7aa1dc1a-6266-4886-9974-4f8f9ee725ab",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    "voices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "904afdf3-b90c-48ca-bade-4352f7ed5dec",
+          "name": "List Agents",
+          "request": {
+            "name": "List Agents",
+            "description": {
+              "content": "List all agents for this account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "20"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "52c1863c-0979-480a-b3d9-2b65f3d9ccad",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "20"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"voiceMode\": \"webhook\",\n      \"voice\": \"string\",\n      \"createdAt\": \"1964-03-21T06:14:55.046Z\",\n      \"enableMessaging\": true,\n      \"modelTier\": \"balanced\",\n      \"systemPrompt\": \"string\",\n      \"beginMessage\": \"string\",\n      \"transferNumber\": \"string\",\n      \"voicemailMessage\": \"string\",\n      \"callScreeningIdentity\": \"string\",\n      \"callScreeningPurpose\": \"string\",\n      \"sttMode\": \"fast\",\n      \"ambientSound\": \"none\",\n      \"denoisingMode\": \"noise-cancellation\",\n      \"maxSilenceMs\": 600000,\n      \"voiceSpeed\": 1,\n      \"interruptionSensitivity\": 0.8,\n      \"enableBackchannel\": true,\n      \"language\": \"en-US\",\n      \"numbers\": [\n        {\n          \"id\": \"string\",\n          \"phoneNumber\": \"string\",\n          \"status\": \"string\",\n          \"type\": \"sms\"\n        },\n        {\n          \"id\": \"string\",\n          \"phoneNumber\": \"string\",\n          \"status\": \"string\",\n          \"type\": \"sms\"\n        }\n      ]\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"voiceMode\": \"webhook\",\n      \"voice\": \"string\",\n      \"createdAt\": \"1964-10-11T07:19:40.975Z\",\n      \"enableMessaging\": true,\n      \"modelTier\": \"balanced\",\n      \"systemPrompt\": \"string\",\n      \"beginMessage\": \"string\",\n      \"transferNumber\": \"string\",\n      \"voicemailMessage\": \"string\",\n      \"callScreeningIdentity\": \"string\",\n      \"callScreeningPurpose\": \"string\",\n      \"sttMode\": \"fast\",\n      \"ambientSound\": \"none\",\n      \"denoisingMode\": \"noise-cancellation\",\n      \"maxSilenceMs\": 600000,\n      \"voiceSpeed\": 1,\n      \"interruptionSensitivity\": 0.8,\n      \"enableBackchannel\": true,\n      \"language\": \"en-US\",\n      \"numbers\": [\n        {\n          \"id\": \"string\",\n          \"phoneNumber\": \"string\",\n          \"status\": \"string\",\n          \"type\": \"sms\"\n        },\n        {\n          \"id\": \"string\",\n          \"phoneNumber\": \"string\",\n          \"status\": \"string\",\n          \"type\": \"sms\"\n        }\n      ]\n    }\n  ],\n  \"total\": 618\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c4f3ab8-31ba-42a7-8d08-2230dd16b750",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "20"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92f1306c-e9cd-4c22-a99d-ba69c46bfdf3",
+          "name": "Create Agent",
+          "request": {
+            "name": "Create Agent",
+            "description": {
+              "content": "Create a new agent.\n\nAn agent represents an AI persona (Support Bot, Sales Agent, etc.)\nthat can have phone numbers attached to it.\n\nvoiceMode: \"webhook\" (default) forwards transcripts to your webhook.\n           \"hosted\" uses a built-in LLM with systemPrompt (no webhook needed).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"<string>\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"<string>\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"headers\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": \"<integer,null>\",\n      \"speakDuringExecution\": \"<boolean,null>\",\n      \"executionMessage\": \"<string,null>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"headers\": {\n        \"key_0\": \"<string>\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": \"<integer,null>\",\n      \"speakDuringExecution\": \"<boolean,null>\",\n      \"executionMessage\": \"<string,null>\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"<string>\",\n  \"ambientSound\": \"<string>\",\n  \"denoisingMode\": \"<string>\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "85f081af-2bff-42de-a516-8e993e9155b9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"webhook\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 8460,\n      \"speakDuringExecution\": true,\n      \"executionMessage\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 7372,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"fast\",\n  \"ambientSound\": \"coffee-shop\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"el-GR\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"voiceMode\": \"webhook\",\n  \"voice\": \"string\",\n  \"createdAt\": \"2005-05-15T05:55:33.362Z\",\n  \"enableMessaging\": true,\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"string\",\n  \"beginMessage\": \"string\",\n  \"transferNumber\": \"string\",\n  \"voicemailMessage\": \"string\",\n  \"callScreeningIdentity\": \"string\",\n  \"callScreeningPurpose\": \"string\",\n  \"sttMode\": \"fast\",\n  \"ambientSound\": \"none\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": 600000,\n  \"voiceSpeed\": 1,\n  \"interruptionSensitivity\": 0.8,\n  \"enableBackchannel\": true,\n  \"language\": \"en-US\",\n  \"numbers\": [\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    },\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76fdbd71-d42a-45ba-844e-02b4f3c35631",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"webhook\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 8460,\n      \"speakDuringExecution\": true,\n      \"executionMessage\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 7372,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"fast\",\n  \"ambientSound\": \"coffee-shop\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"el-GR\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c76a407-90dc-4300-91fd-26e5faff78f5",
+          "name": "Get Agent",
+          "request": {
+            "name": "Get Agent",
+            "description": {
+              "content": "Get a single agent with its attached numbers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ac20d7cf-ce8f-49f2-97b1-3a90d3906442",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"voiceMode\": \"webhook\",\n  \"voice\": \"string\",\n  \"createdAt\": \"2005-05-15T05:55:33.362Z\",\n  \"enableMessaging\": true,\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"string\",\n  \"beginMessage\": \"string\",\n  \"transferNumber\": \"string\",\n  \"voicemailMessage\": \"string\",\n  \"callScreeningIdentity\": \"string\",\n  \"callScreeningPurpose\": \"string\",\n  \"sttMode\": \"fast\",\n  \"ambientSound\": \"none\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": 600000,\n  \"voiceSpeed\": 1,\n  \"interruptionSensitivity\": 0.8,\n  \"enableBackchannel\": true,\n  \"language\": \"en-US\",\n  \"numbers\": [\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    },\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7efbfdb0-7bb2-4270-b3ca-56e46eaaf822",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9bb25cf0-6151-48ab-8403-5d75206cd70a",
+          "name": "Delete Agent",
+          "request": {
+            "name": "Delete Agent",
+            "description": {
+              "content": "Delete an agent.\n\nPhone numbers, conversations, and calls associated with the agent will have their\nagent reference cleared (set to null) but will not be deleted themselves.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b943d1f6-172d-40b9-bcc1-79fe7008a3e0",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"id\": \"string\",\n  \"name\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1bed8fbc-b0e3-490a-85ec-c883bfddb318",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bcc22cde-b4a9-4cf3-8059-fffd1932c2bc",
+          "name": "Update Agent",
+          "request": {
+            "name": "Update Agent",
+            "description": {
+              "content": "Update an agent's configuration.\n\nUse this to change voice mode, system prompt, greeting, or voice.\nSwitching voiceMode to \"hosted\" re-provisions the voice agent with built-in LLM.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                "key": "X-Sub-Account-Id",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string,null>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"<string>\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"<string>\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"headers\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": \"<integer,null>\",\n      \"speakDuringExecution\": \"<boolean,null>\",\n      \"executionMessage\": \"<string,null>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"url\": \"<string>\",\n      \"method\": \"<string>\",\n      \"headers\": {\n        \"key_0\": \"<string>\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": \"<integer,null>\",\n      \"speakDuringExecution\": \"<boolean,null>\",\n      \"executionMessage\": \"<string,null>\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"<string>\",\n  \"ambientSound\": \"<string>\",\n  \"denoisingMode\": \"<string>\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8e55d325-c93b-449e-bb40-51dd91c7ddbf",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string,null>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"webhook\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"POST\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 4655,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 1624,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"accurate\",\n  \"ambientSound\": \"outdoor\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"ar-SA\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"voiceMode\": \"webhook\",\n  \"voice\": \"string\",\n  \"createdAt\": \"2005-05-15T05:55:33.362Z\",\n  \"enableMessaging\": true,\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"string\",\n  \"beginMessage\": \"string\",\n  \"transferNumber\": \"string\",\n  \"voicemailMessage\": \"string\",\n  \"callScreeningIdentity\": \"string\",\n  \"callScreeningPurpose\": \"string\",\n  \"sttMode\": \"fast\",\n  \"ambientSound\": \"none\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": 600000,\n  \"voiceSpeed\": 1,\n  \"interruptionSensitivity\": 0.8,\n  \"enableBackchannel\": true,\n  \"language\": \"en-US\",\n  \"numbers\": [\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    },\n    {\n      \"id\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"status\": \"string\",\n      \"type\": \"sms\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5088252c-6fda-4b7f-ad64-5f7bd006753f",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.",
+                    "key": "X-Sub-Account-Id",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string,null>\",\n  \"description\": \"<string,null>\",\n  \"voiceMode\": \"webhook\",\n  \"enableMessaging\": \"<boolean,null>\",\n  \"modelTier\": \"balanced\",\n  \"systemPrompt\": \"<string,null>\",\n  \"beginMessage\": \"<string,null>\",\n  \"voice\": \"<string,null>\",\n  \"transferNumber\": \"<string,null>\",\n  \"customTools\": [\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"POST\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 4655,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"url\": \"string\",\n      \"method\": \"GET\",\n      \"headers\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      },\n      \"parameters\": {},\n      \"timeoutMs\": 1624,\n      \"speakDuringExecution\": false,\n      \"executionMessage\": \"string\"\n    }\n  ],\n  \"voicemailMessage\": \"<string,null>\",\n  \"callScreeningIdentity\": \"<string,null>\",\n  \"callScreeningPurpose\": \"<string,null>\",\n  \"sttMode\": \"accurate\",\n  \"ambientSound\": \"outdoor\",\n  \"denoisingMode\": \"noise-cancellation\",\n  \"maxSilenceMs\": \"<integer,null>\",\n  \"voiceSpeed\": \"<number,null-double>\",\n  \"interruptionSensitivity\": \"<number,null-double>\",\n  \"enableBackchannel\": \"<boolean,null>\",\n  \"language\": \"ar-SA\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "78500259-01fc-4e0c-bcd6-d5f5cb1b0e65",
+          "name": "Attach Number To Agent",
+          "request": {
+            "name": "Attach Number To Agent",
+            "description": {
+              "content": "Attach an existing phone number to an agent.\n\nThe number must belong to the same account and not be released.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "numbers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numberId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "31b4e5ef-d627-4e50-91cf-ab22d2120e86",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"numberId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agentId\": \"string\",\n  \"number\": {\n    \"id\": \"string\",\n    \"phoneNumber\": \"string\",\n    \"status\": \"string\",\n    \"type\": \"sms\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "024b052d-ece7-4d92-bc8d-9b66ab47cbf5",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"numberId\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0c04a24-f704-4238-aff5-6eeed6eec883",
+          "name": "Detach Number From Agent",
+          "request": {
+            "name": "Detach Number From Agent",
+            "description": {
+              "content": "Detach a phone number from an agent (sets agentId to null).\n\nThe number remains active and can be re-attached to any agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "numbers",
+                ":number_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "number_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4dc6dbd3-d0a2-466f-9ec0-28dce643ccd7",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "numbers",
+                    ":number_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "number_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b787dd6-73c4-4ddd-aaba-1a5c083b4044",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "numbers",
+                    ":number_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "number_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd7f87c6-5bd7-4971-aca9-06203cdaf15b",
+          "name": "List Agent Conversations",
+          "request": {
+            "name": "List Agent Conversations",
+            "description": {
+              "content": "List all conversations for an agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "conversations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a71d1b1d-fc5c-4a9a-bffb-33b1e59e9b94",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "conversations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"participant\": \"string\",\n      \"lastMessageAt\": \"1973-10-17T16:49:25.391Z\",\n      \"lastMessagePreview\": \"string\",\n      \"messageCount\": 4102,\n      \"createdAt\": \"2016-06-20T01:28:58.641Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"participant\": \"string\",\n      \"lastMessageAt\": \"1965-07-20T03:59:13.988Z\",\n      \"lastMessagePreview\": \"string\",\n      \"messageCount\": 8292,\n      \"createdAt\": \"1998-12-14T05:31:19.918Z\"\n    }\n  ],\n  \"hasMore\": false,\n  \"total\": 454\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "720aebb3-3816-4ade-a35e-7331833ad458",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "conversations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1f14cab-0a28-4823-9810-089adbdc0f03",
+          "name": "List Agent Calls",
+          "request": {
+            "name": "List Agent Calls",
+            "description": {
+              "content": "List all calls for an agent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "agents",
+                ":agent_id",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8f037026-20d6-48c4-8d71-d9baf02acdba",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"fromNumber\": \"string\",\n      \"toNumber\": \"string\",\n      \"status\": \"string\",\n      \"startedAt\": \"1981-05-05T20:23:38.113Z\",\n      \"endedAt\": \"2022-08-23T11:40:51.850Z\",\n      \"durationSeconds\": 1432,\n      \"lastTranscriptSnippet\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"agentId\": \"string\",\n      \"phoneNumberId\": \"string\",\n      \"phoneNumber\": \"string\",\n      \"fromNumber\": \"string\",\n      \"toNumber\": \"string\",\n      \"status\": \"string\",\n      \"startedAt\": \"1974-10-12T17:50:13.144Z\",\n      \"endedAt\": \"1983-02-22T18:58:36.950Z\",\n      \"durationSeconds\": 1239,\n      \"lastTranscriptSnippet\": \"string\"\n    }\n  ],\n  \"hasMore\": false,\n  \"total\": 4818\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e49081e-0e6f-4200-8160-e049259b1d9a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agents",
+                    ":agent_id",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Bearer authentication",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.agentphone.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6448b29f-e99d-4348-9021-5f1b4143b954",
+    "name": "API Reference agent-webhooks agents API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

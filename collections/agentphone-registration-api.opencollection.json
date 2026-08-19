@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks registration API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "registration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Registration Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/register/status",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Check the status of your A2P 10DLC registration.\n\n### Sub-account status\n\nTo check the registration status of a sub-account, pass the `X-Sub-Account-Id` header with the sub-account ID returned from `POST /v1/register`.\n\n### Possible statuses\n\n- `none` -- No registration submitted.\n- `pending` -- Registration is under review.\n- `approved` -- Registration approved. Your account is ready to send messages."
+        },
+        {
+          "info": {
+            "name": "Register A2P",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/register",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit an A2P 10DLC registration to enable outbound SMS on your account.\n\nUS carriers require 10DLC registration before your AI agent can send text messages. This endpoint accepts both `sole_proprietor` and `standard_brand` registration types.\n\n### How it works\n\n1. Submit your registration details via this endpoint\n2. A one-time $25 registration fee is deducted from your account balance\n3. We submit your registration to the carriers on your behalf\n4. Carrier approval typically takes 7-10 busines"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

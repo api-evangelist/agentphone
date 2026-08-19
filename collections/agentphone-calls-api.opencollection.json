@@ -1,0 +1,264 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent-webhooks calls API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/calls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status: completed, in-progress, failed"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Filter by direction: inbound, outbound"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by type: pstn, web"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search fromNumber or toNumber (contains)"
+              }
+            ]
+          },
+          "docs": "List all calls for this account."
+        },
+        {
+          "info": {
+            "name": "Create Outbound Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/calls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiate an outbound call.\n\nThis endpoint allows you to programmatically make phone calls from your agent\nto any phone number. Use `fromNumberId` to pick which of the agent's numbers\nto use as caller ID; if omitted, the first assigned number is used.\n\nFlow:\n1. Validates the agent belongs to your account and has a phone number\n2. Initiates a call from the agent's number to the destination\n3. When recipient answers, speaks the initial greeting (if provided)\n4. Listens for recipient's speech and se"
+        },
+        {
+          "info": {
+            "name": "Create Web Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/calls/web",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a browser-based web call.\n\nReturns an access token that your frontend passes to the AgentPhone Web SDK\n(`agentphone-web-sdk`) to start the call in the browser. The token\nexpires 30 seconds after creation.\n\nFlow:\n1. Validates the agent belongs to your account\n2. Creates a web call and returns an access token\n3. Your client calls `webClient.startCall({ accessToken })` to connect\n4. Call lifecycle (transcripts, webhooks) works the same as phone calls"
+        },
+        {
+          "info": {
+            "name": "Get Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/calls/:call_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a specific call with its transcripts."
+        },
+        {
+          "info": {
+            "name": "End Call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/calls/:call_id/end",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Terminate an ongoing call.\n\nWorks for both hosted-mode and webhook-mode calls. The call_ended\nwebhook from the voice provider updates status/endedAt asynchronously,\nso this endpoint returns the current call as soon as the stop request\nis accepted upstream."
+        },
+        {
+          "info": {
+            "name": "Get Call Recording",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/calls/:call_id/recording",
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the audio file (WAV format) for a completed call.\n\nThis is a public endpoint -- no authentication is required. The call ID acts as the access token. The `recordingUrl` field in the call response already contains this URL when recording is enabled.\n\nRecording must be enabled on your account via `POST /credits/recording/enable` ($5/mo add-on). Returns `404` if the call doesn't exist or has no recording.\n\n**Response:** Binary audio file (`audio/wav`), auto-downloads with filename `recording"
+        },
+        {
+          "info": {
+            "name": "Get Call Transcript",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/calls/:call_id/transcript",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the full transcript for a call.\n\nReturns the complete, ordered transcript regardless of the webhook\ncontextLimit setting.  Each entry contains the user utterance and\nthe corresponding agent response (when available)."
+        },
+        {
+          "info": {
+            "name": "Stream Call Transcript",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/calls/:call_id/transcript/stream",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "call_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Stream a call's transcript via Server-Sent Events.\n\nOn connect the server replays all existing transcript turns from the\ndatabase, then streams new turns in real time as they arrive from the\nvoice provider.  A ``: heartbeat`` comment is sent every 15 s to keep\nproxies alive.  The stream closes after sending an ``ended`` event\nwhen the call completes (or immediately after replay if the call has\nalready ended).\n\nWorks for both live and completed calls — same URL either way."
+        },
+        {
+          "info": {
+            "name": "List Calls For Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/numbers/:number_id/calls",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "number_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all calls for a specific phone number."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

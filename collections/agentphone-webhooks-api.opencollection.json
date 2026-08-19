@@ -1,0 +1,181 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference agent webhooks API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/webhooks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Get the master webhook configuration for this account."
+        },
+        {
+          "info": {
+            "name": "Create Or Update Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/webhooks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Sub-Account-Id",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register or update the webhook URL for this account.\n\nIf a webhook already exists, it will be updated.\nA new secret is generated each time.\n\ncontextLimit: Number of recent messages to include in webhook payloads (0-50, default: 10).\nSet to 0 to disable history in webhooks."
+        },
+        {
+          "info": {
+            "name": "Delete Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.agentphone.ai/v1/webhooks",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Remove the master webhook for this account."
+        },
+        {
+          "info": {
+            "name": "List Deliveries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/webhooks/deliveries",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "hours",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get paginated webhook delivery attempts for all account webhooks."
+        },
+        {
+          "info": {
+            "name": "Delivery Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/webhooks/deliveries/stats",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "hours",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Aggregated delivery stats for the account's webhooks over the last N hours."
+        },
+        {
+          "info": {
+            "name": "All Time Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.agentphone.ai/v1/webhooks/deliveries/all-time",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Lightweight all-time delivery counts using indexed COUNT queries."
+        },
+        {
+          "info": {
+            "name": "Test Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.agentphone.ai/v1/webhooks/test",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query",
+                "description": "Agent ID to include in the test payload"
+              }
+            ]
+          },
+          "docs": "Send a test webhook to verify the endpoint is working.\n\nSends a fake message payload to the configured URL.\nPass ?agentId=... to control which agent appears in the payload;\notherwise the first agent in the account is used."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

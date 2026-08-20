@@ -42,6 +42,18 @@ tags:
 - AI Agents
 - Messaging
 - Communications
+- Webhook
+- MCP
+- iMessage
+tags_raw:
+- Company
+- Telephony
+- Phone Numbers
+- SMS
+- Voice
+- AI Agents
+- Messaging
+- Communications
 - Webhooks
 - MCP
 - iMessage
@@ -64,6 +76,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Agents
+  tags_raw:
   - agents
   properties:
   - type: OpenAPI
@@ -76,6 +90,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Calls
+  tags_raw:
   - calls
   properties:
   - type: OpenAPI
@@ -87,7 +103,8 @@ apis:
   description: The contactCards API from AgentPhone — 1 operation(s) for contactcards.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
-  tags:
+  tags: []
+  tags_raw:
   - contactCards
   properties:
   - type: OpenAPI
@@ -100,6 +117,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Contacts
+  tags_raw:
   - contacts
   properties:
   - type: OpenAPI
@@ -112,6 +131,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Conversations
+  tags_raw:
   - conversations
   properties:
   - type: OpenAPI
@@ -124,6 +145,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Location
+  tags_raw:
   - location
   properties:
   - type: OpenAPI
@@ -136,6 +159,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Message
+  tags_raw:
   - messages
   properties:
   - type: OpenAPI
@@ -148,6 +173,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Numbers
+  tags_raw:
   - numbers
   properties:
   - type: OpenAPI
@@ -160,6 +187,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Registration
+  tags_raw:
   - registration
   properties:
   - type: OpenAPI
@@ -172,6 +201,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Subaccounts
+  tags_raw:
   - sub-accounts
   properties:
   - type: OpenAPI
@@ -184,6 +215,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Usage
+  tags_raw:
   - usage
   properties:
   - type: OpenAPI
@@ -196,6 +229,8 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
+  - Webhook
+  tags_raw:
   - webhooks
   properties:
   - type: OpenAPI

@@ -185,7 +185,7 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
-  - Numbers
+  - numbers
   tags_raw:
   - numbers
   properties:
@@ -213,7 +213,7 @@ apis:
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
   tags:
-  - Subaccounts
+  - sub-accounts
   tags_raw:
   - sub-accounts
   properties:

@@ -207,20 +207,6 @@ apis:
     url: openapi/agentphone-registration-api-openapi.yml
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
-- aid: agentphone:agentphone-sub-accounts-api
-  name: AgentPhone sub-accounts API
-  description: The sub-accounts API from AgentPhone — 2 operation(s) for sub-accounts.
-  humanURL: https://docs.agentphone.ai
-  baseURL: https://api.agentphone.ai
-  tags:
-  - Subaccounts
-  tags_raw:
-  - sub-accounts
-  properties:
-  - type: OpenAPI
-    url: openapi/agentphone-sub-accounts-api-openapi.yml
-  - type: APIReference
-    url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-usage-api
   name: AgentPhone usage API
   description: The usage API from AgentPhone — 5 operation(s) for usage.
@@ -247,6 +233,18 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/agentphone-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-subaccounts-api
+  name: AgentPhone Subaccounts API
+  description: The Subaccounts API from AgentPhone — 2 operation(s) for subaccounts.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - Subaccounts
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-subaccounts-api-openapi.yml
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 maintainers:

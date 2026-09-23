@@ -1,12 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference agent-webhooks registration API
+  title: Reference Registration API
   version: 1.0.0
 servers:
 - url: https://api.agentphone.ai
   description: Production
 tags:
-- name: registration
+- name: Registration
 paths:
   /v1/register/status:
     get:
@@ -30,7 +30,7 @@ paths:
 
         - `approved` -- Registration approved. Your account is ready to send messages.'
       tags:
-      - registration
+      - Registration
       parameters:
       - name: Authorization
         in: header
@@ -98,7 +98,7 @@ paths:
 
         If your previous registration was rejected, you can call this endpoint again to re-register.'
       tags:
-      - registration
+      - Registration
       parameters:
       - name: Authorization
         in: header
@@ -126,116 +126,6 @@ paths:
               $ref: '#/components/schemas/RegistrationRequest'
 components:
   schemas:
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    OrganizationType:
-      type: string
-      enum:
-      - sole_proprietor
-      - private_corporation
-      - public_corporation
-      - llc
-      - partnership
-      - non_profit
-      - co_op
-      - government
-      title: OrganizationType
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ContactTitle:
-      type: string
-      enum:
-      - ceo
-      - cfo
-      - cto
-      - coo
-      - vp
-      - gm
-      - director
-      - other
-      title: ContactTitle
-    CampaignStatusResponse:
-      type: object
-      properties:
-        campaign_status:
-          type: string
-        message:
-          type: string
-        stage:
-          type:
-          - string
-          - 'null'
-      required:
-      - campaign_status
-      - message
-      title: CampaignStatusResponse
-    RegistrationRequestRegistrationType:
-      type: string
-      enum:
-      - sole_proprietor
-      - standard_brand
-      description: '''sole_proprietor'' or ''standard_brand'''
-      title: RegistrationRequestRegistrationType
-    RegistrationResponse:
-      type: object
-      properties:
-        ok:
-          type: boolean
-        message:
-          type: string
-        campaign_status:
-          type: string
-        sub_account_id:
-          type:
-          - string
-          - 'null'
-        fee_cents:
-          type: integer
-          default: 2500
-      required:
-      - ok
-      - message
-      - campaign_status
-      title: RegistrationResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    UseCase:
-      type: string
-      enum:
-      - account_notification
-      - customer_care
-      - delivery_notification
-      - fraud_alert
-      - higher_education
-      - marketing
-      - polling_voting
-      - public_service_announcement
-      - security_alert
-      - two_factor_authentication
-      title: UseCase
     RegistrationRequest:
       type: object
       properties:
@@ -379,6 +269,55 @@ components:
       - consent_flow
       - opt_in_image_url
       title: RegistrationRequest
+    RegistrationResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        message:
+          type: string
+        campaign_status:
+          type: string
+        sub_account_id:
+          type:
+          - string
+          - 'null'
+        fee_cents:
+          type: integer
+          default: 2500
+      required:
+      - ok
+      - message
+      - campaign_status
+      title: RegistrationResponse
+    RegistrationRequestRegistrationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - standard_brand
+      description: '''sole_proprietor'' or ''standard_brand'''
+      title: RegistrationRequestRegistrationType
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     CampaignInclude:
       type: string
       enum:
@@ -393,6 +332,67 @@ components:
       - low
       - high
       title: Volume
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    OrganizationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - private_corporation
+      - public_corporation
+      - llc
+      - partnership
+      - non_profit
+      - co_op
+      - government
+      title: OrganizationType
+    UseCase:
+      type: string
+      enum:
+      - account_notification
+      - customer_care
+      - delivery_notification
+      - fraud_alert
+      - higher_education
+      - marketing
+      - polling_voting
+      - public_service_announcement
+      - security_alert
+      - two_factor_authentication
+      title: UseCase
+    CampaignStatusResponse:
+      type: object
+      properties:
+        campaign_status:
+          type: string
+        message:
+          type: string
+        stage:
+          type:
+          - string
+          - 'null'
+      required:
+      - campaign_status
+      - message
+      title: CampaignStatusResponse
+    ContactTitle:
+      type: string
+      enum:
+      - ceo
+      - cfo
+      - cto
+      - coo
+      - vp
+      - gm
+      - director
+      - other
+      title: ContactTitle
   securitySchemes:
     HTTPBearer:
       type: http

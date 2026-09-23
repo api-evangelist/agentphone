@@ -1,19 +1,19 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference agent-webhooks sub-accounts API
+  title: Reference Sub Accounts API
   version: 1.0.0
 servers:
 - url: https://api.agentphone.ai
   description: Production
 tags:
-- name: sub-accounts
+- name: Subaccounts
 paths:
   /v1/sub-accounts:
     get:
       operationId: list-sub-accounts-v-1-sub-accounts-get
       summary: List Sub Accounts
       tags:
-      - sub-accounts
+      - Subaccounts
       parameters:
       - name: limit
         in: query
@@ -51,7 +51,7 @@ paths:
       operationId: create-sub-account-v-1-sub-accounts-post
       summary: Create Sub Account
       tags:
-      - sub-accounts
+      - Subaccounts
       parameters:
       - name: Authorization
         in: header
@@ -82,7 +82,7 @@ paths:
       operationId: delete-sub-account-v-1-sub-accounts-sub-account-id-delete
       summary: Delete Sub Account
       tags:
-      - sub-accounts
+      - Subaccounts
       parameters:
       - name: sub_account_id
         in: path
@@ -112,7 +112,7 @@ paths:
       operationId: update-sub-account-v-1-sub-accounts-sub-account-id-patch
       summary: Update Sub Account
       tags:
-      - sub-accounts
+      - Subaccounts
       parameters:
       - name: sub_account_id
         in: path
@@ -145,11 +145,6 @@ paths:
               $ref: '#/components/schemas/UpdateSubAccountRequest'
 components:
   schemas:
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
     ValidationError:
       type: object
       properties:
@@ -166,6 +161,19 @@ components:
       - msg
       - type
       title: ValidationError
+    UpdateSubAccountRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      title: UpdateSubAccountRequest
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     CreateSubAccountRequest:
       type: object
       properties:
@@ -182,14 +190,6 @@ components:
           items:
             $ref: '#/components/schemas/ValidationError'
       title: HTTPValidationError
-    UpdateSubAccountRequest:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      title: UpdateSubAccountRequest
   securitySchemes:
     HTTPBearer:
       type: http

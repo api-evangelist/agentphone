@@ -1,12 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference agent webhooks API
+  title: Reference Webhooks API
   version: 1.0.0
 servers:
 - url: https://api.agentphone.ai
   description: Production
 tags:
-- name: webhooks
+- name: Webhooks
 paths:
   /v1/webhooks:
     get:
@@ -14,7 +14,7 @@ paths:
       summary: Get Webhook
       description: Get the master webhook configuration for this account.
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: Authorization
         in: header
@@ -52,7 +52,7 @@ paths:
 
         Set to 0 to disable history in webhooks.'
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: Authorization
         in: header
@@ -89,7 +89,7 @@ paths:
       summary: Delete Webhook
       description: Remove the master webhook for this account.
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: Authorization
         in: header
@@ -110,7 +110,7 @@ paths:
       summary: List Deliveries
       description: Get paginated webhook delivery attempts for all account webhooks.
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: limit
         in: query
@@ -156,7 +156,7 @@ paths:
       summary: Delivery Stats
       description: Aggregated delivery stats for the account's webhooks over the last N hours.
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: hours
         in: query
@@ -189,7 +189,7 @@ paths:
       summary: All Time Stats
       description: Lightweight all-time delivery counts using indexed COUNT queries.
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: Authorization
         in: header
@@ -217,7 +217,7 @@ paths:
 
         otherwise the first agent in the account is used.'
       tags:
-      - webhooks
+      - Webhooks
       parameters:
       - name: agentId
         in: query
@@ -248,11 +248,85 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    WebhookDeliveryStatsResponseByHourItems:
+      type: object
+      properties: {}
+      title: WebhookDeliveryStatsResponseByHourItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ValidationErrorLocItems:
       oneOf:
       - type: string
       - type: integer
       title: ValidationErrorLocItems
+    PaginatedDeliveriesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookDeliveryResponse'
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+      required:
+      - items
+      - total
+      - offset
+      - limit
+      title: PaginatedDeliveriesResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    WebhookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        secret:
+          type: string
+        status:
+          type: string
+        contextLimit:
+          type: integer
+        timeout:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - url
+      - secret
+      - status
+      - contextLimit
+      - timeout
+      - createdAt
+      title: WebhookResponse
     WebhookDeliveryStatsResponse:
       type: object
       properties:
@@ -286,22 +360,41 @@ components:
       - byEventType
       - byHour
       title: WebhookDeliveryStatsResponse
-    ValidationError:
+    AllTimeStatsResponse:
       type: object
       properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
+        total:
+          type: integer
+        success:
+          type: integer
+        failed:
+          type: integer
+        successRate:
+          type: number
+          format: double
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - total
+      - success
+      - failed
+      - successRate
+      title: AllTimeStatsResponse
+    WebhookCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        contextLimit:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type:
+          - integer
+          - 'null'
+      required:
+      - url
+      title: WebhookCreateRequest
     WebhookDeliveryResponse:
       type: object
       properties:
@@ -362,99 +455,6 @@ components:
       - nextRetryAt
       - createdAt
       title: WebhookDeliveryResponse
-    WebhookDeliveryStatsResponseByHourItems:
-      type: object
-      properties: {}
-      title: WebhookDeliveryStatsResponseByHourItems
-    PaginatedDeliveriesResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDeliveryResponse'
-        total:
-          type: integer
-        offset:
-          type: integer
-        limit:
-          type: integer
-      required:
-      - items
-      - total
-      - offset
-      - limit
-      title: PaginatedDeliveriesResponse
-    WebhookCreateRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        contextLimit:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type:
-          - integer
-          - 'null'
-      required:
-      - url
-      title: WebhookCreateRequest
-    AllTimeStatsResponse:
-      type: object
-      properties:
-        total:
-          type: integer
-        success:
-          type: integer
-        failed:
-          type: integer
-        successRate:
-          type: number
-          format: double
-      required:
-      - total
-      - success
-      - failed
-      - successRate
-      title: AllTimeStatsResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    WebhookResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        url:
-          type: string
-        secret:
-          type: string
-        status:
-          type: string
-        contextLimit:
-          type: integer
-        timeout:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - url
-      - secret
-      - status
-      - contextLimit
-      - timeout
-      - createdAt
-      title: WebhookResponse
   securitySchemes:
     HTTPBearer:
       type: http

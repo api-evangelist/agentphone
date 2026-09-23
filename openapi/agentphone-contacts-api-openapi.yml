@@ -1,12 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference agent-webhooks contacts API
+  title: Reference Contacts API
   version: 1.0.0
 servers:
 - url: https://api.agentphone.ai
   description: Production
 tags:
-- name: contacts
+- name: Contacts
 paths:
   /v1/contacts:
     get:
@@ -17,7 +17,7 @@ paths:
 
         Optional `search` query filters by name or phone number (case-insensitive contains).'
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: limit
         in: query
@@ -66,7 +66,7 @@ paths:
 
         with this phone number already exists for the project.'
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: Authorization
         in: header
@@ -107,7 +107,7 @@ paths:
 
         Requires at least one active iMessage-capable number on the account.'
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: phone_number
         in: query
@@ -140,7 +140,7 @@ paths:
       summary: Get Contact
       description: Get a single contact by ID.
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: contact_id
         in: path
@@ -171,7 +171,7 @@ paths:
       summary: Delete Contact
       description: Delete a contact.
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: contact_id
         in: path
@@ -206,7 +206,7 @@ paths:
 
         If phoneNumber is updated, it''s re-normalized and checked for uniqueness (409 on conflict).'
       tags:
-      - contacts
+      - Contacts
       parameters:
       - name: contact_id
         in: path
@@ -239,38 +239,6 @@ paths:
               $ref: '#/components/schemas/UpdateContactRequest'
 components:
   schemas:
-    ContactCapabilityFlags:
-      type: object
-      properties:
-        imessage:
-          type: boolean
-        sms:
-          type: boolean
-      required:
-      - imessage
-      - sms
-      title: ContactCapabilityFlags
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ContactListResponse:
       type: object
       properties:
@@ -287,6 +255,80 @@ components:
       - hasMore
       - total
       title: ContactListResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ContactCapabilitiesResponse:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/ContactCapabilityFlags'
+        checkedAt:
+          type: string
+          format: date-time
+      required:
+      - phoneNumber
+      - capabilities
+      - checkedAt
+      title: ContactCapabilitiesResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    CreateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      required:
+      - phoneNumber
+      - name
+      title: CreateContactRequest
+    ContactCapabilityFlags:
+      type: object
+      properties:
+        imessage:
+          type: boolean
+        sms:
+          type: boolean
+      required:
+      - imessage
+      - sms
+      title: ContactCapabilityFlags
     UpdateContactRequest:
       type: object
       properties:
@@ -307,48 +349,6 @@ components:
           - string
           - 'null'
       title: UpdateContactRequest
-    CreateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      required:
-      - phoneNumber
-      - name
-      title: CreateContactRequest
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ContactCapabilitiesResponse:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        capabilities:
-          $ref: '#/components/schemas/ContactCapabilityFlags'
-        checkedAt:
-          type: string
-          format: date-time
-      required:
-      - phoneNumber
-      - capabilities
-      - checkedAt
-      title: ContactCapabilitiesResponse
     ContactResponse:
       type: object
       properties:

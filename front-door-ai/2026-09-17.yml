@@ -1,0 +1,30 @@
+# Front Door AI Index — agentphone — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: agentphone
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.agentphone.ai
+  final_host: www.agentphone.ai
+  ownership: own
+  owner: agentphone
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 32
+  host_score: 32
+  density: 36.95
+  words: 866
+  tiers:
+    agentic: 16
+    core: 13
+    model: 3
+  ambiguous: 18
+  top_terms:
+    agent: 18
+    AI: 13
+    MCP: 9
+    AI agent: 6
+    Claude: 3
+    autonomous agent: 1

@@ -1,19 +1,7 @@
 {
   "provider": "agentphone",
   "sources": [
-    "agentphone-agent-webhooks-api-openapi.yml",
-    "agentphone-agents-api-openapi.yml",
-    "agentphone-calls-api-openapi.yml",
-    "agentphone-contactcards-api-openapi.yml",
-    "agentphone-contacts-api-openapi.yml",
-    "agentphone-conversations-api-openapi.yml",
-    "agentphone-location-api-openapi.yml",
-    "agentphone-messages-api-openapi.yml",
-    "agentphone-numbers-api-openapi.yml",
-    "agentphone-registration-api-openapi.yml",
-    "agentphone-sub-accounts-api-openapi.yml",
-    "agentphone-usage-api-openapi.yml",
-    "agentphone-webhooks-api-openapi.yml"
+    "_original/agentphone-openapi-original.json"
   ],
   "outputs": [
     "agentphone-agent-webhooks-api-openapi.yml",
@@ -30,9 +18,43 @@
     "agentphone-usage-api-openapi.yml",
     "agentphone-webhooks-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "agentphone-openapi-original.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "agentphone-openapi-original.json: declared missing tag: agent-webhooks",
+    "agentphone-openapi-original.json: declared missing tag: agents",
+    "agentphone-openapi-original.json: declared missing tag: calls",
+    "agentphone-openapi-original.json: declared missing tag: contactCards",
+    "agentphone-openapi-original.json: declared missing tag: contacts",
+    "agentphone-openapi-original.json: declared missing tag: conversations",
+    "agentphone-openapi-original.json: declared missing tag: location",
+    "agentphone-openapi-original.json: declared missing tag: messages",
+    "agentphone-openapi-original.json: declared missing tag: numbers",
+    "agentphone-openapi-original.json: declared missing tag: registration",
+    "agentphone-openapi-original.json: declared missing tag: sub-accounts",
+    "agentphone-openapi-original.json: declared missing tag: usage",
+    "agentphone-openapi-original.json: declared missing tag: webhooks",
+    "superseded outputs removed: agentphone-subaccounts-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 13 total)"
+  ],
+  "skipped": [
+    "agentphone-agent-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-agents-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-calls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-contactcards-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-conversations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-location-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-messages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-numbers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-registration-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-subaccounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "agentphone-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

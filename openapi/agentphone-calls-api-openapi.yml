@@ -1,12 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference agent-webhooks calls API
+  title: Reference Calls API
   version: 1.0.0
 servers:
 - url: https://api.agentphone.ai
   description: Production
 tags:
-- name: calls
+- name: Calls
 paths:
   /v1/calls:
     get:
@@ -14,7 +14,7 @@ paths:
       summary: List Calls
       description: List all calls for this account.
       tags:
-      - calls
+      - Calls
       parameters:
       - name: offset
         in: query
@@ -105,7 +105,7 @@ paths:
 
         5. Continues conversation using your webhook responses'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: Authorization
         in: header
@@ -161,7 +161,7 @@ paths:
 
         4. Call lifecycle (transcripts, webhooks) works the same as phone calls'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: Authorization
         in: header
@@ -193,7 +193,7 @@ paths:
       summary: Get Call
       description: Get a specific call with its transcripts.
       tags:
-      - calls
+      - Calls
       parameters:
       - name: call_id
         in: path
@@ -234,7 +234,7 @@ paths:
 
         is accepted upstream.'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: call_id
         in: path
@@ -284,7 +284,7 @@ paths:
 
         - The URL can be shared or embedded directly since it requires no authentication'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: call_id
         in: path
@@ -313,11 +313,11 @@ paths:
 
         Returns the complete, ordered transcript regardless of the webhook
 
-        contextLimit setting.  Each entry contains the user utterance and
+        contextLimit setting. Each entry contains the user utterance and
 
         the corresponding agent response (when available).'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: call_id
         in: path
@@ -354,9 +354,9 @@ paths:
 
         database, then streams new turns in real time as they arrive from the
 
-        voice provider.  A ``: heartbeat`` comment is sent every 15 s to keep
+        voice provider. A ``: heartbeat`` comment is sent every 15 s to keep
 
-        proxies alive.  The stream closes after sending an ``ended`` event
+        proxies alive. The stream closes after sending an ``ended`` event
 
         when the call completes (or immediately after replay if the call has
 
@@ -365,7 +365,7 @@ paths:
 
         Works for both live and completed calls — same URL either way.'
       tags:
-      - calls
+      - Calls
       parameters:
       - name: call_id
         in: path
@@ -397,7 +397,7 @@ paths:
       summary: List Calls For Number
       description: List all calls for a specific phone number.
       tags:
-      - calls
+      - Calls
       parameters:
       - name: number_id
         in: path
@@ -437,27 +437,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CreateWebCallRequest:
       type: object
       properties:
@@ -480,14 +459,11 @@ components:
       - agentId
       description: Request model for creating a browser-based web call.
       title: CreateWebCallRequest
-    HTTPValidationError:
+    CreateWebCallRequestMetadata:
       type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+      properties: {}
+      description: Optional metadata to attach to the call
+      title: CreateWebCallRequestMetadata
     CreateOutboundCallRequest:
       type: object
       properties:
@@ -539,11 +515,35 @@ components:
       - toNumber
       description: Request model for creating an outbound call.
       title: CreateOutboundCallRequest
-    CreateWebCallRequestMetadata:
+    ValidationError:
       type: object
-      properties: {}
-      description: Optional metadata to attach to the call
-      title: CreateWebCallRequestMetadata
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

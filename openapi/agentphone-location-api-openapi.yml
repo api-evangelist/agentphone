@@ -61,33 +61,14 @@ paths:
                 $ref: '#/components/schemas/LocationRefreshResponse'
 components:
   schemas:
-    ValidationError:
+    HTTPValidationError:
       type: object
       properties:
-        loc:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    LocationRefreshResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        pollAfterSeconds:
-          type: integer
-          default: 20
-      required:
-      - success
-      title: LocationRefreshResponse
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
     ValidationErrorLocItems:
       oneOf:
       - type: string
@@ -117,14 +98,33 @@ components:
       - status
       - lastUpdated
       title: LocationResponse
-    HTTPValidationError:
+    LocationRefreshResponse:
       type: object
       properties:
-        detail:
+        success:
+          type: boolean
+        pollAfterSeconds:
+          type: integer
+          default: 20
+      required:
+      - success
+      title: LocationRefreshResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

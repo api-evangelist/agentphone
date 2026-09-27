@@ -459,6 +459,19 @@ components:
       - agentId
       description: Request model for creating a browser-based web call.
       title: CreateWebCallRequest
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
     CreateWebCallRequestMetadata:
       type: object
       properties: {}
@@ -531,19 +544,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

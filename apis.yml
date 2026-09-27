@@ -74,7 +74,7 @@ tags_raw:
 - iMessage
 apis:
 - aid: agentphone:agentphone-agent-webhooks-api
-  name: AgentPhone agent-webhooks API
+  name: AgentPhone Agent Webhooks API
   description: The agent-webhooks API from AgentPhone — 3 operation(s) for agent-webhooks.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -86,7 +86,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-agents-api
-  name: AgentPhone agents API
+  name: AgentPhone Agents API
   description: The agents API from AgentPhone — 7 operation(s) for agents.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -100,7 +100,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-calls-api
-  name: AgentPhone calls API
+  name: AgentPhone Calls API
   description: The calls API from AgentPhone — 8 operation(s) for calls.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -114,7 +114,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-contactcards-api
-  name: AgentPhone contactCards API
+  name: AgentPhone Contact Cards API
   description: The contactCards API from AgentPhone — 1 operation(s) for contactcards.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -127,7 +127,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-contacts-api
-  name: AgentPhone contacts API
+  name: AgentPhone Contacts API
   description: The contacts API from AgentPhone — 3 operation(s) for contacts.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -141,7 +141,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-conversations-api
-  name: AgentPhone conversations API
+  name: AgentPhone Conversations API
   description: The conversations API from AgentPhone — 5 operation(s) for conversations.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -155,7 +155,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-location-api
-  name: AgentPhone location API
+  name: AgentPhone Location API
   description: The location API from AgentPhone — 2 operation(s) for location.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -169,7 +169,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-messages-api
-  name: AgentPhone messages API
+  name: AgentPhone Messages API
   description: The messages API from AgentPhone — 2 operation(s) for messages.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -183,7 +183,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-numbers-api
-  name: AgentPhone numbers API
+  name: AgentPhone Numbers API
   description: The numbers API from AgentPhone — 3 operation(s) for numbers.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -197,7 +197,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-registration-api
-  name: AgentPhone registration API
+  name: AgentPhone Registration API
   description: The registration API from AgentPhone — 2 operation(s) for registration.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -211,7 +211,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-usage-api
-  name: AgentPhone usage API
+  name: AgentPhone Usage API
   description: The usage API from AgentPhone — 5 operation(s) for usage.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai
@@ -225,7 +225,7 @@ apis:
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-webhooks-api
-  name: AgentPhone webhooks API
+  name: AgentPhone Webhooks API
   description: The webhooks API from AgentPhone — 5 operation(s) for webhooks.
   humanURL: https://docs.agentphone.ai
   baseURL: https://api.agentphone.ai

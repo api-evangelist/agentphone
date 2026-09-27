@@ -112,6 +112,36 @@ paths:
               $ref: '#/components/schemas/SendReactionRequest'
 components:
   schemas:
+    SendReactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        reaction_type:
+          type: string
+        message_id:
+          type: string
+        channel:
+          type: string
+      required:
+      - id
+      - reaction_type
+      - message_id
+      - channel
+      title: SendReactionResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     SendMessageRequest:
       type: object
       properties:
@@ -162,78 +192,6 @@ components:
       required:
       - body
       title: SendMessageRequest
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    SendMessageRequestSendStyle:
-      type: string
-      enum:
-      - celebration
-      - fireworks
-      - lasers
-      - love
-      - confetti
-      - balloons
-      - spotlight
-      - echo
-      - invisible
-      - gentle
-      - loud
-      - slam
-      description: 'Optional iMessage expressive effect. Only valid on iMessage-capable numbers. Supported values: celebration, fireworks, lasers, love, confetti, balloons, spotlight, echo, invisible, gentle, loud, slam.'
-      title: SendMessageRequestSendStyle
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    SendReactionRequest:
-      type: object
-      properties:
-        reaction:
-          type: string
-          description: iMessage reaction to send. Classic tapbacks (love, like, dislike, laugh, emphasize, question) are supported on every iMessage line. Custom emoji reactions (e.g. "🔥", "😂", "👍") are supported on newer lines only; lines that don't support them return a 400 with upgrade instructions. Custom emoji also require the recipient to be on macOS 14 / iOS 17 or later.
-      required:
-      - reaction
-      title: SendReactionRequest
-    SendReactionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        reaction_type:
-          type: string
-        message_id:
-          type: string
-        channel:
-          type: string
-      required:
-      - id
-      - reaction_type
-      - message_id
-      - channel
-      title: SendReactionResponse
     SendMessageResponse:
       type: object
       properties:
@@ -271,6 +229,48 @@ components:
       - from_number
       - to_number
       title: SendMessageResponse
+    SendReactionRequest:
+      type: object
+      properties:
+        reaction:
+          type: string
+          description: iMessage reaction to send. Classic tapbacks (love, like, dislike, laugh, emphasize, question) are supported on every iMessage line. Custom emoji reactions (e.g. "🔥", "😂", "👍") are supported on newer lines only; lines that don't support them return a 400 with upgrade instructions. Custom emoji also require the recipient to be on macOS 14 / iOS 17 or later.
+      required:
+      - reaction
+      title: SendReactionRequest
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SendMessageRequestSendStyle:
+      type: string
+      enum:
+      - celebration
+      - fireworks
+      - lasers
+      - love
+      - confetti
+      - balloons
+      - spotlight
+      - echo
+      - invisible
+      - gentle
+      - loud
+      - slam
+      description: 'Optional iMessage expressive effect. Only valid on iMessage-capable numbers. Supported values: celebration, fireworks, lasers, love, confetti, balloons, spotlight, echo, invisible, gentle, loud, slam.'
+      title: SendMessageRequestSendStyle
   securitySchemes:
     HTTPBearer:
       type: http

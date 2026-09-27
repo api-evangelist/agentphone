@@ -177,131 +177,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PlanLimits:
-      type: object
-      properties:
-        numbers:
-          type: integer
-        messagesPerMonth:
-          type: integer
-        voiceMinutesPerMonth:
-          type: integer
-        maxCallDurationMinutes:
-          type: integer
-        concurrentCalls:
-          type: integer
-      required:
-      - numbers
-      - messagesPerMonth
-      - voiceMinutesPerMonth
-      - maxCallDurationMinutes
-      - concurrentCalls
-      title: PlanLimits
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PlanInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        limits:
-          $ref: '#/components/schemas/PlanLimits'
-      required:
-      - name
-      - limits
-      title: PlanInfo
-    NumberLimits:
-      type: object
-      properties:
-        used:
-          type: integer
-        limit:
-          type: integer
-        remaining:
-          type: integer
-      required:
-      - used
-      - limit
-      - remaining
-      title: NumberLimits
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    UsageResponse:
-      type: object
-      properties:
-        plan:
-          $ref: '#/components/schemas/PlanInfo'
-        numbers:
-          $ref: '#/components/schemas/NumberLimits'
-        stats:
-          $ref: '#/components/schemas/UsageStats'
-        periodStart:
-          type: string
-        periodEnd:
-          type: string
-      required:
-      - plan
-      - numbers
-      - stats
-      - periodStart
-      - periodEnd
-      title: UsageResponse
-    MonthlyUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MonthlyUsagePoint'
-        months:
-          type: integer
-      required:
-      - data
-      - months
-      title: MonthlyUsageResponse
-    V1UsageByAgentGetParametersPeriod:
-      type: string
-      enum:
-      - week
-      - month
-      - year
-      title: V1UsageByAgentGetParametersPeriod
-    AgentUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentUsageItem'
-        period:
-          type: string
-        periodStart:
-          type: string
-        periodEnd:
-          type: string
-      required:
-      - data
-      - period
-      - periodStart
-      - periodEnd
-      title: AgentUsageResponse
     DailyUsagePoint:
       type: object
       properties:
@@ -319,14 +194,13 @@ components:
       - calls
       - webhooks
       title: DailyUsagePoint
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+    V1UsageByAgentGetParametersPeriod:
+      type: string
+      enum:
+      - week
+      - month
+      - year
+      title: V1UsageByAgentGetParametersPeriod
     AgentUsageItem:
       type: object
       properties:
@@ -352,6 +226,52 @@ components:
       - calls
       - totalSeconds
       title: AgentUsageItem
+    MonthlyUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonthlyUsagePoint'
+        months:
+          type: integer
+      required:
+      - data
+      - months
+      title: MonthlyUsageResponse
+    UsageResponse:
+      type: object
+      properties:
+        plan:
+          $ref: '#/components/schemas/PlanInfo'
+        numbers:
+          $ref: '#/components/schemas/NumberLimits'
+        stats:
+          $ref: '#/components/schemas/UsageStats'
+        periodStart:
+          type: string
+        periodEnd:
+          type: string
+      required:
+      - plan
+      - numbers
+      - stats
+      - periodStart
+      - periodEnd
+      title: UsageResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     DailyUsageResponse:
       type: object
       properties:
@@ -365,6 +285,20 @@ components:
       - data
       - days
       title: DailyUsageResponse
+    NumberLimits:
+      type: object
+      properties:
+        used:
+          type: integer
+        limit:
+          type: integer
+        remaining:
+          type: integer
+      required:
+      - used
+      - limit
+      - remaining
+      title: NumberLimits
     NumberUsageResponse:
       type: object
       properties:
@@ -375,6 +309,48 @@ components:
       required:
       - data
       title: NumberUsageResponse
+    PlanInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        limits:
+          $ref: '#/components/schemas/PlanLimits'
+      required:
+      - name
+      - limits
+      title: PlanInfo
+    NumberUsageItem:
+      type: object
+      properties:
+        numberId:
+          type: string
+        phoneNumber:
+          type: string
+        country:
+          type: string
+        status:
+          type: string
+        agentId:
+          type:
+          - string
+          - 'null'
+        agentName:
+          type:
+          - string
+          - 'null'
+        messages:
+          type: integer
+        calls:
+          type: integer
+      required:
+      - numberId
+      - phoneNumber
+      - country
+      - status
+      - messages
+      - calls
+      title: NumberUsageItem
     MonthlyUsagePoint:
       type: object
       properties:
@@ -392,6 +368,26 @@ components:
       - calls
       - webhooks
       title: MonthlyUsagePoint
+    PlanLimits:
+      type: object
+      properties:
+        numbers:
+          type: integer
+        messagesPerMonth:
+          type: integer
+        voiceMinutesPerMonth:
+          type: integer
+        maxCallDurationMinutes:
+          type: integer
+        concurrentCalls:
+          type: integer
+      required:
+      - numbers
+      - messagesPerMonth
+      - voiceMinutesPerMonth
+      - maxCallDurationMinutes
+      - concurrentCalls
+      title: PlanLimits
     UsageStats:
       type: object
       properties:
@@ -430,37 +426,41 @@ components:
       - successfulWebhookDeliveries
       - failedWebhookDeliveries
       title: UsageStats
-    NumberUsageItem:
+    ValidationError:
       type: object
       properties:
-        numberId:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
           type: string
-        phoneNumber:
+        type:
           type: string
-        country:
-          type: string
-        status:
-          type: string
-        agentId:
-          type:
-          - string
-          - 'null'
-        agentName:
-          type:
-          - string
-          - 'null'
-        messages:
-          type: integer
-        calls:
-          type: integer
       required:
-      - numberId
-      - phoneNumber
-      - country
-      - status
-      - messages
-      - calls
-      title: NumberUsageItem
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AgentUsageResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentUsageItem'
+        period:
+          type: string
+        periodStart:
+          type: string
+        periodEnd:
+          type: string
+      required:
+      - data
+      - period
+      - periodStart
+      - periodEnd
+      title: AgentUsageResponse
   securitySchemes:
     HTTPBearer:
       type: http

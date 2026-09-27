@@ -239,6 +239,114 @@ paths:
               $ref: '#/components/schemas/UpdateContactRequest'
 components:
   schemas:
+    ContactResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - phoneNumber
+      - name
+      - createdAt
+      - updatedAt
+      title: ContactResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    UpdateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      title: UpdateContactRequest
+    CreateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      required:
+      - phoneNumber
+      - name
+      title: CreateContactRequest
+    ContactCapabilityFlags:
+      type: object
+      properties:
+        imessage:
+          type: boolean
+        sms:
+          type: boolean
+      required:
+      - imessage
+      - sms
+      title: ContactCapabilityFlags
+    ContactCapabilitiesResponse:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/ContactCapabilityFlags'
+        checkedAt:
+          type: string
+          format: date-time
+      required:
+      - phoneNumber
+      - capabilities
+      - checkedAt
+      title: ContactCapabilitiesResponse
     ContactListResponse:
       type: object
       properties:
@@ -271,114 +379,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ContactCapabilitiesResponse:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        capabilities:
-          $ref: '#/components/schemas/ContactCapabilityFlags'
-        checkedAt:
-          type: string
-          format: date-time
-      required:
-      - phoneNumber
-      - capabilities
-      - checkedAt
-      title: ContactCapabilitiesResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    CreateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      required:
-      - phoneNumber
-      - name
-      title: CreateContactRequest
-    ContactCapabilityFlags:
-      type: object
-      properties:
-        imessage:
-          type: boolean
-        sms:
-          type: boolean
-      required:
-      - imessage
-      - sms
-      title: ContactCapabilityFlags
-    UpdateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      title: UpdateContactRequest
-    ContactResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        phoneNumber:
-          type: string
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - phoneNumber
-      - name
-      - createdAt
-      - updatedAt
-      title: ContactResponse
   securitySchemes:
     HTTPBearer:
       type: http

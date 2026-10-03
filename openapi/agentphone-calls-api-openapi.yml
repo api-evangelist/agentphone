@@ -464,14 +464,22 @@ components:
       - type: string
       - type: integer
       title: ValidationErrorLocItems
-    HTTPValidationError:
+    ValidationError:
       type: object
       properties:
-        detail:
+        loc:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CreateWebCallRequestMetadata:
       type: object
       properties: {}
@@ -528,22 +536,14 @@ components:
       - toNumber
       description: Request model for creating an outbound call.
       title: CreateOutboundCallRequest
-    ValidationError:
+    HTTPValidationError:
       type: object
       properties:
-        loc:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

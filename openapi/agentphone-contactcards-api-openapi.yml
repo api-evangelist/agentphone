@@ -110,19 +110,46 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ContactCardResponse:
       type: object
       properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+        firstName:
+          type:
+          - string
+          - 'null'
+        lastName:
+          type:
+          - string
+          - 'null'
+        displayName:
+          type:
+          - string
+          - 'null'
+        hasAvatar:
+          type: boolean
+          default: false
+      title: ContactCardResponse
     ValidationErrorLocItems:
       oneOf:
       - type: string
       - type: integer
       title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ContactCardWriteRequest:
       type: object
       properties:
@@ -143,41 +170,14 @@ components:
           - string
           - 'null'
       title: ContactCardWriteRequest
-    ContactCardResponse:
+    HTTPValidationError:
       type: object
       properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-        lastName:
-          type:
-          - string
-          - 'null'
-        displayName:
-          type:
-          - string
-          - 'null'
-        hasAvatar:
-          type: boolean
-          default: false
-      title: ContactCardResponse
-    ValidationError:
-      type: object
-      properties:
-        loc:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

@@ -326,6 +326,112 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AppRoutesConversationsConversationSummaryMetadata:
+      type: object
+      properties: {}
+      title: AppRoutesConversationsConversationSummaryMetadata
+    SetBackgroundRequest:
+      type: object
+      properties:
+        image_url:
+          type: string
+          description: HTTPS URL of the background image. JPEG/PNG/GIF/WebP/HEIC, max 10MB. Recipients on iOS < 18 see the default background; no error is raised.
+      required:
+      - image_url
+      title: SetBackgroundRequest
+    MessagesListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageInConversation'
+        hasMore:
+          type: boolean
+      required:
+      - data
+      - hasMore
+      title: MessagesListResponse
+    SetBackgroundResponse:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        channel:
+          type: string
+        hasBackground:
+          type: boolean
+        backgroundId:
+          type:
+          - string
+          - 'null'
+        backgroundVersion:
+          type:
+          - integer
+          - 'null'
+        changed:
+          type: boolean
+      required:
+      - conversationId
+      - channel
+      - hasBackground
+      - changed
+      title: SetBackgroundResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ReplyToInConversation:
+      type: object
+      properties:
+        messageId:
+          type: string
+        message:
+          type: string
+        mediaUrls:
+          type: array
+          items:
+            type: string
+          default: []
+      required:
+      - messageId
+      - message
+      title: ReplyToInConversation
+    SendTypingResponse:
+      type: object
+      properties:
+        conversationId:
+          type: string
+        channel:
+          type: string
+        status:
+          type: string
+      required:
+      - conversationId
+      - channel
+      - status
+      title: SendTypingResponse
+    UpdateConversationRequestMetadata:
+      type: object
+      properties: {}
+      title: UpdateConversationRequestMetadata
     UpdateConversationRequest:
       type: object
       properties:
@@ -340,6 +446,60 @@ components:
           description: New display name for a group conversation. iMessage groups only; also renames the underlying iMessage thread. Ignored (omit) for 1:1 chats.
       description: Request body for updating a conversation.
       title: UpdateConversationRequest
+    GroupParticipant:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+      required:
+      - identifier
+      description: A member of a group chat, mirrored from Conversation.participants.
+      title: GroupParticipant
+    app__routes__conversations__ConversationListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/app__routes__conversations__ConversationSummary'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: app__routes__conversations__ConversationListResponse
+    ReactionInConversation:
+      type: object
+      properties:
+        id:
+          type: string
+        reactionType:
+          type: string
+        fromNumber:
+          type: string
+        direction:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - reactionType
+      - fromNumber
+      - direction
+      - createdAt
+      title: ReactionInConversation
+    ConversationDetailMetadata:
+      type: object
+      properties: {}
+      title: ConversationDetailMetadata
     MessageInConversation:
       type: object
       properties:
@@ -452,98 +612,6 @@ components:
       - createdAt
       - messages
       title: ConversationDetail
-    app__routes__conversations__ConversationListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/app__routes__conversations__ConversationSummary'
-        hasMore:
-          type: boolean
-        total:
-          type: integer
-      required:
-      - data
-      - hasMore
-      - total
-      title: app__routes__conversations__ConversationListResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ReplyToInConversation:
-      type: object
-      properties:
-        messageId:
-          type: string
-        message:
-          type: string
-        mediaUrls:
-          type: array
-          items:
-            type: string
-          default: []
-      required:
-      - messageId
-      - message
-      title: ReplyToInConversation
-    GroupParticipant:
-      type: object
-      properties:
-        identifier:
-          type: string
-        name:
-          type:
-          - string
-          - 'null'
-      required:
-      - identifier
-      description: A member of a group chat, mirrored from Conversation.participants.
-      title: GroupParticipant
-    MessagesListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageInConversation'
-        hasMore:
-          type: boolean
-      required:
-      - data
-      - hasMore
-      title: MessagesListResponse
-    ReactionInConversation:
-      type: object
-      properties:
-        id:
-          type: string
-        reactionType:
-          type: string
-        fromNumber:
-          type: string
-        direction:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - reactionType
-      - fromNumber
-      - direction
-      - createdAt
-      title: ReactionInConversation
     app__routes__conversations__ConversationSummary:
       type: object
       properties:
@@ -604,82 +672,14 @@ components:
       - messageCount
       - createdAt
       title: app__routes__conversations__ConversationSummary
-    SendTypingResponse:
+    HTTPValidationError:
       type: object
       properties:
-        conversationId:
-          type: string
-        channel:
-          type: string
-        status:
-          type: string
-      required:
-      - conversationId
-      - channel
-      - status
-      title: SendTypingResponse
-    UpdateConversationRequestMetadata:
-      type: object
-      properties: {}
-      title: UpdateConversationRequestMetadata
-    SetBackgroundRequest:
-      type: object
-      properties:
-        image_url:
-          type: string
-          description: HTTPS URL of the background image. JPEG/PNG/GIF/WebP/HEIC, max 10MB. Recipients on iOS < 18 see the default background; no error is raised.
-      required:
-      - image_url
-      title: SetBackgroundRequest
-    AppRoutesConversationsConversationSummaryMetadata:
-      type: object
-      properties: {}
-      title: AppRoutesConversationsConversationSummaryMetadata
-    ValidationError:
-      type: object
-      properties:
-        loc:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    SetBackgroundResponse:
-      type: object
-      properties:
-        conversationId:
-          type: string
-        channel:
-          type: string
-        hasBackground:
-          type: boolean
-        backgroundId:
-          type:
-          - string
-          - 'null'
-        backgroundVersion:
-          type:
-          - integer
-          - 'null'
-        changed:
-          type: boolean
-      required:
-      - conversationId
-      - channel
-      - hasBackground
-      - changed
-      title: SetBackgroundResponse
-    ConversationDetailMetadata:
-      type: object
-      properties: {}
-      title: ConversationDetailMetadata
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

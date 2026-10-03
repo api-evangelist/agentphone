@@ -239,6 +239,77 @@ paths:
               $ref: '#/components/schemas/UpdateContactRequest'
 components:
   schemas:
+    CreateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      required:
+      - phoneNumber
+      - name
+      title: CreateContactRequest
+    ContactListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactResponse'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: ContactListResponse
+    UpdateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      title: UpdateContactRequest
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ContactResponse:
       type: object
       properties:
@@ -269,69 +340,11 @@ components:
       - createdAt
       - updatedAt
       title: ContactResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
     ValidationErrorLocItems:
       oneOf:
       - type: string
       - type: integer
       title: ValidationErrorLocItems
-    UpdateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      title: UpdateContactRequest
-    CreateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      required:
-      - phoneNumber
-      - name
-      title: CreateContactRequest
-    ContactCapabilityFlags:
-      type: object
-      properties:
-        imessage:
-          type: boolean
-        sms:
-          type: boolean
-      required:
-      - imessage
-      - sms
-      title: ContactCapabilityFlags
     ContactCapabilitiesResponse:
       type: object
       properties:
@@ -347,38 +360,25 @@ components:
       - capabilities
       - checkedAt
       title: ContactCapabilitiesResponse
-    ContactListResponse:
+    ContactCapabilityFlags:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactResponse'
-        hasMore:
+        imessage:
           type: boolean
-        total:
-          type: integer
+        sms:
+          type: boolean
       required:
-      - data
-      - hasMore
-      - total
-      title: ContactListResponse
-    ValidationError:
+      - imessage
+      - sms
+      title: ContactCapabilityFlags
+    HTTPValidationError:
       type: object
       properties:
-        loc:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

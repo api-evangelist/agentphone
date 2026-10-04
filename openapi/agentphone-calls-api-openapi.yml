@@ -437,54 +437,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CreateWebCallRequest:
-      type: object
-      properties:
-        agentId:
-          type: string
-          description: Agent ID to start the web call with
-        metadata:
-          oneOf:
-          - $ref: '#/components/schemas/CreateWebCallRequestMetadata'
-          - type: 'null'
-          description: Optional metadata to attach to the call
-        variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Optional per-call dynamic variables. Values are substituted into ``{{var_name}}`` placeholders in the agent's system prompt and begin message at call time. Requires a hosted-mode agent.
-      required:
-      - agentId
-      description: Request model for creating a browser-based web call.
-      title: CreateWebCallRequest
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CreateWebCallRequestMetadata:
-      type: object
-      properties: {}
-      description: Optional metadata to attach to the call
-      title: CreateWebCallRequestMetadata
     CreateOutboundCallRequest:
       type: object
       properties:
@@ -536,6 +488,49 @@ components:
       - toNumber
       description: Request model for creating an outbound call.
       title: CreateOutboundCallRequest
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateWebCallRequest:
+      type: object
+      properties:
+        agentId:
+          type: string
+          description: Agent ID to start the web call with
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/CreateWebCallRequestMetadata'
+          - type: 'null'
+          description: Optional metadata to attach to the call
+        variables:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: string
+          description: Optional per-call dynamic variables. Values are substituted into ``{{var_name}}`` placeholders in the agent's system prompt and begin message at call time. Requires a hosted-mode agent.
+      required:
+      - agentId
+      description: Request model for creating a browser-based web call.
+      title: CreateWebCallRequest
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     HTTPValidationError:
       type: object
       properties:
@@ -544,6 +539,11 @@ components:
           items:
             $ref: '#/components/schemas/ValidationError'
       title: HTTPValidationError
+    CreateWebCallRequestMetadata:
+      type: object
+      properties: {}
+      description: Optional metadata to attach to the call
+      title: CreateWebCallRequestMetadata
   securitySchemes:
     HTTPBearer:
       type: http

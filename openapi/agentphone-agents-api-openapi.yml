@@ -413,103 +413,81 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CustomToolParam:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Function name the agent calls. Letters, numbers, underscores, hyphens; max 64 chars. Must be unique and not a reserved built-in name.
-        description:
-          type: string
-          description: What the tool does and when to use it. The agent relies on this to decide when to call it.
-        url:
-          type: string
-          description: HTTPS endpoint the voice provider calls when the agent invokes this tool.
-        method:
-          $ref: '#/components/schemas/CustomToolParamMethod'
-          description: HTTP method. Defaults to POST.
-        headers:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Optional HTTP headers sent with the request (e.g. an Authorization token for your endpoint).
-        parameters:
-          oneOf:
-          - $ref: '#/components/schemas/CustomToolParamParameters'
-          - type: 'null'
-          description: JSON Schema object describing the arguments the agent fills in. Omit for a no-argument tool.
-        timeoutMs:
-          type:
-          - integer
-          - 'null'
-          description: How long to wait for your endpoint before giving up. Range 1000-120000 ms.
-        speakDuringExecution:
-          type:
-          - boolean
-          - 'null'
-          description: When true, the agent speaks executionMessage while the tool runs.
-        executionMessage:
-          type:
-          - string
-          - 'null'
-          description: What the agent says while the tool runs (used when speakDuringExecution is true).
-      required:
-      - name
-      - description
-      - url
-      title: CustomToolParam
-    CreateAgentRequestVoiceMode:
+    CustomToolParamMethod:
       type: string
       enum:
-      - webhook
-      - hosted
-      title: CreateAgentRequestVoiceMode
-    AgentResponseSttMode:
+      - GET
+      - POST
+      description: HTTP method. Defaults to POST.
+      title: CustomToolParamMethod
+    CreateAgentRequestLanguage:
       type: string
       enum:
-      - fast
-      - accurate
-      default: fast
-      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
-      title: AgentResponseSttMode
-    app__routes__agents__ConversationSummary:
-      type: object
-      properties:
-        id:
-          type: string
-        agentId:
-          type:
-          - string
-          - 'null'
-        phoneNumberId:
-          type: string
-        phoneNumber:
-          type: string
-        participant:
-          type: string
-        lastMessageAt:
-          type: string
-          format: date-time
-        lastMessagePreview:
-          type: string
-        messageCount:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - agentId
-      - phoneNumberId
-      - phoneNumber
-      - participant
-      - lastMessageAt
-      - lastMessagePreview
-      - messageCount
-      - createdAt
-      title: app__routes__agents__ConversationSummary
+      - af-ZA
+      - ar-SA
+      - az-AZ
+      - bg-BG
+      - bs-BA
+      - ca-ES
+      - cs-CZ
+      - cy-GB
+      - da-DK
+      - de-DE
+      - el-GR
+      - en-AU
+      - en-GB
+      - en-IN
+      - en-NZ
+      - en-US
+      - es-419
+      - es-ES
+      - fa-IR
+      - fi-FI
+      - fil-PH
+      - fr-CA
+      - fr-FR
+      - gl-ES
+      - he-IL
+      - hi-IN
+      - hr-HR
+      - hu-HU
+      - hy-AM
+      - id-ID
+      - is-IS
+      - it-IT
+      - ja-JP
+      - kk-KZ
+      - kn-IN
+      - ko-KR
+      - lt-LT
+      - lv-LV
+      - mk-MK
+      - mr-IN
+      - ms-MY
+      - ne-NP
+      - nl-BE
+      - nl-NL
+      - no-NO
+      - pl-PL
+      - pt-BR
+      - pt-PT
+      - ro-RO
+      - ru-RU
+      - sk-SK
+      - sl-SI
+      - sr-RS
+      - sv-SE
+      - sw-KE
+      - ta-IN
+      - th-TH
+      - tr-TR
+      - uk-UA
+      - ur-IN
+      - vi-VN
+      - yue-CN
+      - zh-CN
+      description: BCP-47 locale that drives the agent's speech recognition and pronunciation. Defaults to 'en-US'. See the enum for the full set of supported codes.
+      title: CreateAgentRequestLanguage
     UpdateAgentRequestDenoisingMode:
       type: string
       enum:
@@ -517,43 +495,6 @@ components:
       - noise-and-background-speech-cancellation
       description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
       title: UpdateAgentRequestDenoisingMode
-    UpdateAgentRequestAmbientSound:
-      type: string
-      enum:
-      - none
-      - office
-      - coffee-shop
-      - outdoor
-      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
-      title: UpdateAgentRequestAmbientSound
-    CreateAgentRequestSttMode:
-      type: string
-      enum:
-      - fast
-      - accurate
-      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
-      title: CreateAgentRequestSttMode
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    AgentResponseCustomToolsItems:
-      type: object
-      properties: {}
-      title: AgentResponseCustomToolsItems
-    CreateAgentRequestAmbientSound:
-      type: string
-      enum:
-      - none
-      - office
-      - coffee-shop
-      - outdoor
-      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
-      title: CreateAgentRequestAmbientSound
     AgentResponse:
       type: object
       properties:
@@ -656,35 +597,96 @@ components:
       - voice
       - createdAt
       title: AgentResponse
-    AgentResponseVoiceMode:
-      type: string
-      enum:
-      - webhook
-      - hosted
-      title: AgentResponseVoiceMode
-    CreateAgentRequestDenoisingMode:
-      type: string
-      enum:
-      - noise-cancellation
-      - noise-and-background-speech-cancellation
-      description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
-      title: CreateAgentRequestDenoisingMode
-    app__routes__agents__ConversationListResponse:
+    CreateAgentRequest:
       type: object
       properties:
-        data:
-          type: array
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        voiceMode:
+          $ref: '#/components/schemas/CreateAgentRequestVoiceMode'
+        enableMessaging:
+          type:
+          - boolean
+          - 'null'
+          description: When true, hosted-mode agents can send and read SMS/iMessage during calls. Defaults to true.
+        modelTier:
+          $ref: '#/components/schemas/CreateAgentRequestModelTier'
+        systemPrompt:
+          type:
+          - string
+          - 'null'
+        beginMessage:
+          type:
+          - string
+          - 'null'
+        voice:
+          type:
+          - string
+          - 'null'
+        transferNumber:
+          type:
+          - string
+          - 'null'
+        customTools:
+          type:
+          - array
+          - 'null'
           items:
-            $ref: '#/components/schemas/app__routes__agents__ConversationSummary'
-        hasMore:
-          type: boolean
-        total:
-          type: integer
+            $ref: '#/components/schemas/CustomToolParam'
+          description: Hosted-mode only. User-defined function tools the agent can call during a call (look up a record, save call notes, etc.). Each points at your HTTPS endpoint; the voice provider invokes it and feeds the JSON response back to the agent. Ignored in webhook mode. Maximum 20 tools.
+        voicemailMessage:
+          type:
+          - string
+          - 'null'
+        callScreeningIdentity:
+          type:
+          - string
+          - 'null'
+        callScreeningPurpose:
+          type:
+          - string
+          - 'null'
+        sttMode:
+          $ref: '#/components/schemas/CreateAgentRequestSttMode'
+          description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
+        ambientSound:
+          $ref: '#/components/schemas/CreateAgentRequestAmbientSound'
+          description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
+        denoisingMode:
+          $ref: '#/components/schemas/CreateAgentRequestDenoisingMode'
+          description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
+        maxSilenceMs:
+          type:
+          - integer
+          - 'null'
+          description: Hang up the call after this many milliseconds of caller silence. Default 600000 (10 min). Raise for IVR/hold-music workflows; lower to fail fast on dead lines. Range 10000 (10s) to 3600000 (1 hour).
+        voiceSpeed:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Voice speed multiplier. 1.0 is normal pace; lower values slow speech (0.5 is half speed), higher values speed it up (2.0 is double). Range 0.5 to 2.0.
+        interruptionSensitivity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: How easily callers can interrupt the agent. 0 means the agent is never interrupted, 1 means the agent stops at the first sound. Default 0.8. Range 0.0 to 1.0.
+        enableBackchannel:
+          type:
+          - boolean
+          - 'null'
+          description: When true, the agent interjects short filler words like 'uh-huh' or 'mhmm' during longer caller utterances. Set false to keep the agent silent while the caller is speaking. Defaults to true.
+        language:
+          $ref: '#/components/schemas/CreateAgentRequestLanguage'
+          description: BCP-47 locale that drives the agent's speech recognition and pronunciation. Defaults to 'en-US'. See the enum for the full set of supported codes.
       required:
-      - data
-      - hasMore
-      - total
-      title: app__routes__agents__ConversationListResponse
+      - name
+      title: CreateAgentRequest
     AttachNumberRequest:
       type: object
       properties:
@@ -693,45 +695,76 @@ components:
       required:
       - numberId
       title: AttachNumberRequest
-    CallListResponse:
+    AgentNumberResponse:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/CallSummary'
-        hasMore:
-          type: boolean
-        total:
-          type: integer
+        id:
+          type: string
+        phoneNumber:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          default: sms
       required:
-      - data
-      - hasMore
-      - total
-      title: CallListResponse
-    AgentResponseAmbientSound:
+      - id
+      - phoneNumber
+      - status
+      title: AgentNumberResponse
+    CreateAgentRequestDenoisingMode:
       type: string
       enum:
-      - none
-      - office
-      - coffee-shop
-      - outdoor
-      default: none
-      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
-      title: AgentResponseAmbientSound
-    CustomToolParamParameters:
+      - noise-cancellation
+      - noise-and-background-speech-cancellation
+      description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
+      title: CreateAgentRequestDenoisingMode
+    AgentResponseVoiceMode:
+      type: string
+      enum:
+      - webhook
+      - hosted
+      title: AgentResponseVoiceMode
+    ValidationError:
       type: object
-      properties: {}
-      description: JSON Schema object describing the arguments the agent fills in. Omit for a no-argument tool.
-      title: CustomToolParamParameters
-    AgentResponseModelTier:
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateAgentRequestVoiceMode:
+      type: string
+      enum:
+      - webhook
+      - hosted
+      title: CreateAgentRequestVoiceMode
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    UpdateAgentRequestVoiceMode:
+      type: string
+      enum:
+      - webhook
+      - hosted
+      title: UpdateAgentRequestVoiceMode
+    CreateAgentRequestModelTier:
       type: string
       enum:
       - turbo
       - balanced
       - max
-      default: balanced
-      title: AgentResponseModelTier
+      title: CreateAgentRequestModelTier
     UpdateAgentRequest:
       type: object
       properties:
@@ -835,6 +868,64 @@ components:
       - data
       - total
       title: AgentListResponse
+    AgentResponseSttMode:
+      type: string
+      enum:
+      - fast
+      - accurate
+      default: fast
+      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
+      title: AgentResponseSttMode
+    CustomToolParamParameters:
+      type: object
+      properties: {}
+      description: JSON Schema object describing the arguments the agent fills in. Omit for a no-argument tool.
+      title: CustomToolParamParameters
+    UpdateAgentRequestModelTier:
+      type: string
+      enum:
+      - turbo
+      - balanced
+      - max
+      title: UpdateAgentRequestModelTier
+    AgentResponseDenoisingMode:
+      type: string
+      enum:
+      - noise-cancellation
+      - noise-and-background-speech-cancellation
+      default: noise-cancellation
+      description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
+      title: AgentResponseDenoisingMode
+    AgentResponseAmbientSound:
+      type: string
+      enum:
+      - none
+      - office
+      - coffee-shop
+      - outdoor
+      default: none
+      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
+      title: AgentResponseAmbientSound
+    CallListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CallSummary'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: CallListResponse
+    AgentResponseCustomToolsItems:
+      type: object
+      properties: {}
+      title: AgentResponseCustomToolsItems
     UpdateAgentRequestLanguage:
       type: string
       enum:
@@ -903,221 +994,102 @@ components:
       - zh-CN
       description: BCP-47 locale that drives the agent's speech recognition and pronunciation. See the enum for the full set of supported codes.
       title: UpdateAgentRequestLanguage
-    CreateAgentRequestModelTier:
-      type: string
-      enum:
-      - turbo
-      - balanced
-      - max
-      title: CreateAgentRequestModelTier
-    DeleteAgentResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        id:
-          type: string
-        name:
-          type: string
-      required:
-      - success
-      - id
-      - name
-      title: DeleteAgentResponse
-    CreateAgentRequest:
+    CustomToolParam:
       type: object
       properties:
         name:
           type: string
+          description: Function name the agent calls. Letters, numbers, underscores, hyphens; max 64 chars. Must be unique and not a reserved built-in name.
         description:
+          type: string
+          description: What the tool does and when to use it. The agent relies on this to decide when to call it.
+        url:
+          type: string
+          description: HTTPS endpoint the voice provider calls when the agent invokes this tool.
+        method:
+          $ref: '#/components/schemas/CustomToolParamMethod'
+          description: HTTP method. Defaults to POST.
+        headers:
           type:
-          - string
+          - object
           - 'null'
-        voiceMode:
-          $ref: '#/components/schemas/CreateAgentRequestVoiceMode'
-        enableMessaging:
-          type:
-          - boolean
-          - 'null'
-          description: When true, hosted-mode agents can send and read SMS/iMessage during calls. Defaults to true.
-        modelTier:
-          $ref: '#/components/schemas/CreateAgentRequestModelTier'
-        systemPrompt:
-          type:
-          - string
-          - 'null'
-        beginMessage:
-          type:
-          - string
-          - 'null'
-        voice:
-          type:
-          - string
-          - 'null'
-        transferNumber:
-          type:
-          - string
-          - 'null'
-        customTools:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/CustomToolParam'
-          description: Hosted-mode only. User-defined function tools the agent can call during a call (look up a record, save call notes, etc.). Each points at your HTTPS endpoint; the voice provider invokes it and feeds the JSON response back to the agent. Ignored in webhook mode. Maximum 20 tools.
-        voicemailMessage:
-          type:
-          - string
-          - 'null'
-        callScreeningIdentity:
-          type:
-          - string
-          - 'null'
-        callScreeningPurpose:
-          type:
-          - string
-          - 'null'
-        sttMode:
-          $ref: '#/components/schemas/CreateAgentRequestSttMode'
-          description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
-        ambientSound:
-          $ref: '#/components/schemas/CreateAgentRequestAmbientSound'
-          description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
-        denoisingMode:
-          $ref: '#/components/schemas/CreateAgentRequestDenoisingMode'
-          description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
-        maxSilenceMs:
+          additionalProperties:
+            type: string
+          description: Optional HTTP headers sent with the request (e.g. an Authorization token for your endpoint).
+        parameters:
+          oneOf:
+          - $ref: '#/components/schemas/CustomToolParamParameters'
+          - type: 'null'
+          description: JSON Schema object describing the arguments the agent fills in. Omit for a no-argument tool.
+        timeoutMs:
           type:
           - integer
           - 'null'
-          description: Hang up the call after this many milliseconds of caller silence. Default 600000 (10 min). Raise for IVR/hold-music workflows; lower to fail fast on dead lines. Range 10000 (10s) to 3600000 (1 hour).
-        voiceSpeed:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Voice speed multiplier. 1.0 is normal pace; lower values slow speech (0.5 is half speed), higher values speed it up (2.0 is double). Range 0.5 to 2.0.
-        interruptionSensitivity:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: How easily callers can interrupt the agent. 0 means the agent is never interrupted, 1 means the agent stops at the first sound. Default 0.8. Range 0.0 to 1.0.
-        enableBackchannel:
+          description: How long to wait for your endpoint before giving up. Range 1000-120000 ms.
+        speakDuringExecution:
           type:
           - boolean
           - 'null'
-          description: When true, the agent interjects short filler words like 'uh-huh' or 'mhmm' during longer caller utterances. Set false to keep the agent silent while the caller is speaking. Defaults to true.
-        language:
-          $ref: '#/components/schemas/CreateAgentRequestLanguage'
-          description: BCP-47 locale that drives the agent's speech recognition and pronunciation. Defaults to 'en-US'. See the enum for the full set of supported codes.
+          description: When true, the agent speaks executionMessage while the tool runs.
+        executionMessage:
+          type:
+          - string
+          - 'null'
+          description: What the agent says while the tool runs (used when speakDuringExecution is true).
       required:
       - name
-      title: CreateAgentRequest
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
+      - description
+      - url
+      title: CustomToolParam
+    UpdateAgentRequestSttMode:
+      type: string
+      enum:
+      - fast
+      - accurate
+      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
+      title: UpdateAgentRequestSttMode
+    AttachNumberResponse:
       type: object
       properties:
-        loc:
+        agentId:
+          type: string
+        number:
+          $ref: '#/components/schemas/AgentNumberResponse'
+      required:
+      - agentId
+      - number
+      title: AttachNumberResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    CreateAgentRequestSttMode:
+      type: string
+      enum:
+      - fast
+      - accurate
+      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
+      title: CreateAgentRequestSttMode
+    app__routes__agents__ConversationListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/app__routes__agents__ConversationSummary'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CreateAgentRequestLanguage:
-      type: string
-      enum:
-      - af-ZA
-      - ar-SA
-      - az-AZ
-      - bg-BG
-      - bs-BA
-      - ca-ES
-      - cs-CZ
-      - cy-GB
-      - da-DK
-      - de-DE
-      - el-GR
-      - en-AU
-      - en-GB
-      - en-IN
-      - en-NZ
-      - en-US
-      - es-419
-      - es-ES
-      - fa-IR
-      - fi-FI
-      - fil-PH
-      - fr-CA
-      - fr-FR
-      - gl-ES
-      - he-IL
-      - hi-IN
-      - hr-HR
-      - hu-HU
-      - hy-AM
-      - id-ID
-      - is-IS
-      - it-IT
-      - ja-JP
-      - kk-KZ
-      - kn-IN
-      - ko-KR
-      - lt-LT
-      - lv-LV
-      - mk-MK
-      - mr-IN
-      - ms-MY
-      - ne-NP
-      - nl-BE
-      - nl-NL
-      - no-NO
-      - pl-PL
-      - pt-BR
-      - pt-PT
-      - ro-RO
-      - ru-RU
-      - sk-SK
-      - sl-SI
-      - sr-RS
-      - sv-SE
-      - sw-KE
-      - ta-IN
-      - th-TH
-      - tr-TR
-      - uk-UA
-      - ur-IN
-      - vi-VN
-      - yue-CN
-      - zh-CN
-      description: BCP-47 locale that drives the agent's speech recognition and pronunciation. Defaults to 'en-US'. See the enum for the full set of supported codes.
-      title: CreateAgentRequestLanguage
-    AgentResponseDenoisingMode:
-      type: string
-      enum:
-      - noise-cancellation
-      - noise-and-background-speech-cancellation
-      default: noise-cancellation
-      description: Audio denoising. 'noise-cancellation' (default) handles general noise. 'noise-and-background-speech-cancellation' is more aggressive for callers in cars, cafes, or near TVs ($0.005/min surcharge).
-      title: AgentResponseDenoisingMode
-    UpdateAgentRequestModelTier:
-      type: string
-      enum:
-      - turbo
-      - balanced
-      - max
-      title: UpdateAgentRequestModelTier
+      - data
+      - hasMore
+      - total
+      title: app__routes__agents__ConversationListResponse
     CallSummary:
       type: object
       properties:
@@ -1170,54 +1142,82 @@ components:
       - durationSeconds
       - lastTranscriptSnippet
       title: CallSummary
-    UpdateAgentRequestVoiceMode:
+    AgentResponseModelTier:
       type: string
       enum:
-      - webhook
-      - hosted
-      title: UpdateAgentRequestVoiceMode
-    AgentNumberResponse:
+      - turbo
+      - balanced
+      - max
+      default: balanced
+      title: AgentResponseModelTier
+    CreateAgentRequestAmbientSound:
+      type: string
+      enum:
+      - none
+      - office
+      - coffee-shop
+      - outdoor
+      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
+      title: CreateAgentRequestAmbientSound
+    app__routes__agents__ConversationSummary:
       type: object
       properties:
         id:
           type: string
+        agentId:
+          type:
+          - string
+          - 'null'
+        phoneNumberId:
+          type: string
         phoneNumber:
           type: string
-        status:
+        participant:
           type: string
-        type:
+        lastMessageAt:
           type: string
-          default: sms
+          format: date-time
+        lastMessagePreview:
+          type: string
+        messageCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
       required:
       - id
+      - agentId
+      - phoneNumberId
       - phoneNumber
-      - status
-      title: AgentNumberResponse
-    CustomToolParamMethod:
-      type: string
-      enum:
-      - GET
-      - POST
-      description: HTTP method. Defaults to POST.
-      title: CustomToolParamMethod
-    UpdateAgentRequestSttMode:
-      type: string
-      enum:
-      - fast
-      - accurate
-      description: Speech-to-text mode. 'fast' optimizes for latency, 'accurate' optimizes for transcription accuracy (~200ms additional latency).
-      title: UpdateAgentRequestSttMode
-    AttachNumberResponse:
+      - participant
+      - lastMessageAt
+      - lastMessagePreview
+      - messageCount
+      - createdAt
+      title: app__routes__agents__ConversationSummary
+    DeleteAgentResponse:
       type: object
       properties:
-        agentId:
+        success:
+          type: boolean
+        id:
           type: string
-        number:
-          $ref: '#/components/schemas/AgentNumberResponse'
+        name:
+          type: string
       required:
-      - agentId
-      - number
-      title: AttachNumberResponse
+      - success
+      - id
+      - name
+      title: DeleteAgentResponse
+    UpdateAgentRequestAmbientSound:
+      type: string
+      enum:
+      - none
+      - office
+      - coffee-shop
+      - outdoor
+      description: Background ambience to mask synthetic silence between turns. 'none' disables; 'office', 'coffee-shop', 'outdoor' enable a quiet bed.
+      title: UpdateAgentRequestAmbientSound
   securitySchemes:
     HTTPBearer:
       type: http

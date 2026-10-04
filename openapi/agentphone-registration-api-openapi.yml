@@ -126,17 +126,46 @@ paths:
               $ref: '#/components/schemas/RegistrationRequest'
 components:
   schemas:
+    CampaignStatusResponse:
+      type: object
+      properties:
+        campaign_status:
+          type: string
+        message:
+          type: string
+        stage:
+          type:
+          - string
+          - 'null'
+      required:
+      - campaign_status
+      - message
+      title: CampaignStatusResponse
+    RegistrationRequestRegistrationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - standard_brand
+      description: '''sole_proprietor'' or ''standard_brand'''
+      title: RegistrationRequestRegistrationType
+    ContactTitle:
+      type: string
+      enum:
+      - ceo
+      - cfo
+      - cto
+      - coo
+      - vp
+      - gm
+      - director
+      - other
+      title: ContactTitle
     Volume:
       type: string
       enum:
       - low
       - high
       title: Volume
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
     ValidationError:
       type: object
       properties:
@@ -153,30 +182,20 @@ components:
       - msg
       - type
       title: ValidationError
-    OrganizationType:
+    UseCase:
       type: string
       enum:
-      - sole_proprietor
-      - private_corporation
-      - public_corporation
-      - llc
-      - partnership
-      - non_profit
-      - co_op
-      - government
-      title: OrganizationType
-    ContactTitle:
-      type: string
-      enum:
-      - ceo
-      - cfo
-      - cto
-      - coo
-      - vp
-      - gm
-      - director
-      - other
-      title: ContactTitle
+      - account_notification
+      - customer_care
+      - delivery_notification
+      - fraud_alert
+      - higher_education
+      - marketing
+      - polling_voting
+      - public_service_announcement
+      - security_alert
+      - two_factor_authentication
+      title: UseCase
     CampaignInclude:
       type: string
       enum:
@@ -328,28 +347,18 @@ components:
       - consent_flow
       - opt_in_image_url
       title: RegistrationRequest
-    CampaignStatusResponse:
-      type: object
-      properties:
-        campaign_status:
-          type: string
-        message:
-          type: string
-        stage:
-          type:
-          - string
-          - 'null'
-      required:
-      - campaign_status
-      - message
-      title: CampaignStatusResponse
-    RegistrationRequestRegistrationType:
+    OrganizationType:
       type: string
       enum:
       - sole_proprietor
-      - standard_brand
-      description: '''sole_proprietor'' or ''standard_brand'''
-      title: RegistrationRequestRegistrationType
+      - private_corporation
+      - public_corporation
+      - llc
+      - partnership
+      - non_profit
+      - co_op
+      - government
+      title: OrganizationType
     RegistrationResponse:
       type: object
       properties:
@@ -371,20 +380,11 @@ components:
       - message
       - campaign_status
       title: RegistrationResponse
-    UseCase:
-      type: string
-      enum:
-      - account_notification
-      - customer_care
-      - delivery_notification
-      - fraud_alert
-      - higher_education
-      - marketing
-      - polling_voting
-      - public_service_announcement
-      - security_alert
-      - two_factor_authentication
-      title: UseCase
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     HTTPValidationError:
       type: object
       properties:

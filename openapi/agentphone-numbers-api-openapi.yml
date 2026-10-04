@@ -248,55 +248,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    MessageResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        from_:
-          type: string
-        to:
-          type: string
-        body:
-          type: string
-        direction:
-          type: string
-        channel:
-          type:
-          - string
-          - 'null'
-        receivedAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - from_
-      - to
-      - body
-      - direction
-      - receivedAt
-      title: MessageResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     PhoneNumberResponse:
       type: object
       properties:
@@ -325,6 +276,78 @@ components:
       - status
       - createdAt
       title: PhoneNumberResponse
+    MessageListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageResponse'
+        hasMore:
+          type: boolean
+      required:
+      - data
+      - hasMore
+      title: MessageListResponse
+    CreateNumberRequest:
+      type: object
+      properties:
+        country:
+          type: string
+          default: US
+        areaCode:
+          type:
+          - string
+          - 'null'
+        agentId:
+          type:
+          - string
+          - 'null'
+      title: CreateNumberRequest
+    MessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        from_:
+          type: string
+        to:
+          type: string
+        body:
+          type: string
+        direction:
+          type: string
+        channel:
+          type:
+          - string
+          - 'null'
+        receivedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - from_
+      - to
+      - body
+      - direction
+      - receivedAt
+      title: MessageResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PhoneNumberListResponse:
       type: object
       properties:
@@ -341,34 +364,6 @@ components:
       - hasMore
       - total
       title: PhoneNumberListResponse
-    CreateNumberRequest:
-      type: object
-      properties:
-        country:
-          type: string
-          default: US
-        areaCode:
-          type:
-          - string
-          - 'null'
-        agentId:
-          type:
-          - string
-          - 'null'
-      title: CreateNumberRequest
-    MessageListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageResponse'
-        hasMore:
-          type: boolean
-      required:
-      - data
-      - hasMore
-      title: MessageListResponse
     HTTPValidationError:
       type: object
       properties:
@@ -377,6 +372,11 @@ components:
           items:
             $ref: '#/components/schemas/ValidationError'
       title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
   securitySchemes:
     HTTPBearer:
       type: http

@@ -239,41 +239,17 @@ paths:
               $ref: '#/components/schemas/UpdateContactRequest'
 components:
   schemas:
-    CreateContactRequest:
+    ContactCapabilityFlags:
       type: object
       properties:
-        phoneNumber:
-          type: string
-        name:
-          type: string
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      required:
-      - phoneNumber
-      - name
-      title: CreateContactRequest
-    ContactListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactResponse'
-        hasMore:
+        imessage:
           type: boolean
-        total:
-          type: integer
+        sms:
+          type: boolean
       required:
-      - data
-      - hasMore
-      - total
-      title: ContactListResponse
+      - imessage
+      - sms
+      title: ContactCapabilityFlags
     UpdateContactRequest:
       type: object
       properties:
@@ -294,22 +270,22 @@ components:
           - string
           - 'null'
       title: UpdateContactRequest
-    ValidationError:
+    ContactListResponse:
       type: object
       properties:
-        loc:
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
+            $ref: '#/components/schemas/ContactResponse'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - data
+      - hasMore
+      - total
+      title: ContactListResponse
     ContactResponse:
       type: object
       properties:
@@ -340,11 +316,6 @@ components:
       - createdAt
       - updatedAt
       title: ContactResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
     ContactCapabilitiesResponse:
       type: object
       properties:
@@ -360,17 +331,22 @@ components:
       - capabilities
       - checkedAt
       title: ContactCapabilitiesResponse
-    ContactCapabilityFlags:
+    ValidationError:
       type: object
       properties:
-        imessage:
-          type: boolean
-        sms:
-          type: boolean
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
       required:
-      - imessage
-      - sms
-      title: ContactCapabilityFlags
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       type: object
       properties:
@@ -379,6 +355,30 @@ components:
           items:
             $ref: '#/components/schemas/ValidationError'
       title: HTTPValidationError
+    CreateContactRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+        name:
+          type: string
+        email:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+      required:
+      - phoneNumber
+      - name
+      title: CreateContactRequest
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
   securitySchemes:
     HTTPBearer:
       type: http

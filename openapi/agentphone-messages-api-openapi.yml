@@ -112,81 +112,6 @@ paths:
               $ref: '#/components/schemas/SendReactionRequest'
 components:
   schemas:
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    SendMessageResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-        channel:
-          type: string
-        from_number:
-          type: string
-        to_number:
-          type: string
-        conversation_id:
-          type:
-          - string
-          - 'null'
-        media_urls:
-          type: array
-          items:
-            type: string
-          default: []
-        reply_to_message_id:
-          type:
-          - string
-          - 'null'
-        reply_parent_unresolved:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - id
-      - status
-      - channel
-      - from_number
-      - to_number
-      title: SendMessageResponse
-    SendReactionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        reaction_type:
-          type: string
-        message_id:
-          type: string
-        channel:
-          type: string
-      required:
-      - id
-      - reaction_type
-      - message_id
-      - channel
-      title: SendReactionResponse
     SendMessageRequest:
       type: object
       properties:
@@ -237,6 +162,23 @@ components:
       required:
       - body
       title: SendMessageRequest
+    SendReactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        reaction_type:
+          type: string
+        message_id:
+          type: string
+        channel:
+          type: string
+      required:
+      - id
+      - reaction_type
+      - message_id
+      - channel
+      title: SendReactionResponse
     SendMessageRequestSendStyle:
       type: string
       enum:
@@ -254,6 +196,27 @@ components:
       - slam
       description: 'Optional iMessage expressive effect. Only valid on iMessage-capable numbers. Supported values: celebration, fireworks, lasers, love, confetti, balloons, spotlight, echo, invisible, gentle, loud, slam.'
       title: SendMessageRequestSendStyle
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     HTTPValidationError:
       type: object
       properties:
@@ -262,6 +225,43 @@ components:
           items:
             $ref: '#/components/schemas/ValidationError'
       title: HTTPValidationError
+    SendMessageResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        channel:
+          type: string
+        from_number:
+          type: string
+        to_number:
+          type: string
+        conversation_id:
+          type:
+          - string
+          - 'null'
+        media_urls:
+          type: array
+          items:
+            type: string
+          default: []
+        reply_to_message_id:
+          type:
+          - string
+          - 'null'
+        reply_parent_unresolved:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - id
+      - status
+      - channel
+      - from_number
+      - to_number
+      title: SendMessageResponse
     SendReactionRequest:
       type: object
       properties:

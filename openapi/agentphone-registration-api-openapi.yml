@@ -126,46 +126,40 @@ paths:
               $ref: '#/components/schemas/RegistrationRequest'
 components:
   schemas:
-    CampaignStatusResponse:
+    HTTPValidationError:
       type: object
       properties:
-        campaign_status:
-          type: string
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    RegistrationResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
         message:
           type: string
-        stage:
+        campaign_status:
+          type: string
+        sub_account_id:
           type:
           - string
           - 'null'
+        fee_cents:
+          type: integer
+          default: 2500
       required:
-      - campaign_status
+      - ok
       - message
-      title: CampaignStatusResponse
-    RegistrationRequestRegistrationType:
-      type: string
-      enum:
-      - sole_proprietor
-      - standard_brand
-      description: '''sole_proprietor'' or ''standard_brand'''
-      title: RegistrationRequestRegistrationType
-    ContactTitle:
-      type: string
-      enum:
-      - ceo
-      - cfo
-      - cto
-      - coo
-      - vp
-      - gm
-      - director
-      - other
-      title: ContactTitle
-    Volume:
-      type: string
-      enum:
-      - low
-      - high
-      title: Volume
+      - campaign_status
+      title: RegistrationResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     ValidationError:
       type: object
       properties:
@@ -196,6 +190,52 @@ components:
       - security_alert
       - two_factor_authentication
       title: UseCase
+    CampaignStatusResponse:
+      type: object
+      properties:
+        campaign_status:
+          type: string
+        message:
+          type: string
+        stage:
+          type:
+          - string
+          - 'null'
+      required:
+      - campaign_status
+      - message
+      title: CampaignStatusResponse
+    OrganizationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - private_corporation
+      - public_corporation
+      - llc
+      - partnership
+      - non_profit
+      - co_op
+      - government
+      title: OrganizationType
+    RegistrationRequestRegistrationType:
+      type: string
+      enum:
+      - sole_proprietor
+      - standard_brand
+      description: '''sole_proprietor'' or ''standard_brand'''
+      title: RegistrationRequestRegistrationType
+    ContactTitle:
+      type: string
+      enum:
+      - ceo
+      - cfo
+      - cto
+      - coo
+      - vp
+      - gm
+      - director
+      - other
+      title: ContactTitle
     CampaignInclude:
       type: string
       enum:
@@ -347,52 +387,12 @@ components:
       - consent_flow
       - opt_in_image_url
       title: RegistrationRequest
-    OrganizationType:
+    Volume:
       type: string
       enum:
-      - sole_proprietor
-      - private_corporation
-      - public_corporation
-      - llc
-      - partnership
-      - non_profit
-      - co_op
-      - government
-      title: OrganizationType
-    RegistrationResponse:
-      type: object
-      properties:
-        ok:
-          type: boolean
-        message:
-          type: string
-        campaign_status:
-          type: string
-        sub_account_id:
-          type:
-          - string
-          - 'null'
-        fee_cents:
-          type: integer
-          default: 2500
-      required:
-      - ok
-      - message
-      - campaign_status
-      title: RegistrationResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
+      - low
+      - high
+      title: Volume
   securitySchemes:
     HTTPBearer:
       type: http

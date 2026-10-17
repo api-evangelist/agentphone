@@ -248,6 +248,52 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    WebhookCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        contextLimit:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type:
+          - integer
+          - 'null'
+      required:
+      - url
+      title: WebhookCreateRequest
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     WebhookResponse:
       type: object
       properties:
@@ -275,6 +321,25 @@ components:
       - timeout
       - createdAt
       title: WebhookResponse
+    PaginatedDeliveriesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookDeliveryResponse'
+        total:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+      required:
+      - items
+      - total
+      - offset
+      - limit
+      title: PaginatedDeliveriesResponse
     WebhookDeliveryResponse:
       type: object
       properties:
@@ -353,66 +418,6 @@ components:
       - failed
       - successRate
       title: AllTimeStatsResponse
-    WebhookCreateRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        contextLimit:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type:
-          - integer
-          - 'null'
-      required:
-      - url
-      title: WebhookCreateRequest
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    PaginatedDeliveriesResponse:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDeliveryResponse'
-        total:
-          type: integer
-        offset:
-          type: integer
-        limit:
-          type: integer
-      required:
-      - items
-      - total
-      - offset
-      - limit
-      title: PaginatedDeliveriesResponse
     WebhookDeliveryStatsResponse:
       type: object
       properties:
@@ -446,11 +451,6 @@ components:
       - byEventType
       - byHour
       title: WebhookDeliveryStatsResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
     WebhookDeliveryStatsResponseByHourItems:
       type: object
       properties: {}

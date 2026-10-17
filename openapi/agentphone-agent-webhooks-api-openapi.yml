@@ -186,6 +186,79 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    WebhookCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        contextLimit:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type:
+          - integer
+          - 'null'
+      required:
+      - url
+      title: WebhookCreateRequest
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WebhookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        secret:
+          type: string
+        status:
+          type: string
+        contextLimit:
+          type: integer
+        timeout:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - url
+      - secret
+      - status
+      - contextLimit
+      - timeout
+      - createdAt
+      title: WebhookResponse
     WebhookDeliveryResponse:
       type: object
       properties:
@@ -246,79 +319,6 @@ components:
       - nextRetryAt
       - createdAt
       title: WebhookDeliveryResponse
-    WebhookCreateRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        contextLimit:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type:
-          - integer
-          - 'null'
-      required:
-      - url
-      title: WebhookCreateRequest
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    WebhookResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        url:
-          type: string
-        secret:
-          type: string
-        status:
-          type: string
-        contextLimit:
-          type: integer
-        timeout:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-      required:
-      - id
-      - url
-      - secret
-      - status
-      - contextLimit
-      - timeout
-      - createdAt
-      title: WebhookResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
   securitySchemes:
     HTTPBearer:
       type: http

@@ -248,6 +248,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     PhoneNumberResponse:
       type: object
       properties:
@@ -276,19 +289,6 @@ components:
       - status
       - createdAt
       title: PhoneNumberResponse
-    MessageListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MessageResponse'
-        hasMore:
-          type: boolean
-      required:
-      - data
-      - hasMore
-      title: MessageListResponse
     CreateNumberRequest:
       type: object
       properties:
@@ -304,6 +304,38 @@ components:
           - string
           - 'null'
       title: CreateNumberRequest
+    PhoneNumberListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberResponse'
+        hasMore:
+          type: boolean
+        total:
+          type: integer
+      required:
+      - data
+      - hasMore
+      - total
+      title: PhoneNumberListResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     MessageResponse:
       type: object
       properties:
@@ -332,51 +364,19 @@ components:
       - direction
       - receivedAt
       title: MessageResponse
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PhoneNumberListResponse:
+    MessageListResponse:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/PhoneNumberResponse'
+            $ref: '#/components/schemas/MessageResponse'
         hasMore:
           type: boolean
-        total:
-          type: integer
       required:
       - data
       - hasMore
-      - total
-      title: PhoneNumberListResponse
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
+      title: MessageListResponse
   securitySchemes:
     HTTPBearer:
       type: http

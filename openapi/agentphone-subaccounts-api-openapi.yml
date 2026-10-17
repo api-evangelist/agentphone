@@ -145,22 +145,19 @@ paths:
               $ref: '#/components/schemas/UpdateSubAccountRequest'
 components:
   schemas:
-    UpdateSubAccountRequest:
+    HTTPValidationError:
       type: object
       properties:
-        name:
-          type: string
-      required:
-      - name
-      title: UpdateSubAccountRequest
-    CreateSubAccountRequest:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      title: CreateSubAccountRequest
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
     ValidationError:
       type: object
       properties:
@@ -177,19 +174,22 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    UpdateSubAccountRequest:
       type: object
       properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
+        name:
+          type: string
+      required:
+      - name
+      title: UpdateSubAccountRequest
+    CreateSubAccountRequest:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+      title: CreateSubAccountRequest
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,0 +1,178 @@
+openapi: 3.2.0
+info:
+  title: SMS contact cards API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: contact cards
+paths:
+  /v1/numbers/{number_id}/contact-card:
+    get:
+      tags:
+      - contact cards
+      summary: Get Contact Card
+      description: Fetch the iMessage contact card set on this number.
+      operationId: get_contact_card_v1_numbers__number_id__contact_card_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Number Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCardResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - contact cards
+      summary: Put Contact Card
+      description: Create or replace the iMessage contact card on this number.
+      operationId: put_contact_card_v1_numbers__number_id__contact_card_put
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Number Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCardWriteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCardResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - contact cards
+      summary: Delete Contact Card
+      description: Remove the iMessage contact card from this number.
+      operationId: delete_contact_card_v1_numbers__number_id__contact_card_delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: number_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Number Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContactCardResponse:
+      properties:
+        firstName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Firstname
+        lastName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lastname
+        displayName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Displayname
+        hasAvatar:
+          type: boolean
+          title: Hasavatar
+          default: false
+      type: object
+      title: ContactCardResponse
+    ContactCardWriteRequest:
+      properties:
+        firstName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Firstname
+        lastName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Lastname
+        displayName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Displayname
+        avatarUrl:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatarurl
+      type: object
+      title: ContactCardWriteRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

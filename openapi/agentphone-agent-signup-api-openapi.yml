@@ -1,0 +1,136 @@
+openapi: 3.2.0
+info:
+  title: SMS Agent Signup API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: agent-signup
+paths:
+  /v0/agent/sign-up:
+    post:
+      tags:
+      - agent-signup
+      summary: Agent Sign Up
+      description: 'Kick off agent self-signup.
+
+
+        Sends a 6-digit OTP to the human''s email. Nothing is provisioned server-side
+
+        until /v0/agent/verify is called with the code.'
+      operationId: agent_sign_up_v0_agent_sign_up_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentSignUpRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v0/agent/verify:
+    post:
+      tags:
+      - agent-signup
+      summary: Agent Verify
+      description: 'Verify the OTP and atomically provision everything.
+
+
+        Creates: User + Project (+ mirrored Account) + starter hosted Agent + phone number
+
+        + first-month charge + API key. Returns the key once — agents must save it.'
+      operationId: agent_verify_v0_agent_verify_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentVerifyRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AgentVerifyRequest:
+      properties:
+        verification_id:
+          type: string
+          title: Verification Id
+        otp_code:
+          type: string
+          title: Otp Code
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+      type: object
+      required:
+      - verification_id
+      - otp_code
+      title: AgentVerifyRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AgentSignUpRequest:
+      properties:
+        human_email:
+          type: string
+          title: Human Email
+        agent_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agent Name
+      type: object
+      required:
+      - human_email
+      title: AgentSignUpRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

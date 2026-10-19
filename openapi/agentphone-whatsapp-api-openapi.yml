@@ -1,0 +1,496 @@
+openapi: 3.2.0
+info:
+  title: SMS WhatsApp API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: whatsapp
+paths:
+  /integrations/whatsapp/connect:
+    post:
+      tags:
+      - whatsapp
+      summary: Whatsapp Connect
+      description: 'Complete Embedded Signup: exchange the code, store the connection, and
+
+        onboard the phone number (register + subscribe webhooks).'
+      operationId: whatsapp_connect_integrations_whatsapp_connect_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppConnectRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /integrations/whatsapp/{connection_id}/available-numbers:
+    get:
+      tags:
+      - whatsapp
+      summary: Whatsapp Available Numbers
+      description: 'List the WABA''s phone numbers with their connected state, for the
+
+        add-number picker. Registration is deliberate and per-number: registering
+
+        a number on the Cloud API kicks it off the WhatsApp Business app, so we
+
+        never auto-register a whole WABA.'
+      operationId: whatsapp_available_numbers_integrations_whatsapp__connection_id__available_numbers_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /integrations/whatsapp/{connection_id}/numbers:
+    post:
+      tags:
+      - whatsapp
+      summary: Whatsapp Connect Number
+      description: 'Connect an additional number from an already-connected WABA: validates
+
+        the number belongs to the WABA, registers it for Cloud API use, and binds
+
+        it (dual-channel when the E.164 already exists on this account).'
+      operationId: whatsapp_connect_number_integrations_whatsapp__connection_id__numbers_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppNumberConnectRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /integrations/whatsapp/{connection_id}/templates:
+    get:
+      tags:
+      - whatsapp
+      summary: Whatsapp List Templates
+      description: 'List the WABA''s message templates and their approval status.
+
+
+        Templates are the only way to message someone outside the 24h customer
+
+        service window. A newly created one is PENDING until Meta reviews it;
+
+        poll here for the transition to APPROVED (or REJECTED, with a reason).'
+      operationId: whatsapp_list_templates_integrations_whatsapp__connection_id__templates_get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      - name: name
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter to one template name (all of its language variants).
+          title: Name
+        description: Filter to one template name (all of its language variants).
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter by approval status, e.g. APPROVED or PENDING.
+          title: Status
+        description: Filter by approval status, e.g. APPROVED or PENDING.
+      - name: category
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Filter by category: MARKETING, UTILITY, or AUTHENTICATION.'
+          title: Category
+        description: 'Filter by category: MARKETING, UTILITY, or AUTHENTICATION.'
+      - name: language
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Filter by language code, e.g. en_US.
+          title: Language
+        description: Filter by language code, e.g. en_US.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - whatsapp
+      summary: Whatsapp Create Template
+      description: 'Submit a template, authored or from Meta''s Template Library.
+
+
+        An authored template (with `components`) comes back PENDING and can''t be
+
+        sent until it reaches APPROVED — UTILITY usually clears in minutes,
+
+        MARKETING can take up to 24h.
+
+
+        Passing `library_template_name` instead builds from Meta''s library, where a
+
+        template used unchanged skips review and is usable straight away. That makes
+
+        it the quickest way to get something sendable; the trade is that the copy is
+
+        Meta''s, customizable only through the library button/body inputs.'
+      operationId: whatsapp_create_template_integrations_whatsapp__connection_id__templates_post
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WhatsAppTemplateCreateRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - whatsapp
+      summary: Whatsapp Delete Template
+      description: 'Delete a template by name.
+
+
+        Meta removes EVERY language variant registered under the name, and blocks
+
+        reuse of that name for 30 days. There is no rename on Meta''s side, so this
+
+        is also the only way to reclaim a name from a typo''d or rejected template.'
+      operationId: whatsapp_delete_template_integrations_whatsapp__connection_id__templates_delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          description: Template name to delete.
+          title: Name
+        description: Template name to delete.
+      - name: hsm_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          description: Optional template id. Narrows the delete to that single language version instead of every variant under the name. Meta requires `name` alongside it.
+          title: Hsm Id
+        description: Optional template id. Narrows the delete to that single language version instead of every variant under the name. Meta requires `name` alongside it.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /integrations/whatsapp/status:
+    get:
+      tags:
+      - whatsapp
+      summary: Whatsapp Status
+      operationId: whatsapp_status_integrations_whatsapp_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /integrations/whatsapp/{connection_id}:
+    delete:
+      tags:
+      - whatsapp
+      summary: Whatsapp Disconnect
+      description: 'Disconnect a WABA: mark the connection disconnected and release its numbers.
+
+
+        The customer keeps all their Meta assets (we never delete anything on their
+
+        side); this only stops AgentPhone from using them.'
+      operationId: whatsapp_disconnect_integrations_whatsapp__connection_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: connection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Connection Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WhatsAppConnectRequest:
+      properties:
+        code:
+          type: string
+          minLength: 1
+          title: Code
+          description: Exchangeable token code from Embedded Signup
+        waba_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Waba Id
+          description: 'Customer WABA ID from the ES message event. Optional: when the browser handoff is blocked we discover it from the exchanged token.'
+        phone_number_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phone Number Id
+          description: Customer business phone number ID (absent for WABA-only signups)
+        business_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Business Id
+          description: Customer business portfolio ID
+        agent_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agent Id
+          description: Optional agent to attach the number to
+      type: object
+      required:
+      - code
+      title: WhatsAppConnectRequest
+    WhatsAppTemplateCreateRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 512
+          minLength: 1
+          title: Name
+          description: Template name. Meta requires lowercase letters, digits and underscores, and it must be unique on the WABA.
+          examples:
+          - order_shipped
+        language:
+          type: string
+          minLength: 2
+          title: Language
+          description: Meta language code, e.g. en_US or es_MX.
+          default: en_US
+        category:
+          type: string
+          title: Category
+          description: MARKETING, UTILITY, or AUTHENTICATION. Meta may recategorize based on the content.
+        parameter_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parameter Format
+          description: 'How the body''s placeholders are written: POSITIONAL for {{1}}, {{2}} or NAMED for {{first_name}}. Omit for Meta''s default, POSITIONAL. A template''s format also dictates the shape you must send: positional templates take an array of variables, named templates take an object keyed by parameter name.'
+          examples:
+          - NAMED
+        components:
+          anyOf:
+          - items:
+              type: object
+            type: array
+          - type: 'null'
+          title: Components
+          description: 'Meta''s component array, passed through as given. Must include a BODY. Required unless `library_template_name` is set, which supplies its own. Positional: [{"type": "BODY", "text": "Your order {{1}} has shipped.", "example": {"body_text": [["1234"]]}}]. Named: [{"type": "BODY", "text": "Thanks {{first_name}}!", "example": {"body_text_named_params": [{"param_name": "first_name", "example": "Pablo"}]}}]. Components containing variables require an `example` or Meta rejects the submission.'
+        library_template_name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Library Template Name
+          description: Build from Meta's Template Library instead of authoring one. Use the library entry's slug, e.g. "appointment_confirmation_1" (visible under each card in WhatsApp Manager > Template library). A library template used unchanged skips Meta's review and is usable immediately, so this is the fastest route to a sendable template. Omit `components` when using it.
+          examples:
+          - appointment_confirmation_1
+        library_template_button_inputs:
+          anyOf:
+          - items:
+              type: object
+            type: array
+          - type: 'null'
+          title: Library Template Button Inputs
+          description: 'Library templates only: fills in the buttons the library entry ships with. Each entry takes {"type", "phone_number", "url", "otp_type", "zero_tap_terms_accepted", "supported_apps"} as the button requires — a URL button needs your url, a CALL button your phone number.'
+        library_template_body_inputs:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Library Template Body Inputs
+          description: 'Library templates only: toggles the optional body lines a library entry offers. {"add_contact_number", "add_learn_more_link", "add_security_recommendation", "add_track_package_link", "code_expiration_minutes"}.'
+      type: object
+      required:
+      - name
+      - category
+      title: WhatsAppTemplateCreateRequest
+      description: 'A template submission, passed through to Meta close to verbatim.
+
+
+        Only structurally-required checks happen here. Meta owns the authoring
+
+        rules (name casing, variable numbering and placement, category fit) and
+
+        returns specific, actionable errors for them — a partial local validator
+
+        would reject payloads Meta would have accepted.'
+    WhatsAppNumberConnectRequest:
+      properties:
+        phone_number_id:
+          type: string
+          minLength: 1
+          title: Phone Number Id
+          description: Meta phone_number_id of a number on this WABA
+        agent_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agent Id
+          description: Optional agent to attach the number to
+      type: object
+      required:
+      - phone_number_id
+      title: WhatsAppNumberConnectRequest
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

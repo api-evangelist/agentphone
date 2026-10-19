@@ -113,19 +113,6 @@ apis:
     url: openapi/agentphone-calls-api-openapi.yml
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
-- aid: agentphone:agentphone-contactcards-api
-  name: AgentPhone Contact Cards API
-  description: The contactCards API from AgentPhone — 1 operation(s) for contactcards.
-  humanURL: https://docs.agentphone.ai
-  baseURL: https://api.agentphone.ai
-  tags: []
-  tags_raw:
-  - contactCards
-  properties:
-  - type: OpenAPI
-    url: openapi/agentphone-contactcards-api-openapi.yml
-  - type: APIReference
-    url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-contacts-api
   name: AgentPhone Contacts API
   description: The contacts API from AgentPhone — 3 operation(s) for contacts.
@@ -236,6 +223,90 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/agentphone-webhooks-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-agent-signup-api
+  name: AgentPhone Agent Signup API
+  description: The agent-signup API from AgentPhone — 2 operation(s) for agent-signup.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - agent-signup
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-agent-signup-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-contact-cards-api
+  name: AgentPhone contact cards API
+  description: The contact cards API from AgentPhone — 1 operation(s) for contact cards.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - contact cards
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-contact-cards-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-feedback-api
+  name: AgentPhone Feedback API
+  description: The feedback API from AgentPhone — 1 operation(s) for feedback.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - feedback
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-feedback-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-integrations-api
+  name: AgentPhone Integrations API
+  description: The integrations API from AgentPhone — 4 operation(s) for integrations.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-integrations-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-sip-trunks-api
+  name: AgentPhone Sip Trunks API
+  description: The sip-trunks API from AgentPhone — 2 operation(s) for sip-trunks.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - sip-trunks
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-sip-trunks-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-verification-api
+  name: AgentPhone Verification API
+  description: The verification API from AgentPhone — 2 operation(s) for verification.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - verification
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-verification-api-openapi.yml
+  - type: APIReference
+    url: https://docs.agentphone.ai/api-reference
+- aid: agentphone:agentphone-whatsapp-api
+  name: AgentPhone WhatsApp API
+  description: The whatsapp API from AgentPhone — 6 operation(s) for whatsapp.
+  humanURL: https://docs.agentphone.ai
+  baseURL: https://api.agentphone.ai
+  tags:
+  - whatsapp
+  properties:
+  - type: OpenAPI
+    url: openapi/agentphone-whatsapp-api-openapi.yml
   - type: APIReference
     url: https://docs.agentphone.ai/api-reference
 - aid: agentphone:agentphone-subaccounts-api

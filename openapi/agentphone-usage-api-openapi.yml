@@ -1,16 +1,15 @@
 openapi: 3.2.0
 info:
-  title: Reference Usage API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Usage API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Usage
 paths:
   /v1/usage:
     get:
-      operationId: get-usage-v-1-usage-get
+      tags:
+      - Usage
       summary: Get Usage
       description: 'Get usage statistics for the current account.
 
@@ -24,15 +23,7 @@ paths:
         - Call statistics (total, last 24h, last 7 days, last 30 days)
 
         - Webhook delivery statistics'
-      tags:
-      - Usage
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+      operationId: get_usage_v1_usage_get
       responses:
         '200':
           description: Successful Response
@@ -40,28 +31,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsageResponse'
+      security:
+      - HTTPBearer: []
   /v1/usage/daily:
     get:
-      operationId: get-daily-usage-v-1-usage-daily-get
+      tags:
+      - Usage
       summary: Get Daily Usage
       description: 'Get daily usage breakdown for the last N days (up to 365).
 
         Returns per-day counts of messages, calls, and webhook deliveries.'
-      tags:
-      - Usage
+      operationId: get_daily_usage_v1_usage_daily_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: days
         in: query
         required: false
         schema:
           type: integer
+          maximum: 365
+          minimum: 1
           default: 30
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Days
       responses:
         '200':
           description: Successful Response
@@ -77,26 +69,25 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/usage/monthly:
     get:
-      operationId: get-monthly-usage-v-1-usage-monthly-get
+      tags:
+      - Usage
       summary: Get Monthly Usage
       description: 'Get monthly usage aggregation for the last N months.
 
         Returns per-month totals of messages, calls, and webhook deliveries.'
-      tags:
-      - Usage
+      operationId: get_monthly_usage_v1_usage_monthly_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: months
         in: query
         required: false
         schema:
           type: integer
+          maximum: 24
+          minimum: 1
           default: 6
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Months
       responses:
         '200':
           description: Successful Response
@@ -112,18 +103,11 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/usage/by-number:
     get:
-      operationId: get-usage-by-number-v-1-usage-by-number-get
-      summary: Get Usage By Number
-      description: Get usage statistics broken down by phone number, with linked agent info.
       tags:
       - Usage
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+      summary: Get Usage By Number
+      description: Get usage statistics broken down by phone number, with linked agent info.
+      operationId: get_usage_by_number_v1_usage_by_number_get
       responses:
         '200':
           description: Successful Response
@@ -131,37 +115,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NumberUsageResponse'
+      security:
+      - HTTPBearer: []
   /v1/usage/by-agent:
     get:
-      operationId: get-usage-by-agent-v-1-usage-by-agent-get
+      tags:
+      - Usage
       summary: Get Usage By Agent
       description: 'Get usage broken down by agent for the current calendar week, month, or year.
 
         Includes message count, completed call count, and total call seconds per agent.
 
         Calls/messages with no agent attached are bucketed as "Unassigned".'
-      tags:
-      - Usage
+      operationId: get_usage_by_agent_v1_usage_by_agent_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: period
         in: query
         required: true
         schema:
-          $ref: '#/components/schemas/V1UsageByAgentGetParametersPeriod'
+          enum:
+          - week
+          - month
+          - year
+          type: string
+          title: Period
       - name: tz
         in: query
-        description: IANA timezone, e.g. America/New_York
         required: false
         schema:
-          type:
-          - string
-          - 'null'
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: IANA timezone, e.g. America/New_York
+          title: Tz
+        description: IANA timezone, e.g. America/New_York
       responses:
         '200':
           description: Successful Response
@@ -177,73 +166,108 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      type: object
+    NumberUsageResponse:
       properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    AgentUsageResponse:
-      type: object
-      properties:
+        reportGeneratedAt:
+          type: string
+          title: Reportgeneratedat
         data:
-          type: array
           items:
-            $ref: '#/components/schemas/AgentUsageItem'
-        period:
-          type: string
-        periodStart:
-          type: string
-        periodEnd:
-          type: string
-      required:
-      - data
-      - period
-      - periodStart
-      - periodEnd
-      title: AgentUsageResponse
-    DailyUsagePoint:
+            $ref: '#/components/schemas/NumberUsageItem'
+          type: array
+          title: Data
       type: object
+      required:
+      - reportGeneratedAt
+      - data
+      title: NumberUsageResponse
+    DailyUsagePoint:
       properties:
         date:
           type: string
+          title: Date
         messages:
           type: integer
+          title: Messages
         calls:
           type: integer
+          title: Calls
         webhooks:
           type: integer
+          title: Webhooks
+      type: object
       required:
       - date
       - messages
       - calls
       - webhooks
       title: DailyUsagePoint
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    AgentUsageItem:
+    MonthlyUsageResponse:
+      properties:
+        reportGeneratedAt:
+          type: string
+          title: Reportgeneratedat
+        data:
+          items:
+            $ref: '#/components/schemas/MonthlyUsagePoint'
+          type: array
+          title: Data
+        months:
+          type: integer
+          title: Months
       type: object
+      required:
+      - reportGeneratedAt
+      - data
+      - months
+      title: MonthlyUsageResponse
+    UsageResponse:
+      properties:
+        reportGeneratedAt:
+          type: string
+          title: Reportgeneratedat
+        numbers:
+          $ref: '#/components/schemas/NumberLimits'
+        stats:
+          $ref: '#/components/schemas/UsageStats'
+        periodStart:
+          type: string
+          title: Periodstart
+        periodEnd:
+          type: string
+          title: Periodend
+      type: object
+      required:
+      - reportGeneratedAt
+      - numbers
+      - stats
+      - periodStart
+      - periodEnd
+      title: UsageResponse
+    AgentUsageItem:
       properties:
         agentId:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agentid
         agentName:
           type: string
+          title: Agentname
         messages:
           type: integer
+          title: Messages
         calls:
           type: integer
+          title: Calls
         totalSeconds:
           type: integer
+          title: Totalseconds
         isOrphan:
           type: boolean
+          title: Isorphan
           default: false
+      type: object
       required:
       - agentId
       - agentName
@@ -251,150 +275,79 @@ components:
       - calls
       - totalSeconds
       title: AgentUsageItem
-    NumberUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/NumberUsageItem'
-      required:
-      - data
-      title: NumberUsageResponse
-    PlanInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        limits:
-          $ref: '#/components/schemas/PlanLimits'
-      required:
-      - name
-      - limits
-      title: PlanInfo
-    MonthlyUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MonthlyUsagePoint'
-        months:
-          type: integer
-      required:
-      - data
-      - months
-      title: MonthlyUsageResponse
     ValidationError:
-      type: object
       properties:
         loc:
-          type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
         msg:
           type: string
+          title: Message
         type:
           type: string
+          title: Error Type
+      type: object
       required:
       - loc
       - msg
       - type
       title: ValidationError
-    V1UsageByAgentGetParametersPeriod:
-      type: string
-      enum:
-      - week
-      - month
-      - year
-      title: V1UsageByAgentGetParametersPeriod
     MonthlyUsagePoint:
-      type: object
       properties:
         month:
           type: string
+          title: Month
         messages:
           type: integer
+          title: Messages
         calls:
           type: integer
+          title: Calls
         webhooks:
           type: integer
+          title: Webhooks
+      type: object
       required:
       - month
       - messages
       - calls
       - webhooks
       title: MonthlyUsagePoint
-    NumberLimits:
-      type: object
-      properties:
-        used:
-          type: integer
-        limit:
-          type: integer
-        remaining:
-          type: integer
-      required:
-      - used
-      - limit
-      - remaining
-      title: NumberLimits
-    UsageResponse:
-      type: object
-      properties:
-        plan:
-          $ref: '#/components/schemas/PlanInfo'
-        numbers:
-          $ref: '#/components/schemas/NumberLimits'
-        stats:
-          $ref: '#/components/schemas/UsageStats'
-        periodStart:
-          type: string
-        periodEnd:
-          type: string
-      required:
-      - plan
-      - numbers
-      - stats
-      - periodStart
-      - periodEnd
-      title: UsageResponse
-    DailyUsageResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DailyUsagePoint'
-        days:
-          type: integer
-      required:
-      - data
-      - days
-      title: DailyUsageResponse
     NumberUsageItem:
-      type: object
       properties:
         numberId:
           type: string
+          title: Numberid
         phoneNumber:
           type: string
+          title: Phonenumber
         country:
           type: string
+          title: Country
         status:
           type: string
+          title: Status
         agentId:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agentid
         agentName:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Agentname
         messages:
           type: integer
+          title: Messages
         calls:
           type: integer
+          title: Calls
+      type: object
       required:
       - numberId
       - phoneNumber
@@ -403,51 +356,99 @@ components:
       - messages
       - calls
       title: NumberUsageItem
-    PlanLimits:
-      type: object
+    HTTPValidationError:
       properties:
-        numbers:
-          type: integer
-        messagesPerMonth:
-          type: integer
-        voiceMinutesPerMonth:
-          type: integer
-        maxCallDurationMinutes:
-          type: integer
-        concurrentCalls:
-          type: integer
-      required:
-      - numbers
-      - messagesPerMonth
-      - voiceMinutesPerMonth
-      - maxCallDurationMinutes
-      - concurrentCalls
-      title: PlanLimits
-    UsageStats:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
+      title: HTTPValidationError
+    NumberLimits:
+      properties:
+        used:
+          type: integer
+          title: Used
+        limit:
+          type: integer
+          title: Limit
+        remaining:
+          type: integer
+          title: Remaining
+      type: object
+      required:
+      - used
+      - limit
+      - remaining
+      title: NumberLimits
+    AgentUsageResponse:
+      properties:
+        reportGeneratedAt:
+          type: string
+          title: Reportgeneratedat
+        data:
+          items:
+            $ref: '#/components/schemas/AgentUsageItem'
+          type: array
+          title: Data
+        period:
+          type: string
+          title: Period
+        periodStart:
+          type: string
+          title: Periodstart
+        periodEnd:
+          type: string
+          title: Periodend
+      type: object
+      required:
+      - reportGeneratedAt
+      - data
+      - period
+      - periodStart
+      - periodEnd
+      title: AgentUsageResponse
+    UsageStats:
       properties:
         totalMessages:
           type: integer
+          title: Totalmessages
         messagesLast24h:
           type: integer
+          title: Messageslast24H
         messagesLast7d:
           type: integer
+          title: Messageslast7D
         messagesLast30d:
           type: integer
+          title: Messageslast30D
+        smsSegmentsLast30d:
+          type: integer
+          title: Smssegmentslast30D
+          default: 0
         totalCalls:
           type: integer
+          title: Totalcalls
         callsLast24h:
           type: integer
+          title: Callslast24H
         callsLast7d:
           type: integer
+          title: Callslast7D
         callsLast30d:
           type: integer
+          title: Callslast30D
         totalWebhookDeliveries:
           type: integer
+          title: Totalwebhookdeliveries
         successfulWebhookDeliveries:
           type: integer
+          title: Successfulwebhookdeliveries
         failedWebhookDeliveries:
           type: integer
+          title: Failedwebhookdeliveries
+      type: object
       required:
       - totalMessages
       - messagesLast24h
@@ -461,6 +462,25 @@ components:
       - successfulWebhookDeliveries
       - failedWebhookDeliveries
       title: UsageStats
+    DailyUsageResponse:
+      properties:
+        reportGeneratedAt:
+          type: string
+          title: Reportgeneratedat
+        data:
+          items:
+            $ref: '#/components/schemas/DailyUsagePoint'
+          type: array
+          title: Data
+        days:
+          type: integer
+          title: Days
+      type: object
+      required:
+      - reportGeneratedAt
+      - data
+      - days
+      title: DailyUsageResponse
   securitySchemes:
     HTTPBearer:
       type: http

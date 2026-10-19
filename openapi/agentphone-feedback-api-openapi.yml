@@ -1,0 +1,161 @@
+openapi: 3.2.0
+info:
+  title: SMS Feedback API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: Feedback
+paths:
+  /v1/feedback:
+    post:
+      tags:
+      - Feedback
+      summary: Submit agent feedback
+      description: 'Report an API issue or documentation mismatch, including the request id
+
+        of the call it is about when you have one.
+
+
+        Returns `201` when the feedback is stored, or `200` with
+
+        `already_submitted: true` when feedback for the same `request_id` was
+
+        already recorded on this account.'
+      operationId: submit_feedback_v1_feedback_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitFeedbackRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitFeedbackResponse'
+        '200':
+          description: Feedback for this request_id was already recorded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitFeedbackResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    SubmitFeedbackRequest:
+      properties:
+        category:
+          type: string
+          enum:
+          - bug
+          - docs_mismatch
+          - friction
+          - feature_gap
+          - quality_degradation
+          - other
+          title: Category
+          description: 'Kind of issue: `bug`, `docs_mismatch`, `friction`, `feature_gap`, `quality_degradation` or `other`.'
+        note:
+          type: string
+          title: Note
+          description: What went wrong and what you expected instead. 1 to 4000 characters.
+          examples:
+          - GET /v1/numbers?externalId= returns 200 with an empty list; expected 404 or 422.
+        request_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Request Id
+          description: The `request_id` of the API call the feedback is about, from the `X-Request-Id` response header or the error body. Feedback is stored once per request id.
+          examples:
+          - 3f1c2a6e-8b4d-4c1e-9f0a-2d7b5e6c8a91
+        url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Url
+          description: The page the feedback is about, such as a docs page. http(s) only, up to 2048 characters.
+          examples:
+          - https://docs.agentphone.ai/messages
+        tags:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Tags
+          description: Labels for filtering, up to 20, each 1 to 50 characters.
+          examples:
+          - - production
+            - team-alpha
+      type: object
+      required:
+      - category
+      - note
+      title: SubmitFeedbackRequest
+    SubmitFeedbackResponse:
+      properties:
+        feedback_id:
+          type: string
+          title: Feedback Id
+          description: ID of the stored feedback.
+        already_submitted:
+          type: boolean
+          title: Already Submitted
+          description: True when feedback for this `request_id` was already recorded; the original `feedback_id` is returned.
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+          description: Unique ID of this request, also in the `X-Request-Id` header. Include it when contacting support.
+      type: object
+      required:
+      - feedback_id
+      - already_submitted
+      - request_id
+      title: SubmitFeedbackResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

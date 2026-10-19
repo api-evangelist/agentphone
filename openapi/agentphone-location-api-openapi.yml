@@ -1,31 +1,26 @@
 openapi: 3.2.0
 info:
-  title: Reference Location API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Location API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Location
 paths:
   /v1/location/{phone_number}:
     get:
-      operationId: get-location-v-1-location-phone-number-get
-      summary: Get Location
       tags:
       - Location
+      summary: Get Location
+      operationId: get_location_v1_location__phone_number__get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: phone_number
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Phone Number
       responses:
         '200':
           description: Successful Response
@@ -41,17 +36,10 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/location/refresh:
     post:
-      operationId: refresh-locations-v-1-location-refresh-post
-      summary: Refresh Locations
       tags:
       - Location
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+      summary: Refresh Locations
+      operationId: refresh_locations_v1_location_refresh_post
       responses:
         '200':
           description: Successful Response
@@ -59,72 +47,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LocationRefreshResponse'
+      security:
+      - HTTPBearer: []
 components:
   schemas:
-    HTTPValidationError:
+    LocationResponse:
+      properties:
+        phoneNumber:
+          type: string
+          title: Phonenumber
+        latitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Latitude
+        longitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Longitude
+        status:
+          type: string
+          title: Status
+        lastUpdated:
+          type: integer
+          title: Lastupdated
       type: object
+      required:
+      - phoneNumber
+      - status
+      - lastUpdated
+      title: LocationResponse
+    HTTPValidationError:
       properties:
         detail:
-          type: array
           items:
             $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
+          type: array
+          title: Detail
       type: object
+      title: HTTPValidationError
+    ValidationError:
       properties:
         loc:
-          type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
         msg:
           type: string
+          title: Message
         type:
           type: string
+          title: Error Type
+      type: object
       required:
       - loc
       - msg
       - type
       title: ValidationError
     LocationRefreshResponse:
-      type: object
       properties:
         success:
           type: boolean
+          title: Success
         pollAfterSeconds:
           type: integer
+          title: Pollafterseconds
           default: 20
+      type: object
       required:
       - success
       title: LocationRefreshResponse
-    LocationResponse:
-      type: object
-      properties:
-        phoneNumber:
-          type: string
-        latitude:
-          type:
-          - number
-          - 'null'
-          format: double
-        longitude:
-          type:
-          - number
-          - 'null'
-          format: double
-        status:
-          type: string
-        lastUpdated:
-          type: integer
-      required:
-      - phoneNumber
-      - status
-      - lastUpdated
-      title: LocationResponse
   securitySchemes:
     HTTPBearer:
       type: http

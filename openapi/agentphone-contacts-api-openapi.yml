@@ -1,48 +1,48 @@
 openapi: 3.2.0
 info:
-  title: Reference Contacts API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Contacts API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Contacts
 paths:
   /v1/contacts:
     get:
-      operationId: list-contacts-v-1-contacts-get
+      tags:
+      - Contacts
       summary: List Contacts
       description: 'List all contacts for this account.
 
 
         Optional `search` query filters by name or phone number (case-insensitive contains).'
-      tags:
-      - Contacts
+      operationId: list_contacts_v1_contacts_get
+      security:
+      - HTTPBearer: []
       parameters:
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Search
       - name: limit
         in: query
         required: false
         schema:
           type: integer
+          maximum: 200
           default: 50
+          title: Limit
       - name: offset
         in: query
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      - name: X-Sub-Account-Id
-        in: header
-        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
-        required: false
-        schema:
-          type: string
+          title: Offset
       responses:
         '200':
           description: Successful Response
@@ -57,7 +57,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
-      operationId: create-contact-v-1-contacts-post
+      tags:
+      - Contacts
       summary: Create Contact
       description: 'Create a new contact.
 
@@ -65,15 +66,15 @@ paths:
         Phone number is normalized to E.164 format. Returns 409 if a contact
 
         with this phone number already exists for the project.'
-      tags:
-      - Contacts
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+      operationId: create_contact_v1_contacts_post
+      security:
+      - HTTPBearer: []
+      requestBody:
         required: true
-        schema:
-          type: string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContactRequest'
       responses:
         '201':
           description: Successful Response
@@ -87,14 +88,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateContactRequest'
   /v1/contacts/capabilities:
     get:
-      operationId: get-contact-capabilities-v-1-contacts-capabilities-get
+      tags:
+      - Contacts
       summary: Get Contact Capabilities
       description: 'Check which messaging channels a phone number supports, without sending
 
@@ -105,22 +102,25 @@ paths:
 
         number right now. Capabilities can still change by the time you send.
 
-        Requires at least one active iMessage-capable number on the account.'
-      tags:
-      - Contacts
+        Requires at least one active iMessage-capable or RCS number on the
+
+        account; each flag is null when your account holds no line that could
+
+        act on it (rcs reachability is checked against YOUR agents, so it can
+
+        differ per account while an agent is pre-launch).'
+      operationId: get_contact_capabilities_v1_contacts_capabilities_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: phone_number
         in: query
+        required: true
+        schema:
+          type: string
+          description: Phone number to check (E.164 preferred; URL-encode + as %2B)
+          title: Phone Number
         description: Phone number to check (E.164 preferred; URL-encode + as %2B)
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
       responses:
         '200':
           description: Successful Response
@@ -136,23 +136,57 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/contacts/{contact_id}:
     get:
-      operationId: get-contact-v-1-contacts-contact-id-get
-      summary: Get Contact
-      description: Get a single contact by ID.
       tags:
       - Contacts
+      summary: Get Contact
+      description: Get a single contact by ID.
+      operationId: get_contact_v1_contacts__contact_id__get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: contact_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+          title: Contact Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Contacts
+      summary: Update Contact
+      description: 'Update a contact''s fields.
+
+
+        If phoneNumber is updated, it''s re-normalized and checked for uniqueness (409 on conflict).'
+      operationId: update_contact_v1_contacts__contact_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: contact_id
+        in: path
         required: true
         schema:
           type: string
+          title: Contact Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContactRequest'
       responses:
         '200':
           description: Successful Response
@@ -167,129 +201,101 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
-      operationId: delete-contact-v-1-contacts-contact-id-delete
-      summary: Delete Contact
-      description: Delete a contact.
       tags:
       - Contacts
+      summary: Delete Contact
+      description: Delete a contact.
+      operationId: delete_contact_v1_contacts__contact_id__delete
+      security:
+      - HTTPBearer: []
       parameters:
       - name: contact_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Contact Id
       responses:
         '204':
           description: Successful Response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-    patch:
-      operationId: update-contact-v-1-contacts-contact-id-patch
-      summary: Update Contact
-      description: 'Update a contact''s fields.
-
-
-        If phoneNumber is updated, it''s re-normalized and checked for uniqueness (409 on conflict).'
-      tags:
-      - Contacts
-      parameters:
-      - name: contact_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ContactResponse'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateContactRequest'
 components:
   schemas:
-    HTTPValidationError:
-      type: object
+    ContactCapabilityFlags:
       properties:
-        detail:
-          type: array
+        imessage:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Imessage
+        sms:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Sms
+        rcs:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Rcs
+      type: object
+      title: ContactCapabilityFlags
+    ValidationError:
+      properties:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ContactCapabilitiesResponse:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
-      properties:
-        phoneNumber:
-          type: string
-        capabilities:
-          $ref: '#/components/schemas/ContactCapabilityFlags'
-        checkedAt:
-          type: string
-          format: date-time
       required:
-      - phoneNumber
-      - capabilities
-      - checkedAt
-      title: ContactCapabilitiesResponse
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ContactResponse:
-      type: object
       properties:
         id:
           type: string
+          title: Id
         phoneNumber:
           type: string
+          title: Phonenumber
         name:
           type: string
+          title: Name
         email:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
         notes:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
         createdAt:
           type: string
           format: date-time
+          title: Createdat
         updatedAt:
           type: string
           format: date-time
+          title: Updatedat
+      type: object
       required:
       - id
       - phoneNumber
@@ -297,88 +303,98 @@ components:
       - createdAt
       - updatedAt
       title: ContactResponse
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ContactCapabilityFlags:
-      type: object
-      properties:
-        imessage:
-          type: boolean
-        sms:
-          type: boolean
-      required:
-      - imessage
-      - sms
-      title: ContactCapabilityFlags
     CreateContactRequest:
-      type: object
       properties:
         phoneNumber:
           type: string
+          title: Phonenumber
         name:
           type: string
+          title: Name
         email:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
         notes:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
       required:
       - phoneNumber
       - name
       title: CreateContactRequest
-    UpdateContactRequest:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-        notes:
-          type:
-          - string
-          - 'null'
-      title: UpdateContactRequest
     ContactListResponse:
-      type: object
       properties:
         data:
-          type: array
           items:
             $ref: '#/components/schemas/ContactResponse'
+          type: array
+          title: Data
         hasMore:
           type: boolean
+          title: Hasmore
         total:
           type: integer
+          title: Total
+      type: object
       required:
       - data
       - hasMore
       - total
       title: ContactListResponse
+    ContactCapabilitiesResponse:
+      properties:
+        phoneNumber:
+          type: string
+          title: Phonenumber
+        capabilities:
+          $ref: '#/components/schemas/ContactCapabilityFlags'
+        checkedAt:
+          type: string
+          format: date-time
+          title: Checkedat
+      type: object
+      required:
+      - phoneNumber
+      - capabilities
+      - checkedAt
+      title: ContactCapabilitiesResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UpdateContactRequest:
+      properties:
+        phoneNumber:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Phonenumber
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Email
+        notes:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Notes
+      type: object
+      title: UpdateContactRequest
   securitySchemes:
     HTTPBearer:
       type: http

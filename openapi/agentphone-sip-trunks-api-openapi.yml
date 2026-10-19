@@ -1,0 +1,372 @@
+openapi: 3.2.0
+info:
+  title: SMS Sip Trunks API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: sip-trunks
+paths:
+  /v1/sip-trunks:
+    get:
+      tags:
+      - sip-trunks
+      summary: List Sip Trunks
+      description: List SIP trunks for the current account.
+      operationId: list_sip_trunks_v1_sip_trunks_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipTrunkListResponse'
+      security:
+      - HTTPBearer: []
+    post:
+      tags:
+      - sip-trunks
+      summary: Create Sip Trunk
+      description: Create a SIP trunk for routing your numbers' calls to your own SIP infrastructure.
+      operationId: create_sip_trunk_v1_sip_trunks_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipTrunkResponse'
+      security:
+      - HTTPBearer: []
+  /v1/sip-trunks/{trunk_id}:
+    get:
+      tags:
+      - sip-trunks
+      summary: Get Sip Trunk
+      description: Get a single SIP trunk.
+      operationId: get_sip_trunk_v1_sip_trunks__trunk_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trunk_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trunk Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipTrunkResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - sip-trunks
+      summary: Update Sip Trunk
+      description: Update a SIP trunk (name, transfers, origination URIs).
+      operationId: update_sip_trunk_v1_sip_trunks__trunk_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trunk_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trunk Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipTrunkResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: All fields optional; send only what changes.
+              properties:
+                name:
+                  type: string
+                  maxLength: 64
+                  description: Display name.
+                transfers:
+                  type: string
+                  enum:
+                  - all
+                  - sip
+                  - none
+                  description: Which transfers the trunk allows.
+                transfer_caller_id:
+                  type: string
+                  enum:
+                  - transferee
+                  - transferor
+                  description: Caller ID presented on a transferred leg.
+                origination:
+                  type: object
+                  description: Where inbound calls to this trunk are delivered.
+                  properties:
+                    uris:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                        - sip_uri
+                        properties:
+                          sip_uri:
+                            type: string
+                            description: Destination SIP URI, e.g. sip:host.example.com or sip:host;transport=tls.
+                          name:
+                            type: string
+                            description: Optional label.
+                          priority:
+                            anyOf:
+                            - type: integer
+                              minimum: 0
+                              maximum: 65535
+                            - type: 'null'
+                            default: 10
+                          weight:
+                            anyOf:
+                            - type: integer
+                              minimum: 0
+                              maximum: 65535
+                            - type: 'null'
+                            default: 10
+                      description: Empty or omitted clears the origination URIs (only allowed when no numbers are attached).
+            example:
+              origination:
+                uris:
+                - sip_uri: sip:example.sip.livekit.cloud;transport=tls
+                  priority: 10
+                  weight: 10
+    delete:
+      tags:
+      - sip-trunks
+      summary: Delete Sip Trunk
+      description: Delete a SIP trunk (removes upstream and soft-deletes locally).
+      operationId: delete_sip_trunk_v1_sip_trunks__trunk_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: trunk_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trunk Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SipTrunkDeleteResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SipTrunkDeleteResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+        id:
+          type: string
+          title: Id
+      type: object
+      required:
+      - status
+      - id
+      title: SipTrunkDeleteResponse
+    SipTrunkResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        provider:
+          type: string
+          title: Provider
+        encrypted:
+          type: boolean
+          title: Encrypted
+        transport:
+          type: string
+          title: Transport
+        mediaEncryption:
+          type: string
+          title: Mediaencryption
+        transfers:
+          type: string
+          title: Transfers
+        transferCallerId:
+          type: string
+          title: Transfercallerid
+        terminationSipUri:
+          type: string
+          title: Terminationsipuri
+        originationUris:
+          items:
+            $ref: '#/components/schemas/OriginationUri'
+          type: array
+          title: Originationuris
+        allowedIps:
+          items:
+            $ref: '#/components/schemas/AllowedIp'
+          type: array
+          title: Allowedips
+        proxyIps:
+          items:
+            type: string
+          type: array
+          title: Proxyips
+        createdAt:
+          type: string
+          title: Createdat
+        credentials:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/SipTrunkCredential'
+            type: array
+          - type: 'null'
+          title: Credentials
+      type: object
+      required:
+      - id
+      - name
+      - provider
+      - encrypted
+      - transport
+      - mediaEncryption
+      - transfers
+      - transferCallerId
+      - terminationSipUri
+      - createdAt
+      title: SipTrunkResponse
+    AllowedIp:
+      properties:
+        name:
+          type: string
+          title: Name
+          default: ''
+        cidr:
+          type: string
+          title: Cidr
+      type: object
+      required:
+      - cidr
+      title: AllowedIp
+    SipTrunkCredential:
+      properties:
+        username:
+          type: string
+          title: Username
+        password:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Password
+        passwordLast4:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Passwordlast4
+        credentialListName:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Credentiallistname
+      type: object
+      required:
+      - username
+      title: SipTrunkCredential
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    OriginationUri:
+      properties:
+        name:
+          type: string
+          title: Name
+          default: ''
+        sip_uri:
+          type: string
+          title: Sip Uri
+        priority:
+          type: integer
+          title: Priority
+          default: 10
+        weight:
+          type: integer
+          title: Weight
+          default: 10
+      type: object
+      required:
+      - sip_uri
+      title: OriginationUri
+    SipTrunkListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SipTrunkResponse'
+          type: array
+          title: Data
+      type: object
+      required:
+      - data
+      title: SipTrunkListResponse
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

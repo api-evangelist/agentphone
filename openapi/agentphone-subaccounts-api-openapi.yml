@@ -1,46 +1,54 @@
 openapi: 3.2.0
 info:
-  title: Reference Sub Accounts API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Sub Accounts API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Subaccounts
 paths:
   /v1/sub-accounts:
     get:
-      operationId: list-sub-accounts-v-1-sub-accounts-get
-      summary: List Sub Accounts
       tags:
       - Subaccounts
+      summary: List Sub Accounts
+      operationId: list_sub_accounts_v1_sub_accounts_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: limit
         in: query
         required: false
         schema:
-          type:
-          - integer
-          - 'null'
+          anyOf:
+          - type: integer
+            maximum: 500
+            minimum: 1
+          - type: 'null'
+          title: Limit
       - name: offset
         in: query
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
+          title: Offset
+      - name: stats_days
+        in: query
+        required: false
         schema:
-          type: string
+          anyOf:
+          - type: integer
+            maximum: 90
+            minimum: 1
+          - type: 'null'
+          title: Stats Days
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -48,145 +56,140 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
-      operationId: create-sub-account-v-1-sub-accounts-post
-      summary: Create Sub Account
       tags:
       - Subaccounts
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
+      summary: Create Sub Account
+      operationId: create_sub_account_v1_sub_accounts_post
+      security:
+      - HTTPBearer: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateSubAccountRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /v1/sub-accounts/{sub_account_id}:
-    delete:
-      operationId: delete-sub-account-v-1-sub-accounts-sub-account-id-delete
-      summary: Delete Sub Account
-      tags:
-      - Subaccounts
-      parameters:
-      - name: sub_account_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
     patch:
-      operationId: update-sub-account-v-1-sub-accounts-sub-account-id-patch
-      summary: Update Sub Account
       tags:
       - Subaccounts
+      summary: Update Sub Account
+      operationId: update_sub_account_v1_sub_accounts__sub_account_id__patch
+      security:
+      - HTTPBearer: []
       parameters:
       - name: sub_account_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                description: Any type
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
+          title: Sub Account Id
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateSubAccountRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Subaccounts
+      summary: Delete Sub Account
+      operationId: delete_sub_account_v1_sub_accounts__sub_account_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: sub_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Sub Account Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    UpdateSubAccountRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
       type: object
+      required:
+      - name
+      title: UpdateSubAccountRequest
+    HTTPValidationError:
       properties:
         detail:
-          type: array
           items:
             $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    ValidationError:
+          type: array
+          title: Detail
       type: object
+      title: HTTPValidationError
+    ValidationError:
       properties:
         loc:
-          type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
         msg:
           type: string
+          title: Message
         type:
           type: string
+          title: Error Type
+      type: object
       required:
       - loc
       - msg
       - type
       title: ValidationError
-    UpdateSubAccountRequest:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
-      title: UpdateSubAccountRequest
     CreateSubAccountRequest:
-      type: object
       properties:
         name:
           type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
+      type: object
       required:
       - name
       title: CreateSubAccountRequest

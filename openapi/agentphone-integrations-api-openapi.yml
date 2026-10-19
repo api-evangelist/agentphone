@@ -1,0 +1,127 @@
+openapi: 3.2.0
+info:
+  title: SMS Integrations API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: Integrations
+paths:
+  /integrations/supabase/connect:
+    post:
+      tags:
+      - Integrations
+      summary: Supabase Connect Code
+      description: Create a short-lived one-time code for initiating the Supabase OAuth flow.
+      operationId: supabase_connect_code_integrations_supabase_connect_post
+      security:
+      - HTTPBearer: []
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+    get:
+      tags:
+      - Integrations
+      summary: Supabase Connect
+      description: Exchange a one-time connect code and redirect to Supabase OAuth.
+      operationId: supabase_connect_integrations_supabase_connect_get
+      parameters:
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Code
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /integrations/supabase/status:
+    get:
+      tags:
+      - Integrations
+      summary: Supabase Status
+      operationId: supabase_status_integrations_supabase_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /integrations/supabase/token:
+    get:
+      tags:
+      - Integrations
+      summary: Supabase Token
+      description: Get a valid Supabase access token, auto-refreshing if expired.
+      operationId: supabase_token_integrations_supabase_token_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+  /integrations/supabase:
+    delete:
+      tags:
+      - Integrations
+      summary: Supabase Disconnect
+      operationId: supabase_disconnect_integrations_supabase_delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

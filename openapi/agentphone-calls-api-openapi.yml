@@ -1,79 +1,83 @@
 openapi: 3.2.0
 info:
-  title: Reference Calls API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Calls API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Calls
 paths:
   /v1/calls:
     get:
-      operationId: list-calls-v-1-calls-get
-      summary: List Calls
-      description: List all calls for this account.
       tags:
       - Calls
+      summary: List Calls
+      description: List all calls for this account.
+      operationId: list_calls_v1_calls_get
+      security:
+      - HTTPBearer: []
       parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          default: 20
+          title: Limit
       - name: offset
         in: query
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
+          title: Offset
       - name: status
         in: query
-        description: 'Filter by status: completed, in-progress, failed'
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Filter by status: completed, in-progress, failed'
+          title: Status
+        description: 'Filter by status: completed, in-progress, failed'
       - name: direction
         in: query
-        description: 'Filter by direction: inbound, outbound'
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Filter by direction: inbound, outbound'
+          title: Direction
+        description: 'Filter by direction: inbound, outbound'
       - name: type
         in: query
-        description: 'Filter by type: pstn, web'
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: 'Filter by type: pstn, web'
+          title: Type
+        description: 'Filter by type: pstn, web'
       - name: search
         in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Search fromNumber or toNumber (contains)
+          title: Search
         description: Search fromNumber or toNumber (contains)
-        required: false
-        schema:
-          type:
-          - string
-          - 'null'
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      - name: X-Sub-Account-Id
-        in: header
-        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
-        required: false
-        schema:
-          type: string
-          default: 20
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -81,7 +85,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
-      operationId: create-outbound-call-v-1-calls-post
+      tags:
+      - Calls
       summary: Create Outbound Call
       description: 'Initiate an outbound call.
 
@@ -104,42 +109,31 @@ paths:
         4. Listens for recipient''s speech and sends to your webhook
 
         5. Continues conversation using your webhook responses'
-      tags:
-      - Calls
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+      operationId: create_outbound_call_v1_calls_post
+      security:
+      - HTTPBearer: []
+      requestBody:
         required: true
-        schema:
-          type: string
-      - name: X-Sub-Account-Id
-        in: header
-        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
-        required: false
-        schema:
-          type: string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOutboundCallRequest'
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOutboundCallRequest'
   /v1/calls/web:
     post:
-      operationId: create-web-call-v-1-calls-web-post
+      tags:
+      - Calls
       summary: Create Web Call
       description: 'Create a browser-based web call.
 
@@ -160,59 +154,49 @@ paths:
         3. Your client calls `webClient.startCall({ accessToken })` to connect
 
         4. Call lifecycle (transcripts, webhooks) works the same as phone calls'
-      tags:
-      - Calls
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+      operationId: create_web_call_v1_calls_web_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWebCallRequest'
         required: true
-        schema:
-          type: string
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateWebCallRequest'
+      security:
+      - HTTPBearer: []
   /v1/calls/{call_id}:
     get:
-      operationId: get-call-v-1-calls-call-id-get
-      summary: Get Call
-      description: Get a specific call with its transcripts.
       tags:
       - Calls
+      summary: Get Call
+      description: Get a specific call with its transcripts.
+      operationId: get_call_v1_calls__call_id__get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: call_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Call Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -221,7 +205,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/calls/{call_id}/end:
     post:
-      operationId: end-call-v-1-calls-call-id-end-post
+      tags:
+      - Calls
       summary: End Call
       description: 'Terminate an ongoing call.
 
@@ -233,27 +218,22 @@ paths:
         so this endpoint returns the current call as soon as the stop request
 
         is accepted upstream.'
-      tags:
-      - Calls
+      operationId: end_call_v1_calls__call_id__end_post
+      security:
+      - HTTPBearer: []
       parameters:
       - name: call_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Call Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -262,42 +242,33 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/calls/{call_id}/recording:
     get:
-      operationId: get-call-recording-v-1-calls-call-id-recording-get
-      summary: Get Call Recording
-      description: 'Returns the audio file (WAV format) for a completed call.
-
-
-        This is a public endpoint -- no authentication is required. The call ID acts as the access token. The `recordingUrl` field in the call response already contains this URL when recording is enabled.
-
-
-        Recording must be enabled on your account via `POST /credits/recording/enable` ($5/mo add-on). Returns `404` if the call doesn''t exist or has no recording.
-
-
-        **Response:** Binary audio file (`audio/wav`), auto-downloads with filename `recording-{call_id}.wav`.
-
-
-        **Notes:**
-
-        - Recording is available shortly after a call completes
-
-        - Check `recordingAvailable: true` in the call response before fetching
-
-        - The URL can be shared or embedded directly since it requires no authentication'
       tags:
       - Calls
+      summary: Get Call Recording
+      description: 'Stream the audio recording for a specific call. Public bearer-link endpoint.
+
+
+        Forwards the browser''s Range request upstream and passes the partial response
+
+        (206 + Content-Range) back through, so the element can seek — without
+
+        it, clicking a timestamp does nothing because the browser can''t fetch a byte
+
+        range.'
+      operationId: get_call_recording_v1_calls__call_id__recording_get
       parameters:
       - name: call_id
         in: path
         required: true
         schema:
           type: string
+          title: Call Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -306,7 +277,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/calls/{call_id}/transcript:
     get:
-      operationId: get-call-transcript-v-1-calls-call-id-transcript-get
+      tags:
+      - Calls
       summary: Get Call Transcript
       description: 'Get the full transcript for a call.
 
@@ -316,27 +288,22 @@ paths:
         contextLimit setting. Each entry contains the user utterance and
 
         the corresponding agent response (when available).'
-      tags:
-      - Calls
+      operationId: get_call_transcript_v1_calls__call_id__transcript_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: call_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Call Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -345,7 +312,8 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/calls/{call_id}/transcript/stream:
     get:
-      operationId: stream-call-transcript-v-1-calls-call-id-transcript-stream-get
+      tags:
+      - Calls
       summary: Stream Call Transcript
       description: 'Stream a call''s transcript via Server-Sent Events.
 
@@ -364,27 +332,22 @@ paths:
 
 
         Works for both live and completed calls — same URL either way.'
-      tags:
-      - Calls
+      operationId: stream_call_transcript_v1_calls__call_id__transcript_stream_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: call_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Call Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -393,42 +356,42 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/numbers/{number_id}/calls:
     get:
-      operationId: list-calls-for-number-v-1-numbers-number-id-calls-get
-      summary: List Calls For Number
-      description: List all calls for a specific phone number.
       tags:
       - Calls
+      summary: List Calls For Number
+      description: List all calls for a specific phone number.
+      operationId: list_calls_for_number_v1_numbers__number_id__calls_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: number_id
         in: path
         required: true
         schema:
           type: string
+          title: Number Id
       - name: limit
         in: query
         required: false
         schema:
           type: integer
+          maximum: 100
           default: 20
+          title: Limit
       - name: offset
         in: query
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Offset
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -437,113 +400,137 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    CreateWebCallRequest:
-      type: object
-      properties:
-        agentId:
-          type: string
-          description: Agent ID to start the web call with
-        metadata:
-          oneOf:
-          - $ref: '#/components/schemas/CreateWebCallRequestMetadata'
-          - type: 'null'
-          description: Optional metadata to attach to the call
-        variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
-          description: Optional per-call dynamic variables. Values are substituted into ``{{var_name}}`` placeholders in the agent's system prompt and begin message at call time. Requires a hosted-mode agent.
-      required:
-      - agentId
-      description: Request model for creating a browser-based web call.
-      title: CreateWebCallRequest
     CreateOutboundCallRequest:
-      type: object
       properties:
         agentId:
           type: string
+          title: Agentid
           description: Agent ID to make the call from
         toNumber:
           type: string
+          title: Tonumber
           description: Phone number to call (E.164 format)
         fromNumberId:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fromnumberid
           description: Optional phone number ID to use as caller ID. Must belong to the agent. If omitted, the agent's first assigned number is used.
         initialGreeting:
-          type:
-          - string
-          - 'null'
-          description: Optional initial greeting to speak when recipient answers
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Initialgreeting
+          description: Optional initial greeting to speak when recipient answers. Pass an empty string to have the agent stay silent and wait for the recipient to speak first.
         voice:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Voice
           description: Voice ID override for this call (uses agent's configured voice if omitted)
         systemPrompt:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Systemprompt
           description: When provided, uses a built-in LLM for the conversation instead of forwarding to a webhook. The prompt defines the AI's personality and conversation topic.
+        modelTier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          enum:
+          - turbo
+          - balanced
+          - max
+          - realtime
+          title: Modeltier
+          description: Optional model tier override for this call's built-in conversation. Only applies when ``systemPrompt`` is provided; defaults to the agent's configured modelTier.
         variables:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            type: string
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Variables
           description: Optional per-call dynamic variables. Values are substituted into ``{{var_name}}`` placeholders in the agent's system prompt and initial greeting at call time. Requires either ``systemPrompt`` or a hosted-mode agent.
         callScreeningIdentity:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Callscreeningidentity
           description: 'For outbound calls that hit an automated call screener (e.g. iOS 26 Call Screening or Android Call Screen): the identity the agent gives when asked who is calling. Overrides the agent''s stored default for this call. Both identity and purpose are required to enable screening; if only a purpose is set, the agent''s name is used.'
         callScreeningPurpose:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Callscreeningpurpose
           description: 'For outbound calls that hit an automated call screener: the purpose the agent gives when asked why it is calling. Overrides the agent''s stored default for this call.'
+        disableRecording:
+          type: boolean
+          title: Disablerecording
+          description: When true, no audio recording is stored for this call. The transcript is still captured and available via the transcript endpoints and the agent.call_ended webhook. Useful for calls where a party has not consented to being recorded (e.g. two-party consent states).
+          default: false
+      type: object
       required:
       - agentId
       - toNumber
-      description: Request model for creating an outbound call.
       title: CreateOutboundCallRequest
-    ValidationError:
+      description: Request model for creating an outbound call.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
+      title: HTTPValidationError
+    ValidationError:
       properties:
         loc:
-          type: array
           items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
         msg:
           type: string
+          title: Message
         type:
           type: string
+          title: Error Type
+      type: object
       required:
       - loc
       - msg
       - type
       title: ValidationError
-    CreateWebCallRequestMetadata:
+    CreateWebCallRequest:
+      properties:
+        agentId:
+          type: string
+          title: Agentid
+          description: Agent ID to start the web call with
+        metadata:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Metadata
+          description: Optional metadata to attach to the call
+        variables:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Variables
+          description: Optional per-call dynamic variables. Values are substituted into ``{{var_name}}`` placeholders in the agent's system prompt and begin message at call time. Requires a hosted-mode agent.
       type: object
-      properties: {}
-      description: Optional metadata to attach to the call
-      title: CreateWebCallRequestMetadata
+      required:
+      - agentId
+      title: CreateWebCallRequest
+      description: Request model for creating a browser-based web call.
   securitySchemes:
     HTTPBearer:
       type: http

@@ -1,0 +1,12 @@
+{
+ "url": "https://api.agentphone.ai/openapi.json",
+ "final": "https://api.agentphone.ai/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 164014,
+ "sha256": "c0ddfedd2b73033e85d678327e616d5f2d8c6f143b2e354549772e76efe1bb21",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

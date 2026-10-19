@@ -1,0 +1,201 @@
+openapi: 3.2.0
+info:
+  title: SMS Verification API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
+tags:
+- name: Verification
+paths:
+  /v1/verify/send:
+    post:
+      tags:
+      - Verification
+      summary: Send Verification
+      description: 'Send a 6-digit verification code to a phone number via SMS.
+
+
+        Use this instead of sending your own code over `POST /v1/messages`: it
+
+        routes through carrier-registered sender IDs, so it reaches countries
+
+        where plain application SMS from a US long code is not deliverable
+
+        (e.g. Greece, UAE, the Philippines, the UK).
+
+
+        The code is always 6 digits, expires after 10 minutes, and allows up to
+
+        3 check attempts. None of these are configurable.
+
+
+        **Billing.** Sending a code costs the standard outbound SMS rate for the
+
+        destination country. A successful `POST /v1/verify/check` adds a $0.05
+
+        verification fee; failed, expired, and exhausted checks are not charged.
+
+
+        **Destination coverage.** A small number of countries are unavailable and
+
+        return 400. Email founders@agentphone.to if you need access to one.'
+      operationId: send_verification_v1_verify_send_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendVerificationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+  /v1/verify/check:
+    post:
+      tags:
+      - Verification
+      summary: Check Verification
+      description: 'Check a verification code against a pending verification.
+
+
+        Possible results:
+
+        - `ok` — code is correct, phone number verified
+
+        - `incorrect` — wrong code, try again (up to 3 attempts)
+
+        - `exhausted` — too many failed attempts, send a new code
+
+        - `expired` — verification expired (10 min), send a new code
+
+        - `already_verified` — this verification was already completed
+
+
+        **Billing.** An `ok` or `already_verified` result costs a $0.05
+
+        verification fee. Other results are free.'
+      operationId: check_verification_v1_verify_check_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckVerificationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckVerificationResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    CheckVerificationResponse:
+      properties:
+        result:
+          type: string
+          title: Result
+          description: One of `ok`, `incorrect`, `exhausted`, `expired`, or `already_verified`.
+        attempts_remaining:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Attempts Remaining
+          description: Checks left before the verification is exhausted. 0 once it reaches a final state.
+      type: object
+      required:
+      - result
+      title: CheckVerificationResponse
+    SendVerificationResponse:
+      properties:
+        verification_id:
+          type: string
+          title: Verification Id
+          description: Pass this to POST /v1/verify/check along with the code the user entered.
+        status:
+          type: string
+          title: Status
+          description: Verification status. `pending` until the code is checked.
+      type: object
+      required:
+      - verification_id
+      - status
+      title: SendVerificationResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SendVerificationRequest:
+      properties:
+        phone_number:
+          type: string
+          title: Phone Number
+          description: Phone number in E.164 format (e.g. +639277372243)
+      type: object
+      required:
+      - phone_number
+      title: SendVerificationRequest
+    CheckVerificationRequest:
+      properties:
+        verification_id:
+          type: string
+          title: Verification Id
+          description: Verification ID returned from /v1/verify/send
+        code:
+          type: string
+          pattern: ^[0-9]{6}$
+          title: Code
+          description: 6-digit verification code
+      type: object
+      required:
+      - verification_id
+      - code
+      title: CheckVerificationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

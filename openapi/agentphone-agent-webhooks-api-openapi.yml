@@ -1,68 +1,36 @@
 openapi: 3.2.0
 info:
-  title: Reference Agent Webhooks API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Agent Webhooks API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: agent-webhooks
 paths:
   /v1/agents/{agent_id}/webhook:
-    get:
-      operationId: get-agent-webhook-v-1-agents-agent-id-webhook-get
-      summary: Get Agent Webhook
-      description: Get the webhook configuration for a specific agent.
+    post:
       tags:
       - agent-webhooks
-      parameters:
-      - name: agent_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                oneOf:
-                - $ref: '#/components/schemas/WebhookResponse'
-                - type: 'null'
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
-    post:
-      operationId: create-or-update-agent-webhook-v-1-agents-agent-id-webhook-post
       summary: Create Or Update Agent Webhook
       description: 'Register or update a webhook URL for a specific agent.
 
 
         When set, this agent''s events are delivered here instead of the account default webhook.'
-      tags:
-      - agent-webhooks
+      operationId: create_or_update_agent_webhook_v1_agents__agent_id__webhook_post
+      security:
+      - HTTPBearer: []
       parameters:
       - name: agent_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+          title: Agent Id
+      requestBody:
         required: true
-        schema:
-          type: string
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
       responses:
         '200':
           description: Successful Response
@@ -76,36 +44,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreateRequest'
-    delete:
-      operationId: delete-agent-webhook-v-1-agents-agent-id-webhook-delete
-      summary: Delete Agent Webhook
-      description: Remove the webhook for a specific agent.
+    get:
       tags:
       - agent-webhooks
+      summary: Get Agent Webhook
+      description: Get the webhook configuration for a specific agent.
+      operationId: get_agent_webhook_v1_agents__agent_id__webhook_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: agent_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Agent Id
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                description: Any type
+                anyOf:
+                - $ref: '#/components/schemas/WebhookResponse'
+                - type: 'null'
+                title: Response Get Agent Webhook V1 Agents  Agent Id  Webhook Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - agent-webhooks
+      summary: Delete Agent Webhook
+      description: Remove the webhook for a specific agent.
+      operationId: delete_agent_webhook_v1_agents__agent_id__webhook_delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: agent_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Agent Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -114,29 +104,28 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/agents/{agent_id}/webhook/deliveries:
     get:
-      operationId: list-agent-deliveries-v-1-agents-agent-id-webhook-deliveries-get
-      summary: List Agent Deliveries
-      description: Get recent webhook delivery attempts for a specific agent's webhook.
       tags:
       - agent-webhooks
+      summary: List Agent Deliveries
+      description: Get recent webhook delivery attempts for a specific agent's webhook.
+      operationId: list_agent_deliveries_v1_agents__agent_id__webhook_deliveries_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: agent_id
         in: path
         required: true
         schema:
           type: string
+          title: Agent Id
       - name: limit
         in: query
         required: false
         schema:
           type: integer
+          maximum: 100
           default: 50
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Limit
       responses:
         '200':
           description: Successful Response
@@ -146,6 +135,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/WebhookDeliveryResponse'
+                title: Response List Agent Deliveries V1 Agents  Agent Id  Webhook Deliveries Get
         '422':
           description: Validation Error
           content:
@@ -154,30 +144,37 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/agents/{agent_id}/webhook/test:
     post:
-      operationId: test-agent-webhook-v-1-agents-agent-id-webhook-test-post
-      summary: Test Agent Webhook
-      description: Send a test webhook to the agent's webhook endpoint.
       tags:
       - agent-webhooks
+      summary: Test Agent Webhook
+      description: 'Send a test webhook to the agent''s webhook endpoint.
+
+
+        Same optional overrides as POST /v1/webhooks/test.'
+      operationId: test_agent_webhook_v1_agents__agent_id__webhook_test_post
+      security:
+      - HTTPBearer: []
       parameters:
       - name: agent_id
         in: path
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Agent Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/TestWebhookRequest'
+              - type: 'null'
+              title: Body
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -186,70 +183,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    WebhookCreateRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        contextLimit:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type:
-          - integer
-          - 'null'
-      required:
-      - url
-      title: WebhookCreateRequest
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     WebhookResponse:
-      type: object
       properties:
         id:
           type: string
+          title: Id
         url:
           type: string
+          title: Url
         secret:
           type: string
+          title: Secret
         status:
           type: string
+          title: Status
         contextLimit:
           type: integer
+          title: Contextlimit
         timeout:
           type: integer
+          title: Timeout
         createdAt:
           type: string
           format: date-time
+          title: Createdat
+      type: object
       required:
       - id
       - url
@@ -259,52 +217,142 @@ components:
       - timeout
       - createdAt
       title: WebhookResponse
-    WebhookDeliveryResponse:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TestWebhookRequest:
+      properties:
+        from:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: From
+          description: Sender number, E.164
+        to:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: To
+          description: Recipient number, E.164
+        message:
+          anyOf:
+          - type: string
+            maxLength: 1600
+          - type: 'null'
+          title: Message
+          description: Message text
+        channel:
+          anyOf:
+          - type: string
+            enum:
+            - sms
+            - imessage
+            - mms
+            - whatsapp
+            - rcs
+          - type: 'null'
+          title: Channel
+          description: Channel to report in the payload (default sms)
+      additionalProperties: false
+      type: object
+      title: TestWebhookRequest
+      description: 'Optional overrides for the synthetic agent.message a test delivery carries.
+
+
+        Everything is optional and defaults to the historical sample values, so a
+
+        bare POST behaves exactly as before. Overrides let a handler that routes on
+
+        `to` / `from` (one webhook serving many sub-accounts) exercise its real
+
+        path without buying a number first. The event only ever goes to the
+
+        calling account''s own configured webhook, so `to` is just a string here.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WebhookDeliveryResponse:
       properties:
         id:
           type: string
+          title: Id
         messageId:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Messageid
         eventType:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Eventtype
         channel:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Channel
         status:
           type: string
+          title: Status
         httpStatus:
-          type:
-          - integer
-          - 'null'
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Httpstatus
         errorMessage:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Errormessage
         responseBody:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Responsebody
         attemptCount:
           type: integer
+          title: Attemptcount
         lastAttemptAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastattemptat
         nextRetryAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Nextretryat
         createdAt:
           type: string
           format: date-time
+          title: Createdat
+      type: object
       required:
       - id
       - messageId
@@ -319,6 +367,28 @@ components:
       - nextRetryAt
       - createdAt
       title: WebhookDeliveryResponse
+    WebhookCreateRequest:
+      properties:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        contextLimit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Contextlimit
+        timeout:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Timeout
+      type: object
+      required:
+      - url
+      title: WebhookCreateRequest
   securitySchemes:
     HTTPBearer:
       type: http

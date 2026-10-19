@@ -1,44 +1,33 @@
 openapi: 3.2.0
 info:
-  title: Reference Webhooks API
-  version: 1.0.0
-servers:
-- url: https://api.agentphone.ai
-  description: Production
+  title: SMS Webhooks API
+  description: A simple API to provision phone numbers and receive SMS
+  version: 0.1.0
 tags:
 - name: Webhooks
 paths:
   /v1/webhooks:
     get:
-      operationId: get-webhook-v-1-webhooks-get
-      summary: Get Webhook
-      description: Get the master webhook configuration for this account.
       tags:
       - Webhooks
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
-      - name: X-Sub-Account-Id
-        in: header
-        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
-        required: false
-        schema:
-          type: string
+      summary: Get Webhook
+      description: Get the master webhook configuration for this account.
+      operationId: get_webhook_v1_webhooks_get
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                oneOf:
+                anyOf:
                 - $ref: '#/components/schemas/WebhookResponse'
                 - type: 'null'
+                title: Response Get Webhook V1 Webhooks Get
+      security:
+      - HTTPBearer: []
     post:
-      operationId: create-or-update-webhook-v-1-webhooks-post
+      tags:
+      - Webhooks
       summary: Create Or Update Webhook
       description: 'Register or update the webhook URL for this account.
 
@@ -51,21 +40,13 @@ paths:
         contextLimit: Number of recent messages to include in webhook payloads (0-50, default: 10).
 
         Set to 0 to disable history in webhooks.'
-      tags:
-      - Webhooks
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
+      operationId: create_or_update_webhook_v1_webhooks_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
         required: true
-        schema:
-          type: string
-      - name: X-Sub-Account-Id
-        in: header
-        description: Target a sub-account. Pass a sub-account ID to scope this request. Omit to use the master account.
-        required: false
-        schema:
-          type: string
       responses:
         '200':
           description: Successful Response
@@ -79,64 +60,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WebhookCreateRequest'
+      security:
+      - HTTPBearer: []
     delete:
-      operationId: delete-webhook-v-1-webhooks-delete
-      summary: Delete Webhook
-      description: Remove the master webhook for this account.
       tags:
       - Webhooks
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+      summary: Delete Webhook
+      description: Remove the master webhook for this account.
+      operationId: delete_webhook_v1_webhooks_delete
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
+      security:
+      - HTTPBearer: []
   /v1/webhooks/deliveries:
     get:
-      operationId: list-deliveries-v-1-webhooks-deliveries-get
-      summary: List Deliveries
-      description: Get paginated webhook delivery attempts for all account webhooks.
       tags:
       - Webhooks
+      summary: List Deliveries
+      description: Get paginated webhook delivery attempts for all account webhooks.
+      operationId: list_deliveries_v1_webhooks_deliveries_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: limit
         in: query
         required: false
         schema:
           type: integer
+          maximum: 100
           default: 50
+          title: Limit
       - name: offset
         in: query
         required: false
         schema:
           type: integer
+          minimum: 0
           default: 0
+          title: Offset
       - name: hours
         in: query
         required: false
         schema:
-          type:
-          - integer
-          - 'null'
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          anyOf:
+          - type: integer
+            maximum: 168
+            minimum: 1
+          - type: 'null'
+          title: Hours
       responses:
         '200':
           description: Successful Response
@@ -152,24 +127,23 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/webhooks/deliveries/stats:
     get:
-      operationId: delivery-stats-v-1-webhooks-deliveries-stats-get
-      summary: Delivery Stats
-      description: Aggregated delivery stats for the account's webhooks over the last N hours.
       tags:
       - Webhooks
+      summary: Delivery Stats
+      description: Aggregated delivery stats for the account's webhooks over the last N hours.
+      operationId: delivery_stats_v1_webhooks_deliveries_stats_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: hours
         in: query
         required: false
         schema:
           type: integer
+          maximum: 168
+          minimum: 1
           default: 24
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          title: Hours
       responses:
         '200':
           description: Successful Response
@@ -185,18 +159,11 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
   /v1/webhooks/deliveries/all-time:
     get:
-      operationId: all-time-stats-v-1-webhooks-deliveries-all-time-get
-      summary: All Time Stats
-      description: Lightweight all-time delivery counts using indexed COUNT queries.
       tags:
       - Webhooks
-      parameters:
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+      summary: All Time Stats
+      description: Lightweight all-time delivery counts using indexed COUNT queries.
+      operationId: all_time_stats_v1_webhooks_deliveries_all_time_get
       responses:
         '200':
           description: Successful Response
@@ -204,42 +171,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AllTimeStatsResponse'
+      security:
+      - HTTPBearer: []
   /v1/webhooks/test:
     post:
-      operationId: test-webhook-v-1-webhooks-test-post
+      tags:
+      - Webhooks
       summary: Test Webhook
       description: 'Send a test webhook to verify the endpoint is working.
 
 
-        Sends a fake message payload to the configured URL.
+        Sends a synthetic agent.message payload (flagged `"test": true`) through
+
+        the real delivery path to the configured URL. The optional JSON body
+
+        overrides `from`, `to`, `message` and `channel` so a handler can be
+
+        exercised with the numbers it actually routes on.
 
         Pass ?agentId=... to control which agent appears in the payload;
 
         otherwise the first agent in the account is used.'
-      tags:
-      - Webhooks
+      operationId: test_webhook_v1_webhooks_test_post
+      security:
+      - HTTPBearer: []
       parameters:
       - name: agentId
         in: query
-        description: Agent ID to include in the test payload
         required: false
         schema:
-          type:
-          - string
-          - 'null'
-      - name: Authorization
-        in: header
-        description: Bearer authentication
-        required: true
-        schema:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Agent ID to include in the test payload
+          title: Agentid
+        description: Agent ID to include in the test payload
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/TestWebhookRequest'
+              - type: 'null'
+              title: Body
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema:
-                description: Any type
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -248,70 +228,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    WebhookCreateRequest:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        contextLimit:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type:
-          - integer
-          - 'null'
-      required:
-      - url
-      title: WebhookCreateRequest
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     WebhookResponse:
-      type: object
       properties:
         id:
           type: string
+          title: Id
         url:
           type: string
+          title: Url
         secret:
           type: string
+          title: Secret
         status:
           type: string
+          title: Status
         contextLimit:
           type: integer
+          title: Contextlimit
         timeout:
           type: integer
+          title: Timeout
         createdAt:
           type: string
           format: date-time
+          title: Createdat
+      type: object
       required:
       - id
       - url
@@ -321,71 +262,204 @@ components:
       - timeout
       - createdAt
       title: WebhookResponse
-    PaginatedDeliveriesResponse:
-      type: object
+    WebhookDeliveryStatsResponse:
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDeliveryResponse'
         total:
           type: integer
+          title: Total
+        success:
+          type: integer
+          title: Success
+        failed:
+          type: integer
+          title: Failed
+        pending:
+          type: integer
+          title: Pending
+        successRate:
+          type: number
+          title: Successrate
+        byEventType:
+          additionalProperties:
+            additionalProperties:
+              type: integer
+            type: object
+          type: object
+          title: Byeventtype
+        byHour:
+          items:
+            type: object
+          type: array
+          title: Byhour
+      type: object
+      required:
+      - total
+      - success
+      - failed
+      - pending
+      - successRate
+      - byEventType
+      - byHour
+      title: WebhookDeliveryStatsResponse
+    PaginatedDeliveriesResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/WebhookDeliveryResponse'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
         offset:
           type: integer
+          title: Offset
         limit:
           type: integer
+          title: Limit
+      type: object
       required:
       - items
       - total
       - offset
       - limit
       title: PaginatedDeliveriesResponse
-    WebhookDeliveryResponse:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TestWebhookRequest:
+      properties:
+        from:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: From
+          description: Sender number, E.164
+        to:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: To
+          description: Recipient number, E.164
+        message:
+          anyOf:
+          - type: string
+            maxLength: 1600
+          - type: 'null'
+          title: Message
+          description: Message text
+        channel:
+          anyOf:
+          - type: string
+            enum:
+            - sms
+            - imessage
+            - mms
+            - whatsapp
+            - rcs
+          - type: 'null'
+          title: Channel
+          description: Channel to report in the payload (default sms)
+      additionalProperties: false
+      type: object
+      title: TestWebhookRequest
+      description: 'Optional overrides for the synthetic agent.message a test delivery carries.
+
+
+        Everything is optional and defaults to the historical sample values, so a
+
+        bare POST behaves exactly as before. Overrides let a handler that routes on
+
+        `to` / `from` (one webhook serving many sub-accounts) exercise its real
+
+        path without buying a number first. The event only ever goes to the
+
+        calling account''s own configured webhook, so `to` is just a string here.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WebhookDeliveryResponse:
       properties:
         id:
           type: string
+          title: Id
         messageId:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Messageid
         eventType:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Eventtype
         channel:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Channel
         status:
           type: string
+          title: Status
         httpStatus:
-          type:
-          - integer
-          - 'null'
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Httpstatus
         errorMessage:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Errormessage
         responseBody:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Responsebody
         attemptCount:
           type: integer
+          title: Attemptcount
         lastAttemptAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Lastattemptat
         nextRetryAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Nextretryat
         createdAt:
           type: string
           format: date-time
+          title: Createdat
+      type: object
       required:
       - id
       - messageId
@@ -401,60 +475,48 @@ components:
       - createdAt
       title: WebhookDeliveryResponse
     AllTimeStatsResponse:
-      type: object
       properties:
         total:
           type: integer
+          title: Total
         success:
           type: integer
+          title: Success
         failed:
           type: integer
+          title: Failed
         successRate:
           type: number
-          format: double
+          title: Successrate
+      type: object
       required:
       - total
       - success
       - failed
       - successRate
       title: AllTimeStatsResponse
-    WebhookDeliveryStatsResponse:
-      type: object
+    WebhookCreateRequest:
       properties:
-        total:
-          type: integer
-        success:
-          type: integer
-        failed:
-          type: integer
-        pending:
-          type: integer
-        successRate:
-          type: number
-          format: double
-        byEventType:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties:
-              type: integer
-        byHour:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookDeliveryStatsResponseByHourItems'
-      required:
-      - total
-      - success
-      - failed
-      - pending
-      - successRate
-      - byEventType
-      - byHour
-      title: WebhookDeliveryStatsResponse
-    WebhookDeliveryStatsResponseByHourItems:
+        url:
+          type: string
+          maxLength: 2083
+          minLength: 1
+          format: uri
+          title: Url
+        contextLimit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Contextlimit
+        timeout:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Timeout
       type: object
-      properties: {}
-      title: WebhookDeliveryStatsResponseByHourItems
+      required:
+      - url
+      title: WebhookCreateRequest
   securitySchemes:
     HTTPBearer:
       type: http

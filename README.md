@@ -66,18 +66,17 @@
 
 AgentPhone is the telephony infrastructure layer for AI agents. A single REST API provisions real US/Canada phone numbers for agents with voice calling, SMS, MMS, and iMessage built in, plus unified webhooks, automatic conversation threading, real-time call transcription, hosted-LLM or webhook voice modes, and 10DLC/A2P compliance handled for you. Official Python and TypeScript SDKs and a published MCP server let agents buy numbers, place calls, and send messages through natural language. Founded 2026 (Y Combinator), used by teams at Google ADK, Replit, LangChain, Sim AI, and Alchemy.
 
-**Areas:** Company · Telephony · Phone Numbers · SMS · Voice · AI Agents · Messaging · Communications · Webhook · MCP · iMessage
+**Areas:** Company · Telephony · Phone Numbers · SMS · Voice · AI Agents · Messaging · Communications · Webhook · MCP · I Message
 
 ## AgentPhone on APIs.io
 
 Everything profiled for AgentPhone is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/agentphone/](https://apis.io/providers/agentphone/)** — or go straight to one of the APIs or properties below.
 
-### APIs (13)
+### APIs (19)
 
 - [AgentPhone Agent Webhooks API](https://apis.io/apis/agentphone/agentphone-agent-webhooks-api/) — The agent-webhooks API from AgentPhone — 3 operation(s) for agent-webhooks.
 - [AgentPhone Agents API](https://apis.io/apis/agentphone/agentphone-agents-api/) — The agents API from AgentPhone — 7 operation(s) for agents.
 - [AgentPhone Calls API](https://apis.io/apis/agentphone/agentphone-calls-api/) — The calls API from AgentPhone — 8 operation(s) for calls.
-- [AgentPhone Contact Cards API](https://apis.io/apis/agentphone/agentphone-contactcards-api/) — The contactCards API from AgentPhone — 1 operation(s) for contactcards.
 - [AgentPhone Contacts API](https://apis.io/apis/agentphone/agentphone-contacts-api/) — The contacts API from AgentPhone — 3 operation(s) for contacts.
 - [AgentPhone Conversations API](https://apis.io/apis/agentphone/agentphone-conversations-api/) — The conversations API from AgentPhone — 5 operation(s) for conversations.
 - [AgentPhone Location API](https://apis.io/apis/agentphone/agentphone-location-api/) — The location API from AgentPhone — 2 operation(s) for location.
@@ -86,6 +85,13 @@ Everything profiled for AgentPhone is published on APIs.io rather than in this r
 - [AgentPhone Registration API](https://apis.io/apis/agentphone/agentphone-registration-api/) — The registration API from AgentPhone — 2 operation(s) for registration.
 - [AgentPhone Usage API](https://apis.io/apis/agentphone/agentphone-usage-api/) — The usage API from AgentPhone — 5 operation(s) for usage.
 - [AgentPhone Webhooks API](https://apis.io/apis/agentphone/agentphone-webhooks-api/) — The webhooks API from AgentPhone — 5 operation(s) for webhooks.
+- [AgentPhone Agent Signup API](https://apis.io/apis/agentphone/agentphone-agent-signup-api/) — The agent-signup API from AgentPhone — 2 operation(s) for agent-signup.
+- [AgentPhone contact cards API](https://apis.io/apis/agentphone/agentphone-contact-cards-api/) — The contact cards API from AgentPhone — 1 operation(s) for contact cards.
+- [AgentPhone Feedback API](https://apis.io/apis/agentphone/agentphone-feedback-api/) — The feedback API from AgentPhone — 1 operation(s) for feedback.
+- [AgentPhone Integrations API](https://apis.io/apis/agentphone/agentphone-integrations-api/) — The integrations API from AgentPhone — 4 operation(s) for integrations.
+- [AgentPhone Sip Trunks API](https://apis.io/apis/agentphone/agentphone-sip-trunks-api/) — The sip-trunks API from AgentPhone — 2 operation(s) for sip-trunks.
+- [AgentPhone Verification API](https://apis.io/apis/agentphone/agentphone-verification-api/) — The verification API from AgentPhone — 2 operation(s) for verification.
+- [AgentPhone WhatsApp API](https://apis.io/apis/agentphone/agentphone-whatsapp-api/) — The whatsapp API from AgentPhone — 6 operation(s) for whatsapp.
 - [AgentPhone Subaccounts API](https://apis.io/apis/agentphone/agentphone-subaccounts-api/) — The Subaccounts API from AgentPhone — 2 operation(s) for subaccounts.
 
 ### Published properties
@@ -114,7 +120,7 @@ Model Context Protocol servers that expose the API to agents.
 
 Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Agentphone Agentic Access](https://apis.io/agentic-access/agentphone/agentphone-agentic-access/)
+- [AgentPhone Agentic Access](https://apis.io/agentic-access/agentphone/agentphone-agentic-access/)
 
 #### Collections (13)
 
@@ -134,30 +140,51 @@ Postman and Open Collection request collections.
 - [API Reference agent-webhooks usage API](https://apis.io/collections/agentphone/open-agentphone-usage-api/)
 - [API Reference agent webhooks API](https://apis.io/collections/agentphone/open-agentphone-webhooks-api/)
 
-#### Overlays (1)
+#### Overlays (10)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Agentphone Overlay](https://apis.io/overlays/agentphone/agentphone-overlay/)
+- [AgentPhone Agents Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-agents-api-certification-overlay/)
+- [AgentPhone Calls Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-calls-api-certification-overlay/)
+- [AgentPhone Contacts Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-contacts-api-certification-overlay/)
+- [AgentPhone Conversations Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-conversations-api-certification-overlay/)
+- [AgentPhone Numbers Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-numbers-api-certification-overlay/)
+- [AgentPhone Overlay](https://apis.io/overlays/agentphone/agentphone-overlay/)
+- [AgentPhone Registration Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-registration-api-certification-overlay/)
+- [AgentPhone Subaccounts Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-subaccounts-api-certification-overlay/)
+- [AgentPhone Usage Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-usage-api-certification-overlay/)
+- [AgentPhone Webhooks Api Certification Overlay](https://apis.io/overlays/agentphone/agentphone-webhooks-api-certification-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [AgentPhone API Rules](https://apis.io/rules/agentphone/agentphone-rules/)
 
 #### Security (2)
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Agentphone Authentication](https://apis.io/security/agentphone/agentphone-authentication/)
-- [Agentphone Domain Security](https://apis.io/security/agentphone/agentphone-domain-security/)
+- [AgentPhone Authentication](https://apis.io/security/agentphone/agentphone-authentication/)
+- [AgentPhone Domain Security](https://apis.io/security/agentphone/agentphone-domain-security/)
 
 #### Plans and pricing (1)
 
 Published plans, tiers and prices.
 
-- [Agentphone Plans Pricing](https://apis.io/plans/agentphone/agentphone-plans-pricing/)
+- [AgentPhone Plans Pricing](https://apis.io/plans/agentphone/agentphone-plans-pricing/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Agentphone Rate Limits](https://apis.io/rate-limits/agentphone/agentphone-rate-limits/)
+- [AgentPhone Rate Limits](https://apis.io/rate-limits/agentphone/agentphone-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [AgentPhone Finops](https://apis.io/finops/agentphone/agentphone-finops/)
 
 ## Where to find this API
 
@@ -176,34 +203,34 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 42.6** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 54.8** — strong · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
-| Discoverability | 73.2 |
-| Contract quality | 58.5 |
-| Contract governance | 4.5 |
-| Operational transparency | 10.5 |
+| Discoverability | 75.0 |
+| Contract quality | 60.2 |
+| Contract governance | 18.2 |
+| Operational transparency | 11.9 |
 | Developer ergonomics | 78.6 |
-| Access clarity | 6.6 |
+| Access clarity | 40.4 |
 
-**Agent readiness 50.0** — agent-native
+**Agent readiness 60.6** — agent-native
 
 | Agent-readiness dimension | Result |
 |---|---|
 | Spec Presence | yes |
 | Agentic Access | derived (partial credit) |
 | Reversibility Documented | — |
-| MCP Server | — |
+| MCP Server | verified |
 | Auth Clarity | served (partial credit) |
 | Idempotency | documented (partial credit) |
 | Error Semantics | verified |
-| OpenAPI Examples | — |
+| OpenAPI Examples | partial |
 | Rate Limit Signal | documented (partial credit) |
 | Event Surface Described | derived (partial credit) |
 | Agent Skills | yes |
 | Well Known Catalog | yes |
-| Consent Identity | — |
+| Consent Identity | signal |
 | Agent Card | — |
 | Dry Run Mode | — |
 | Delegated Identity | served (partial credit) |
@@ -212,8 +239,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | partial |
 | Operation Distinctiveness | distinct |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | yes |
 
-**Regulatory alignment 14.2** — Telecommunications
+**Regulatory alignment 15.8** — Telecommunications
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/agentphone/](https://apis.io/providers/agentphone/).
 
